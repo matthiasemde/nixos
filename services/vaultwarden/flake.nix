@@ -39,6 +39,9 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.vaultwarden.rule" = "HostRegexp(`vaultwarden.*`)";
+              "traefik.http.routers.vaultwarden.entrypoints" = "websecure";
+              "traefik.http.routers.vaultwarden.tls.certresolver" = "myresolver";
+              "traefik.http.routers.vaultwarden.tls.domains[0].main" = "vaultwarden.emdecloud.de";
               "traefik.http.services.vaultwarden.loadbalancer.server.port" = "80";
 
               # 🏠 Homepage integration

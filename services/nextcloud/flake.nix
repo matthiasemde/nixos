@@ -67,7 +67,7 @@
               NEXTCLOUD_ADMIN_USER = "admin";
               # NEXTCLOUD_ADMIN_PASSWORD = "adminpassword" # set via secret management;
               NEXTCLOUD_TRUSTED_DOMAINS = "nextcloud.emdecloud.de nextcloud.mahler.local";
-              # Necessary to allow clients to connect trough the reverse proxy
+              # Necessary to allow clients to connect through the reverse proxy
               OVERWRITEPROTOCOL = "https";
               OVERWRITECLIURL = "https://nextcloud.emdecloud.de";
             };
@@ -76,6 +76,9 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.nextcloud.rule" = "HostRegexp(`nextcloud.*`)";
+              "traefik.http.routers.nextcloud.entrypoints" = "websecure";
+              "traefik.http.routers.nextcloud.tls.certresolver" = "myresolver";
+              "traefik.http.routers.nextcloud.tls.domains[0].main" = "nextcloud.emdecloud.de";
               "traefik.http.services.nextcloud.loadbalancer.server.port" = "80";
 
               # 🏠 Homepage integration

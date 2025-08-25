@@ -1,0 +1,23 @@
+serverAddr = "vps.emdecloud.de"
+serverPort = 7000
+
+auth.method = "token"
+auth.token = "{{ .Envs.FRP_TOKEN }}"
+
+[[proxies]]
+name = "traefik-http"
+type = "tcp"
+localIP = "traefik"
+localPort = 80
+remotePort = 80
+# subdomain = "vps"
+# customDomains = ["home.vps.emdecloud.de"]
+
+[[proxies]]
+name = "traefik-https"
+type = "tcp"
+localIP = "traefik"
+localPort = 443
+remotePort = 443
+# subdomain = "vps"
+# customDomains = ["home.vps.emdecloud.de"]

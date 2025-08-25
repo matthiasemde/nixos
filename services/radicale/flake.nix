@@ -56,8 +56,11 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.radicale.rule" = "HostRegexp(`radicale.*`)";
-              "traefik.http.services.radicale.loadbalancer.server.port" = "5232";
+              "traefik.http.routers.radicale.entrypoints" = "websecure";
+              "traefik.http.routers.radicale.tls.certresolver" = "myresolver";
+              "traefik.http.routers.radicale.tls.domains[0].main" = "radicale.emdecloud.de";
               "traefik.http.routers.radicale.middlewares" = "auth";
+              "traefik.http.services.radicale.loadbalancer.server.port" = "5232";
             };
           };
         };

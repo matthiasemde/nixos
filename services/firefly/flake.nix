@@ -23,10 +23,7 @@
         };
       };
       containers =
-        { hostname, getServiceEnvFiles, ... }:
-        let
-          host = "firefly.${hostname}.local";
-        in
+        { getServiceEnvFiles, ... }:
         {
           ${appName} = {
             image = "fireflyiii/core:version-6.2.19";
@@ -49,20 +46,23 @@
               APP_LOG_LEVEL = "notice";
               AUDIT_LOG_LEVEL = "emergency";
               DB_CONNECTION = "sqlite";
-              APP_URL = "http://${host})";
+              APP_URL = "https://firefly.emdecloud.de";
             };
             environmentFiles = getServiceEnvFiles name;
             labels = {
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.${appName}.rule" = "HostRegexp(`firefly.*`)";
+              "traefik.http.routers.${appName}.entrypoints" = "websecure";
+              "traefik.http.routers.${appName}.tls.certresolver" = "myresolver";
+              "traefik.http.routers.${appName}.tls.domains[0].main" = "firefly.emdecloud.de";
               "traefik.http.services.${appName}.loadbalancer.server.port" = "8080";
 
               # 🏠 Homepage integration
               "homepage.group" = "Life Management";
               "homepage.name" = "Firefly";
               "homepage.icon" = "firefly";
-              "homepage.href" = "http://${host}";
+              "homepage.href" = "https://firefly.emdecloud.de";
               "homepage.description" = "Finance managment";
             };
           };

@@ -18,7 +18,7 @@
       containers =
         { hostname, getServiceEnvFiles, ... }:
         let
-          version = "v1.135.3";
+          version = "v1.138.1";
         in
         {
           immich-app = {
@@ -41,6 +41,9 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.immich.rule" = "HostRegexp(`immich.*`)";
+              "traefik.http.routers.immich.entrypoints" = "websecure";
+              "traefik.http.routers.immich.tls.certresolver" = "myresolver";
+              "traefik.http.routers.immich.tls.domains[0].main" = "immich.emdecloud.de";
               "traefik.http.services.immich.loadbalancer.server.port" = "2283";
 
               # 🏠 Homepage integration

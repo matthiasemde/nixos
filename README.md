@@ -39,6 +39,14 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── app_key.env.age.nix
 │   │       ├── gls.json.age
 │   │       └── gls.json.age.nix
+│   ├── frp
+│   │   ├── config
+│   │   │   └── frpc.toml
+│   │   ├── .env
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── FRP_TOKEN.env.age
+│   │       └── FRP_TOKEN.env.age.nix
 │   ├── glances
 │   │   └── flake.nix
 │   ├── home-assistant
@@ -111,7 +119,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-35 directories, 72 files
+38 directories, 77 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

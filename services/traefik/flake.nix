@@ -25,9 +25,10 @@
               "443:443"
               "8080:8080"
             ];
+            extraOptions = [ "--dns=1.1.1.1" ];
             networks = [
               "traefik"
-              "cloudflare-ingress"
+              "frp-ingress"
             ];
             environmentFiles = getServiceEnvFiles "traefik";
             volumes = [
@@ -41,6 +42,7 @@
             labels = {
               "homepage.group" = "Utilities";
               "homepage.name" = "Traefik";
+              "homepage.icon" = "traefik";
               "homepage.href" = "http://${hostname}:8080";
               "homepage.description" = "Reverse proxy dashboard";
             };

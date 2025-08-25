@@ -14,10 +14,7 @@
         };
       };
       containers =
-        { hostname, ... }:
-        let
-          host = "home-assistant.${hostname}.local";
-        in
+        { ... }:
         {
           home-assistant = {
             image = "ghcr.io/home-assistant/home-assistant:2025.7";
@@ -40,13 +37,17 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.ha.rule" = "HostRegexp(`home-assistant.*`)";
+              "traefik.http.routers.ha.entrypoints" = "websecure";
+              "traefik.http.routers.ha.tls.certresolver" = "myresolver";
+              "traefik.http.routers.ha.tls.domains[0].main" = "home-assistant.emdecloud.de";
               "traefik.http.services.ha.loadbalancer.server.port" = "8123";
 
               # 🏠 Homepage integration
               "homepage.group" = "Home Automation";
               "homepage.name" = "Home Assistant";
               "homepage.icon" = "home-assistant";
-              "homepage.href" = "http://${host}";
+              "homepage.href" = "https://home-assistant.emdecloud.de";
+              "homepage.description" = "Smart home control";
             };
           };
         };

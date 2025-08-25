@@ -49,6 +49,9 @@
               # 🛡️ Traefik
               "traefik.enable" = "true";
               "traefik.http.routers.paperless.rule" = "HostRegexp(`paperless.*`)";
+              "traefik.http.routers.paperless.entrypoints" = "websecure";
+              "traefik.http.routers.paperless.tls.certresolver" = "myresolver";
+              "traefik.http.routers.paperless.tls.domains[0].main" = "paperless.emdecloud.de";
               "traefik.http.services.paperless.loadbalancer.server.port" = "8000";
 
               # 🏠 Homepage integration
@@ -66,6 +69,10 @@
               "/data/services/paperless/redis:/data"
             ];
             networks = [ backendNetwork ];
+            labels = {
+              # 🛡️ Traefik (disabled)
+              "traefik.enable" = "false";
+            };
           };
         };
     };
