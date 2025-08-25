@@ -47,6 +47,7 @@
               AUDIT_LOG_LEVEL = "emergency";
               DB_CONNECTION = "sqlite";
               APP_URL = "https://firefly.emdecloud.de";
+              TRUSTED_PROXIES = "**";
             };
             environmentFiles = getServiceEnvFiles name;
             labels = {
