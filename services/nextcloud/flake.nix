@@ -6,36 +6,6 @@
   outputs =
     { self, nixpkgs }:
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-      nextcloudBase = pkgs.dockerTools.pullImage {
-        imageName = "nextcloud";
-        imageDigest = "sha256:c0be97cad52e01422c3acb0adae472f7869c137ac865614cc976f9d2f17d988b";
-        sha256 = "sha256-ujZH/VTC3Ul3gpY7F8lrmSrL4kwMoUawqEj0sXUrTYc=";
-      };
-
-      # Build custom docker image
-      nextcloudDerived = pkgs.dockerTools.buildImage {
-        name = "nextcloud-derived";
-        tag = "v1.0.0";
-        fromImage = nextcloudBase;
-
-        # Add smbclient
-        copyToRoot = pkgs.buildEnv {
-          name = "image-root";
-          paths = with pkgs; [
-            bash
-            samba
-          ];
-          pathsToLink = [ "/bin" ];
-        };
-
-        config = {
-          Entrypoint = [ "/entrypoint.sh" ];
-          Cmd = [ "apache2-foreground" ];
-        };
-      };
-
       backendNetwork = "nextcloud-backend";
     in
     {
@@ -49,8 +19,7 @@
         { hostname, getServiceEnvFiles, ... }:
         {
           nextcloud-app = {
-            image = "nextcloud-derived:v1.0.0";
-            imageFile = nextcloudDerived;
+            image = "nextcloud-derived:v1.0.1";
             volumes = [
               "/data/services/nextcloud/app:/var/www/html"
             ];

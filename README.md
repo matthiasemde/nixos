@@ -80,6 +80,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── fileshare-pw.age
 │   │       └── fileshare-pw.age.nix
 │   ├── nextcloud
+│   │   ├── Dockerfile
 │   │   ├── flake.nix
 │   │   └── secrets
 │   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age
@@ -119,7 +120,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-38 directories, 77 files
+38 directories, 78 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
