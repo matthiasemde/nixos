@@ -82,11 +82,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── nextcloud
 │   │   ├── Dockerfile
 │   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age
-│   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age.nix
-│   │       ├── POSTGRES_PASSWORD.env.age
-│   │       └── POSTGRES_PASSWORD.env.age.nix
+│   │   ├── README.md
+│   │   ├── secrets
+│   │   │   ├── NEXTCLOUD_ADMIN_PASSWORD.env.age
+│   │   │   ├── NEXTCLOUD_ADMIN_PASSWORD.env.age.nix
+│   │   │   ├── POSTGRES_PASSWORD.env.age
+│   │   │   └── POSTGRES_PASSWORD.env.age.nix
+│   │   └── supervisord.conf
 │   ├── paperless
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -122,7 +124,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-38 directories, 80 files
+38 directories, 82 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

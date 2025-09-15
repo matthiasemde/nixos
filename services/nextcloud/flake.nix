@@ -19,7 +19,7 @@
         { hostname, getServiceEnvFiles, ... }:
         {
           nextcloud-app = {
-            image = "nextcloud-derived:v1.0.1";
+            image = "nextcloud-derived:v1.1.1";
             volumes = [
               "/data/services/nextcloud/app:/var/www/html"
             ];
