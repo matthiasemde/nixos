@@ -15,6 +15,7 @@
       configDerivation = pkgs.runCommand "radicale-config" { } ''
         mkdir -p $out/etc/radicale
         cp ${./config/config} $out/etc/radicale/config
+        cp ${./users} $out/etc/radicale/users
       '';
 
       radicaleImage = pkgs.dockerTools.buildImage {
@@ -59,7 +60,6 @@
               "traefik.http.routers.radicale.entrypoints" = "websecure";
               "traefik.http.routers.radicale.tls.certresolver" = "myresolver";
               "traefik.http.routers.radicale.tls.domains[0].main" = "radicale.emdecloud.de";
-              "traefik.http.routers.radicale.middlewares" = "auth";
               "traefik.http.services.radicale.loadbalancer.server.port" = "5232";
             };
           };

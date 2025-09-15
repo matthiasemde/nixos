@@ -97,7 +97,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── radicale
 │   │   ├── config
 │   │   │   └── config
-│   │   └── flake.nix
+│   │   ├── flake.nix
+│   │   ├── README.md
+│   │   └── users
 │   ├── traefik
 │   │   ├── config
 │   │   │   ├── error.html
@@ -120,7 +122,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-38 directories, 78 files
+38 directories, 80 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
