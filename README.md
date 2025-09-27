@@ -96,6 +96,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── PAPERLESS_SECRET_KEY.env.age.nix
 │   │       ├── smtp-credentials.env.age
 │   │       └── smtp-credentials.env.age.nix
+│   ├── pterodactyl
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── db_credentials.env.age
+│   │       ├── db_credentials.env.age.nix
+│   │       ├── smtp_credentials.env.age
+│   │       └── smtp_credentials.env.age.nix
 │   ├── radicale
 │   │   ├── config
 │   │   │   └── config
@@ -124,7 +131,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-38 directories, 82 files
+40 directories, 87 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

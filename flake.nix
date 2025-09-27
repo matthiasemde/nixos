@@ -26,6 +26,7 @@
     vaultwarden.url = "path:./services/vaultwarden";
     paperless.url = "path:./services/paperless";
     radicale.url = "path:./services/radicale";
+    pterodactyl.url = "path:./services/pterodactyl";
   };
 
   outputs =
@@ -50,6 +51,7 @@
       vaultwarden,
       paperless,
       radicale,
+      pterodactyl,
       ...
     }:
     {
@@ -88,6 +90,7 @@
             vaultwarden
             paperless
             radicale
+            pterodactyl
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;

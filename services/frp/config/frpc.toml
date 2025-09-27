@@ -21,3 +21,38 @@ localPort = 443
 remotePort = 443
 # subdomain = "vps"
 # customDomains = ["home.vps.emdecloud.de"]
+
+[[proxies]]
+name = "minecraft-tcp"
+type = "tcp"
+localIP = "172.31.0.3"
+localPort = 25565
+remotePort = 25565
+
+[[proxies]]
+name = "satisfactory-primary-tcp"
+type = "tcp"
+localIP = "172.31.0.5"
+localPort = 7777
+remotePort = 7777
+
+[[proxies]]
+name = "satisfactory-primary-udp"
+type = "udp"
+localIP = "172.31.0.5"
+localPort = 7777
+remotePort = 7777
+
+[[proxies]]
+name = "satisfactory-reliable-messaging-tcp"
+type = "tcp"
+localIP = "172.31.0.5"
+localPort = 8888
+remotePort = 8888
+
+[[proxies]]
+name = "satisfactory-reliable-messaging-udp"
+type = "udp"
+localIP = "172.31.0.5"
+localPort = 8888
+remotePort = 8888
