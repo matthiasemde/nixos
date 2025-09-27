@@ -26,7 +26,7 @@
         { getServiceEnvFiles, ... }:
         {
           ${appName} = {
-            image = "fireflyiii/core:version-6.2.19";
+            image = "fireflyiii/core:version-6.4.0";
             volumes = [
               "/data/services/firefly/app/upload:/var/www/html/storage/upload"
               "/data/services/firefly/app/database/database.sqlite:/var/www/html/storage/database/database.sqlite"

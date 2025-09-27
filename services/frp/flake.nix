@@ -49,6 +49,7 @@
             imageFile = frpcImage;
             networks = [
               "frp-ingress"
+              "pterodactyl_nw"
             ];
             extraOptions = [ "--dns=1.1.1.1" ];
             environmentFiles = getServiceEnvFiles "frp";

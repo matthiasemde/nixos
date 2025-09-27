@@ -18,7 +18,7 @@
       containers =
         { hostname, getServiceEnvFiles, ... }:
         let
-          version = "v1.138.1";
+          version = "v1.142.1";
         in
         {
           immich-app = {

@@ -16,7 +16,7 @@
       adguardBase = pkgs.dockerTools.pullImage {
         imageName = "adguard/adguardhome";
         imageDigest = "sha256:320ab49bd5f55091c7da7d1232ed3875f687769d6bb5e55eb891471528e2e18f";
-        sha256 = "sha256-hP6yYr0AHv1wDZ7BHzhx4GZGKL9wPy8wEaKjrDvh4KE=";
+        sha256 = "sha256-St9EOxoipyQZYMX027BSxMbXOFJbZJ5kgiAaVjfZyy4=";
       };
 
       # Build custom docker image with baked-in config
@@ -62,9 +62,6 @@
             imageFile = adguardDerived;
             networks = [ "${networkName}" ];
             extraOptions = [ "--ip=192.168.178.240" ];
-            volumes = [
-              "/data/services/adguard/work:/opt/adguardhome/work"
-            ];
             labels = {
               # Traefik (disabled)
               "traefik.enable" = "false";
