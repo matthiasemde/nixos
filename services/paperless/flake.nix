@@ -32,6 +32,10 @@
               "PAPERLESS_EMAIL_HOST_USER" = "no-reply@emdecloud.de";
               # "PAPERLESS_EMAIL_HOST_PASSWORD" = "password"; # set via secret management;
               "PAPERLESS_EMAIL_USE_SSL" = "true";
+
+              # Configuration
+              "PAPERLESS_CONSUMER_RECURSIVE" = "true";
+              "PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS" = "true";
             };
             environmentFiles = getServiceEnvFiles "paperless";
             volumes = [
@@ -39,7 +43,7 @@
               "/data/services/paperless/app/data:/usr/src/paperless/data"
               "/data/services/paperless/app/media:/usr/src/paperless/media"
               "/data/services/paperless/app/export:/usr/src/paperless/export"
-              "/data/services/paperless/app/consume:/usr/src/paperless/consume"
+              "/tmp/paperless-consumer:/usr/src/paperless/consume"
             ];
             networks = [
               "traefik"
