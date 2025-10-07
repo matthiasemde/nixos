@@ -1,8 +1,6 @@
 {
   description = "Nextcloud container flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     let
@@ -16,7 +14,33 @@
         };
       };
       containers =
-        { hostname, getServiceEnvFiles, ... }:
+        {
+          hostname,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          postgresRawImageReference = "postgres:15@sha256:22d83dee85fd73ffa34e5b19d192184bad1fbc6b960aca3df4d31ac464532dab";
+          postgresImageReference = parseDockerImageReference postgresRawImageReference;
+          postgresImage = pkgs.dockerTools.pullImage {
+            imageName = postgresImageReference.name;
+            imageDigest = postgresImageReference.digest;
+            finalImageTag = postgresImageReference.tag;
+            sha256 = "sha256-oG5Do29b4CSok3H6mSk/xYiHeyJd4XJShwdkgO3A6D0=";
+          };
+
+          redisRawImageReference = "redis:7@sha256:88e81357a782cf72ad2c4a8bac4391d193bae19ab119bb1bff3ea9344ab675be";
+          redisImageReference = parseDockerImageReference redisRawImageReference;
+          redisImage = pkgs.dockerTools.pullImage {
+            imageName = redisImageReference.name;
+            imageDigest = redisImageReference.digest;
+            finalImageTag = redisImageReference.tag;
+            sha256 = "sha256-VigxNiQYrKw8IeKNGTEi01chwwccka286qdmelz6Idc=";
+          };
+        in
         {
           nextcloud-app = {
             image = "nextcloud-derived:v1.1.1";
@@ -60,7 +84,8 @@
           };
 
           nextcloud-database = {
-            image = "postgres:15";
+            image = postgresImageReference.name + ":" + postgresImageReference.tag;
+            imageFile = postgresImage;
             volumes = [ "/data/services/nextcloud/database:/var/lib/postgresql/data" ];
             networks = [ backendNetwork ];
             environment = {
@@ -76,7 +101,8 @@
           };
 
           nextcloud-redis = {
-            image = "redis:7";
+            image = redisImageReference.name + ":" + redisImageReference.tag;
+            imageFile = redisImage;
             networks = [ backendNetwork ];
             labels = {
               # 🛡️ Traefik (disabled)

@@ -1,12 +1,8 @@
 {
   description = "Radicale service using a custom Docker image";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-  };
-
   outputs =
-    { self, nixpkgs, ... }:
+    { self, nixpkgs }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };

@@ -1,12 +1,8 @@
 {
   description = "NAS configuration using Samba";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-  };
-
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs }:
     {
       name = "nas";
       nixosModules.default =

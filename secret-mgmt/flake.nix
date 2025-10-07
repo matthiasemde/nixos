@@ -1,15 +1,13 @@
 {
   description = "Generic secret-management flake for NixOS + OCI containers";
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    agenix.url = "github:ryantm/agenix";
-  };
+
+  inputs.agenix.url = "github:ryantm/agenix";
+
   outputs =
     {
       self,
       nixpkgs,
       agenix,
-      ...
     }:
     let
       lib = nixpkgs.lib;
@@ -39,7 +37,8 @@
         };
 
       # collectDirSecrets: collect entries for one directory
-      collectDirSecrets = dir:
+      collectDirSecrets =
+        dir:
         let
           files = scanDir dir;
           entries = lib.map (fname: makeSecretEntry dir fname) files;
@@ -57,14 +56,16 @@
       # -------- Secret Retrieval ---------
 
       #getServiceSecrets: return all files under /run/agenix for a service
-      getServiceSecrets = serviceName:
-      let
-        ageFiles = scanDir ../services/${serviceName}/secrets;
-        secretNames = lib.map (fname: lib.removeSuffix ".age" fname) ageFiles;
-      in
+      getServiceSecrets =
+        serviceName:
+        let
+          ageFiles = scanDir ../services/${serviceName}/secrets;
+          secretNames = lib.map (fname: lib.removeSuffix ".age" fname) ageFiles;
+        in
         lib.map (fname: "/run/agenix/${serviceName}-${fname}") secretNames;
 
-      getServiceEnvFiles = serviceName:
+      getServiceEnvFiles =
+        serviceName:
         let
           ageFiles = scanDir ../services/${serviceName}/secrets;
           secretNames = lib.map (fname: lib.removeSuffix ".age" fname) ageFiles;
@@ -80,11 +81,13 @@
           pkgs,
           lib,
           hostname,
-          services ? [],
+          services ? [ ],
           ...
         }:
         let
-          dirs = lib.foldl' (acc: service: acc ++ [ ../services/${service.name}/secrets ]) [ ../hosts/${hostname}/secrets ] services;
+          dirs = lib.foldl' (acc: service: acc ++ [ ../services/${service.name}/secrets ]) [
+            ../hosts/${hostname}/secrets
+          ] services;
           secrets = collectSecrets dirs;
         in
         {

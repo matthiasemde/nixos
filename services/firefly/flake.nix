@@ -1,8 +1,6 @@
 {
   description = "Firefly III service flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     let
@@ -23,10 +21,41 @@
         };
       };
       containers =
-        { getServiceEnvFiles, ... }:
+        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          fireflyRawImageReference = "fireflyiii/core:version-6.4.0@sha256:1938b4385ba33e647cc6c1de0234f858ac963229c0156e10f8d1f6b16de10efa";
+          fireflyImageReference = parseDockerImageReference fireflyRawImageReference;
+          fireflyImage = pkgs.dockerTools.pullImage {
+            imageName = fireflyImageReference.name;
+            imageDigest = fireflyImageReference.digest;
+            finalImageTag = fireflyImageReference.tag;
+            sha256 = "sha256-lbRGYi6OT3wVu5w2ylQQROxVj6S6SIW1IaV0oZHKjpk=";
+          };
+
+          fintsRawImageReference = "docker.io/benkl/firefly-iii-fints-importer:latest@sha256:c8abed41fdcd5f1f234ee1141c2f006c60b5e1865640fc1e45de738b4bbdef23";
+          fintsImageReference = parseDockerImageReference fintsRawImageReference;
+          fintsImage = pkgs.dockerTools.pullImage {
+            imageName = fintsImageReference.name;
+            imageDigest = fintsImageReference.digest;
+            finalImageTag = fintsImageReference.tag;
+            sha256 = "sha256-R/zqzFFGZwiSuzM17OFsdEYCLkJ0zC50pAuxVad6FSM=";
+          };
+
+          alpineRawImageReference = "alpine:3.22.1@sha256:eafc1edb577d2e9b458664a15f23ea1c370214193226069eb22921169fc7e43f";
+          alpineImageReference = parseDockerImageReference alpineRawImageReference;
+          alpineImage = pkgs.dockerTools.pullImage {
+            imageName = alpineImageReference.name;
+            imageDigest = alpineImageReference.digest;
+            finalImageTag = alpineImageReference.tag;
+            sha256 = "sha256-oBoU1GqTLZGH8N3TJKoQCjmpkefCzhHFU3DU5etu7zc=";
+          };
+        in
         {
           ${appName} = {
-            image = "fireflyiii/core:version-6.4.0";
+            image = fireflyImageReference.name + ":" + fireflyImageReference.tag;
+            imageFile = fireflyImage;
             volumes = [
               "/data/services/firefly/app/upload:/var/www/html/storage/upload"
               "/data/services/firefly/app/database/database.sqlite:/var/www/html/storage/database/database.sqlite"
@@ -69,7 +98,8 @@
           };
 
           ${fintsName} = {
-            image = "docker.io/benkl/firefly-iii-fints-importer:latest";
+            image = fintsImageReference.name + ":" + fintsImageReference.tag;
+            imageFile = fintsImage;
             # ports = [ "8123:8080" ]; # you only need to enable this during configuration
             extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
@@ -86,7 +116,8 @@
           };
 
           ${cronName} = {
-            image = "alpine";
+            image = alpineImageReference.name + ":" + alpineImageReference.tag;
+            imageFile = alpineImage;
             volumes = [ "/etc/localtime:/etc/localtime:ro" ];
             extraOptions = [ "--dns=1.1.1.1" ];
             cmd = [

@@ -1,8 +1,6 @@
 {
   description = "Paperless-NGX container flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     let
@@ -16,10 +14,32 @@
         };
       };
       containers =
-        { getServiceEnvFiles, ... }:
+        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          paperlessRawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.17.1@sha256:ab72a0ab42a792228cdbe83342b99a48acd49f7890ae54b1ae8e04401fba24ee";
+          paperlessImageReference = parseDockerImageReference paperlessRawImageReference;
+          paperlessImage = pkgs.dockerTools.pullImage {
+            imageName = paperlessImageReference.name;
+            imageDigest = paperlessImageReference.digest;
+            finalImageTag = paperlessImageReference.tag;
+            sha256 = "sha256-g6usmGwpbghIjEkdh/QfSsXw7w17E1v41f/qATv4Bvk=";
+          };
+
+          redisRawImageReference = "docker.io/library/redis:8@sha256:b83648c7ab6752e1f52b88ddf5dabc11987132336210d26758f533fb01325865";
+          redisImageReference = parseDockerImageReference redisRawImageReference;
+          redisImage = pkgs.dockerTools.pullImage {
+            imageName = redisImageReference.name;
+            imageDigest = redisImageReference.digest;
+            finalImageTag = redisImageReference.tag;
+            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
+          };
+        in
         {
           paperless-app = {
-            image = "ghcr.io/paperless-ngx/paperless-ngx:2.17.1";
+            image = paperlessImageReference.name + ":" + paperlessImageReference.tag;
+            imageFile = paperlessImage;
             extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               "PAPERLESS_URL" = "https://paperless.emdecloud.de";
@@ -68,7 +88,8 @@
           };
 
           paperless-redis = {
-            image = "docker.io/library/redis:8";
+            image = redisImageReference.name + ":" + redisImageReference.tag;
+            imageFile = redisImage;
             volumes = [
               "/data/services/paperless/redis:/data"
             ];

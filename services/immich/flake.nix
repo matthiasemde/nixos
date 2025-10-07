@@ -1,8 +1,6 @@
 {
   description = "Immich container flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     let
@@ -16,13 +14,55 @@
         };
       };
       containers =
-        { hostname, getServiceEnvFiles, ... }:
+        {
+          hostname,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
         let
-          version = "v1.142.1";
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          immichAppRawImageReference = "ghcr.io/immich-app/immich-server:v1.142.1@sha256:06bc7715fa4c4a1641bd0b566c949cd7327f420632b480389fd4d1e70665d046";
+          immichAppImageReference = parseDockerImageReference immichAppRawImageReference;
+          immichAppImage = pkgs.dockerTools.pullImage {
+            imageName = immichAppImageReference.name;
+            imageDigest = immichAppImageReference.digest;
+            finalImageTag = immichAppImageReference.tag;
+            sha256 = "sha256-ieXjtlmxIWojjuvHgLPpZ8cc/dDd6WkKPmB5u4AwXvg=";
+          };
+
+          immichMLRawImageReference = "ghcr.io/immich-app/immich-machine-learning:v1.142.1@sha256:9855f6a0a998db508ca97894997b17f3a0a61e9388b204d861110c19c42814eb";
+          immichMLImageReference = parseDockerImageReference immichMLRawImageReference;
+          immichMLImage = pkgs.dockerTools.pullImage {
+            imageName = immichMLImageReference.name;
+            imageDigest = immichMLImageReference.digest;
+            finalImageTag = immichMLImageReference.tag;
+            sha256 = "sha256-6INEsn30aYfaQY/FGQC5Cyue+3jGc7yMa8WF2U75IoM=";
+          };
+
+          immichRedisRawImageReference = "docker.io/valkey/valkey:8-bookworm@sha256:fec42f399876eb6faf9e008570597741c87ff7662a54185593e74b09ce83d177";
+          immichRedisImageReference = parseDockerImageReference immichRedisRawImageReference;
+          immichRedisImage = pkgs.dockerTools.pullImage {
+            imageName = immichRedisImageReference.name;
+            imageDigest = immichRedisImageReference.digest;
+            finalImageTag = immichRedisImageReference.tag;
+            sha256 = "sha256-pRgJXPCztxizPzsRTPvBbNAxLC4XXBtIMKtz3joyLPk=";
+          };
+
+          immichDatabaseRawImageReference = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:41eacbe83eca995561fe43814fd4891e16e39632806253848efaf04d3c8a8b84";
+          immichDatabaseImageReference = parseDockerImageReference immichDatabaseRawImageReference;
+          immichDatabaseImage = pkgs.dockerTools.pullImage {
+            imageName = immichDatabaseImageReference.name;
+            imageDigest = immichDatabaseImageReference.digest;
+            finalImageTag = immichDatabaseImageReference.tag;
+            sha256 = "sha256-kEW12MDS2g1naTj4NZCUuEiuP39zEZXeuvTqIcJHZYs=";
+          };
         in
         {
           immich-app = {
-            image = "ghcr.io/immich-app/immich-server:${version}";
+            image = immichAppImageReference.name + ":" + immichAppImageReference.tag;
+            imageFile = immichAppImage;
             extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
@@ -59,7 +99,8 @@
           };
 
           immich-machine-learning = {
-            image = "ghcr.io/immich-app/immich-machine-learning:${version}";
+            image = immichMLImageReference.name + ":" + immichMLImageReference.tag;
+            imageFile = immichMLImage;
             volumes = [ "immich-ml-cache:/cache" ];
             networks = [ backendNetwork ];
             labels = {
@@ -69,7 +110,8 @@
           };
 
           immich-redis = {
-            image = "docker.io/valkey/valkey:8-bookworm@sha256:fec42f399876eb6faf9e008570597741c87ff7662a54185593e74b09ce83d177";
+            image = immichRedisImageReference.name + ":" + immichRedisImageReference.tag;
+            imageFile = immichRedisImage;
             networks = [ backendNetwork ];
             labels = {
               # 🛡️ Traefik (disabled)
@@ -78,7 +120,8 @@
           };
 
           immich-database = {
-            image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0";
+            image = immichDatabaseImageReference.name + ":" + immichDatabaseImageReference.tag;
+            imageFile = immichDatabaseImage;
             networks = [ backendNetwork ];
             environment = {
               # POSTGRES_PASSWORD = set via secret management (use only the characters `A-Za-z0-9`);

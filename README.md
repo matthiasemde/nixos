@@ -19,6 +19,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │       ├── configuration.nix
 │       └── hardware-configuration.nix
 ├── README.md
+├── renovate.json
 ├── secret-mgmt
 │   ├── add_secret.sh
 │   ├── flake.nix
@@ -162,7 +163,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-48 directories, 110 files
+48 directories, 111 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

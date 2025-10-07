@@ -1,0 +1,106 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":pinVersions",
+    ":automergeMinor",
+    ":rebaseStalePrs"
+  ],
+  "pinDigests": true,
+  "labels": [
+    "dependencies"
+  ],
+  "automergeStrategy": "fast-forward",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": [
+      "schedule:weekly"
+    ],
+    "automerge": true,
+    "timezone": "Europe/Berlin"
+  },
+  "nix": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "nix"
+      ],
+      "matchDepNames": [
+        "nixpkgs"
+      ],
+      "labels": [
+        "nixpkgs"
+      ],
+      "automerge": false,
+      "prPriority": 10
+    },
+    {
+      "matchManagers": [
+        "nix"
+      ],
+      "labels": [
+        "flake-input"
+      ],
+      "automerge": false,
+      "prPriority": 5,
+      "matchPackageNames": [
+        "!nixpkgs"
+      ]
+    },
+    {
+      "description": "Block major version updates from automerging for Docker images",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Automerge minor and patch Docker image updates",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "labels": [
+        "docker-image"
+      ],
+      "automerge": true,
+      "prPriority": 3
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)flake\\.nix$/"
+      ],
+      "matchStrings": [
+        "RawImageReference\\s*=\\s*\"(?<depName>[a-zA-Z0-9._\\-/]+):(?<currentValue>[a-zA-Z0-9._-]+)@(?<currentDigest>sha256:[a-zA-Z0-9]+)\""
+      ],
+      "datasourceTemplate": "docker",
+      "autoReplaceStringTemplate": "RawImageReference = \"{{{depName}}}:{{{newValue}}}@{{{newDigest}}}\""
+    }
+  ]
+}

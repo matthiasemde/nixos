@@ -1,17 +1,33 @@
 {
   description = "Kopia Server container for de-duplicated backups";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-
   outputs =
-    { self, nixpkgs, ... }:
+    { self, nixpkgs }:
     {
       name = "kopia";
       containers =
-        { hostname, getServiceEnvFiles, ... }:
+        {
+          hostname,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          kopiaRawImageReference = "kopia/kopia:0.21.1@sha256:c594f95b4c0888f51a89339f746db45e141d6b65567814f592955368e575da55";
+          kopiaImageReference = parseDockerImageReference kopiaRawImageReference;
+          kopiaImage = pkgs.dockerTools.pullImage {
+            imageName = kopiaImageReference.name;
+            imageDigest = kopiaImageReference.digest;
+            finalImageTag = kopiaImageReference.tag;
+            sha256 = "sha256-+onyN8iEw9HbZ+ZQ4hYGQyI1kELR96wd8SGMrIOrT1s=";
+          };
+        in
         {
           kopia = {
-            image = "kopia/kopia:0.21.1";
+            image = kopiaImageReference.name + ":" + kopiaImageReference.tag;
+            imageFile = kopiaImage;
             networks = [
               "traefik"
             ];

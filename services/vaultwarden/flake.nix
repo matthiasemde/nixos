@@ -1,17 +1,28 @@
 {
   description = "Vaultwarden container flake";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     {
       name = "vaultwarden";
       containers =
-        { getServiceEnvFiles, ... }:
+        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          vaultwardenRawImageReference = "vaultwarden/server:1.34.2@sha256:369a2a3bbfa0d8ac50da7db42f4beab10501fcc5fe155bc56497cec4339556a8";
+          vaultwardenImageReference = parseDockerImageReference vaultwardenRawImageReference;
+          vaultwardenImage = pkgs.dockerTools.pullImage {
+            imageName = vaultwardenImageReference.name;
+            imageDigest = vaultwardenImageReference.digest;
+            finalImageTag = vaultwardenImageReference.tag;
+            sha256 = "sha256-85c/SV7bz4mCcu8HOLyJchoscu1bkAIRYMF64lPzTDM=";
+          };
+        in
         {
           vaultwarden = {
-            image = "vaultwarden/server:1.34.2";
+            image = vaultwardenImageReference.name + ":" + vaultwardenImageReference.tag;
+            imageFile = vaultwardenImage;
             extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               # Server hostname

@@ -1,12 +1,8 @@
 {
   description = "Generic virtualization flake: a reusable NixOS module";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-  };
-
   outputs =
-    { self, ... }:
+    { self, nixpkgs }:
     {
       nixosModules.default =
         {
@@ -19,12 +15,34 @@
           ...
         }:
         let
+          # Parses a docker image string like:
+          # "ghcr.io/gethomepage/homepage:v1.3.2@sha256:4f923b..."
+          # into { name, tag, digest }
+          parseDockerImageReference =
+            imageStr:
+            let
+              # split by "@"
+              partsAt = lib.splitString "@" imageStr;
+              beforeAt = builtins.elemAt partsAt 0;
+              digest = builtins.elemAt partsAt 1;
+
+              # split by ":"
+              partsColon = lib.splitString ":" beforeAt;
+              name = builtins.elemAt partsColon 0;
+              tag = builtins.elemAt partsColon 1;
+            in
+            {
+              name = name;
+              tag = tag;
+              digest = digest;
+            };
+
           mergedContainers = lib.foldl' (
             acc: service:
             let
               maybeContainers =
                 if lib.hasAttr "containers" service && builtins.isFunction service.containers then
-                  service.containers { inherit hostname getServiceEnvFiles; }
+                  service.containers { inherit hostname getServiceEnvFiles parseDockerImageReference; }
                 else
                   { };
             in

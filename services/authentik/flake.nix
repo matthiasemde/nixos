@@ -1,8 +1,6 @@
 {
   description = "Authentik SSO service";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-
   outputs =
     { self, nixpkgs }:
     let
@@ -16,10 +14,41 @@
         };
       };
       containers =
-        { getServiceEnvFiles, ... }:
+        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          authentikRawImageReference = "ghcr.io/goauthentik/server:2025.8.4@sha256:a10398480e7f8292dbcc27b64fe572f6abed6220bd40f4b6d28e9c12d4b78dca";
+          authentikImageReference = parseDockerImageReference authentikRawImageReference;
+          authentikImage = pkgs.dockerTools.pullImage {
+            imageName = authentikImageReference.name;
+            imageDigest = authentikImageReference.digest;
+            finalImageTag = authentikImageReference.tag;
+            sha256 = "sha256-WaBINdtyR4hKfZs5VW47p+WVrQuwqHkYEWIhw4pWs88=";
+          };
+
+          postgresRawImageReference = "docker.io/library/postgres:16-alpine@sha256:e75afc5bf90e2cad3f0ee2395ccbc31db663cd10d1d9cabd0de3c99fe4aa5bab";
+          postgresImageReference = parseDockerImageReference postgresRawImageReference;
+          postgresImage = pkgs.dockerTools.pullImage {
+            imageName = postgresImageReference.name;
+            imageDigest = postgresImageReference.digest;
+            finalImageTag = postgresImageReference.tag;
+            sha256 = "sha256-neAQQa92onE6d43OqSSpCBmLA1q5Mykydp1mRFiHPHI=";
+          };
+
+          redisRawImageReference = "docker.io/library/redis:8@sha256:b83648c7ab6752e1f52b88ddf5dabc11987132336210d26758f533fb01325865";
+          redisImageReference = parseDockerImageReference redisRawImageReference;
+          redisImage = pkgs.dockerTools.pullImage {
+            imageName = redisImageReference.name;
+            imageDigest = redisImageReference.digest;
+            finalImageTag = redisImageReference.tag;
+            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
+          };
+        in
         {
           authentik-db = {
-            image = "docker.io/library/postgres:16-alpine";
+            image = postgresImageReference.name + ":" + postgresImageReference.tag;
+            imageFile = postgresImage;
             environment = {
               "POSTGRES_USER" = "authentik";
               # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
@@ -36,7 +65,8 @@
           };
 
           authentik-redis = {
-            image = "docker.io/library/redis:alpine";
+            image = redisImageReference.name + ":" + redisImageReference.tag;
+            imageFile = redisImage;
             cmd = [
               "--save"
               "60"
@@ -54,7 +84,8 @@
           };
 
           authentik-server = {
-            image = "ghcr.io/goauthentik/server:2025.8.4";
+            image = authentikImageReference.name + ":" + authentikImageReference.tag;
+            imageFile = authentikImage;
             cmd = [ "server" ];
             environment = {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
@@ -90,7 +121,8 @@
           };
 
           authentik-worker = {
-            image = "ghcr.io/goauthentik/server:2025.8.4";
+            image = authentikImageReference.name + ":" + authentikImageReference.tag;
+            imageFile = authentikImage;
             cmd = [ "worker" ];
             environment = {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";

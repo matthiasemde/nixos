@@ -1,25 +1,45 @@
 {
   description = "Service flake exporting Traefik container config";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-  };
-
   outputs =
     { self, nixpkgs }:
-    let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in
     {
       name = "traefik";
       networks = {
         traefik = "";
       };
       containers =
-        { hostname, getServiceEnvFiles, ... }:
+        {
+          hostname,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          traefikRawImageReference = "traefik:3.4.3@sha256:46f40f4c0c00282ea15748b57753fdaa47d719ab29ee3a121bab5296e0dc6898";
+          traefikImageReference = parseDockerImageReference traefikRawImageReference;
+          traefikImage = pkgs.dockerTools.pullImage {
+            imageName = traefikImageReference.name;
+            imageDigest = traefikImageReference.digest;
+            finalImageTag = traefikImageReference.tag;
+            sha256 = "sha256-/NqHpsUuGuLRmpP2wXyD9I3f3KyVWVs/pkRlMLFVSQQ=";
+          };
+
+          nginxRawImageReference = "nginx:1.28.0-alpine@sha256:07273e8eb118b64e6d2c1e7e0f7404566bde3901e22871f42b68422c317904c7";
+          nginxImageReference = parseDockerImageReference nginxRawImageReference;
+          nginxImage = pkgs.dockerTools.pullImage {
+            imageName = nginxImageReference.name;
+            imageDigest = nginxImageReference.digest;
+            finalImageTag = nginxImageReference.tag;
+            sha256 = "sha256-QT2eDDKD8AkWMvJTarMJ/751cEfpiWbM1u1Gllc+QkE=";
+          };
+        in
         {
           traefik = {
-            image = "traefik:v3.4.3";
+            image = traefikImageReference.name + ":" + traefikImageReference.tag;
+            imageFile = traefikImage;
             ports = [
               "80:80"
               "443:443"
@@ -49,7 +69,8 @@
           };
 
           error-pages = {
-            image = "nginx:alpine";
+            image = nginxImageReference.name + ":" + nginxImageReference.tag;
+            imageFile = nginxImage;
             networks = [
               "traefik"
             ];
