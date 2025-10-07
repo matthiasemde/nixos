@@ -25,6 +25,15 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── config
 │   │   │   └── AdGuardHome.yaml
 │   │   └── flake.nix
+│   ├── authentik
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── AUTHENTIK_SECRET_KEY.env.age
+│   │       ├── AUTHENTIK_SECRET_KEY.env.age.nix
+│   │       ├── db-credentials.env.age
+│   │       ├── db-credentials.env.age.nix
+│   │       ├── smtp-credentials.env.age
+│   │       └── smtp-credentials.env.age.nix
 │   ├── cloudflared
 │   │   ├── config
 │   │   │   └── config.yaml
@@ -144,7 +153,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-42 directories, 98 files
+44 directories, 105 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

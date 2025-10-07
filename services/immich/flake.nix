@@ -23,6 +23,7 @@
         {
           immich-app = {
             image = "ghcr.io/immich-app/immich-server:${version}";
+            extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/immich/upload:/usr/src/app/upload"
