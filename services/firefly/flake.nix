@@ -74,6 +74,7 @@
             extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/run/agenix/firefly-gls.json:/data/configurations/gls.json"
+              "/run/agenix/firefly-gls-tagesgeldkonto.json:/data/configurations/gls-tagesgeldkonto.json"
             ];
             networks = [
               "${backendNetwork}"
@@ -93,7 +94,9 @@
               "-c"
               ''
                 apk add --no-cache tzdata && \
-                echo "0 3 * * * wget -O - -q 'http://firefly-fints:8080/?automate=true&config=gls.json'; echo" | crontab - && \
+                ( crontab -l 2>/dev/null; \
+                  echo "0 3 * * * wget -O - -q 'http://firefly-fints:8080/?automate=true&config=gls.json'; echo"; \
+                  echo "5 3 * * * wget -O - -q 'http://firefly-fints:8080/?automate=true&config=gls-tagesgeldkonto.json'; echo" ) | crontab - && \
                 crond -f -L /dev/stdout
               ''
             ];
