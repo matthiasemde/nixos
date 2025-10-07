@@ -34,6 +34,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/backup" = {
+    device = "/dev/disk/by-label/backup";
+    fsType = "ext4";
+  };
+
   swapDevices = [
     { device = "/dev/disk/by-uuid/a96da43f-9ecc-450c-8388-ba549c1c90fb"; }
   ];

@@ -27,6 +27,7 @@
     paperless.url = "path:./services/paperless";
     radicale.url = "path:./services/radicale";
     pterodactyl.url = "path:./services/pterodactyl";
+    kopia.url = "path:./services/kopia";
   };
 
   outputs =
@@ -52,6 +53,7 @@
       paperless,
       radicale,
       pterodactyl,
+      kopia,
       ...
     }:
     {
@@ -91,6 +93,7 @@
             paperless
             radicale
             pterodactyl
+            kopia
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
