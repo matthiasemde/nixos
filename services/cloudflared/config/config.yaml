@@ -1,8 +1,0 @@
-# name of the tunnel we want to connect to
-tunnel: Project Pandora
-metrics: 0.0.0.0:2000
-no-autoupdate: true
-# The `ingress` block tells cloudflared which local service to route incoming
-# requests to. In our case, everything goes to traefik
-ingress:
-   - service: http://traefik:80

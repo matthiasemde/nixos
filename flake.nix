@@ -15,7 +15,6 @@
     homepage.url = "path:./services/homepage";
     glances.url = "path:./services/glances";
     traefik.url = "path:./services/traefik";
-    cloudflared.url = "path:./services/cloudflared";
     frp.url = "path:./services/frp";
     adguard.url = "path:./services/adguard";
     firefly.url = "path:./services/firefly";
@@ -40,7 +39,6 @@
       homepage,
       glances,
       traefik,
-      cloudflared,
       frp,
       adguard,
       agenix,
@@ -83,7 +81,6 @@
             homepage
             glances
             traefik
-            cloudflared
             frp
             adguard
             firefly

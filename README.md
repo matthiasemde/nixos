@@ -41,13 +41,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── db-credentials.env.age.nix
 │   │       ├── smtp-credentials.env.age
 │   │       └── smtp-credentials.env.age.nix
-│   ├── cloudflared
-│   │   ├── config
-│   │   │   └── config.yaml
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── .env.age
-│   │       └── .env.age.nix
 │   ├── firefly
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -163,7 +156,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-48 directories, 111 files
+45 directories, 107 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
