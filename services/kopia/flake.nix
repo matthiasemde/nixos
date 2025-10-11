@@ -33,6 +33,14 @@
             ];
             ports = [ "51515:51515" ];
             extraOptions = [ "--dns=1.1.1.1" ];
+            ##########################
+            ### The SYS_ADMIN capabilities are only required for
+            ### mounting backups into the local file system.
+            # capabilities = {
+            #   SYS_ADMIN = true;
+            # };
+            # devices = [ "/dev/fuse:/dev/fuse" ];
+            ##########################
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               # Mount local folders needed by kopia
