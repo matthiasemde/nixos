@@ -43,13 +43,13 @@
             sha256 = "sha256-R/zqzFFGZwiSuzM17OFsdEYCLkJ0zC50pAuxVad6FSM=";
           };
 
-          alpineRawImageReference = "alpine:3.22.1@sha256:eafc1edb577d2e9b458664a15f23ea1c370214193226069eb22921169fc7e43f";
+          alpineRawImageReference = "alpine:3.22.2@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412";
           alpineImageReference = parseDockerImageReference alpineRawImageReference;
           alpineImage = pkgs.dockerTools.pullImage {
             imageName = alpineImageReference.name;
             imageDigest = alpineImageReference.digest;
             finalImageTag = alpineImageReference.tag;
-            sha256 = "sha256-oBoU1GqTLZGH8N3TJKoQCjmpkefCzhHFU3DU5etu7zc=";
+            sha256 = "sha256-j4kP+bImWttrQwre7dYR6A6c9XaYh9lAAXjsKazj0MI=";
           };
         in
         {
