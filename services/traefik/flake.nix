@@ -27,13 +27,13 @@
             sha256 = "sha256-/NqHpsUuGuLRmpP2wXyD9I3f3KyVWVs/pkRlMLFVSQQ=";
           };
 
-          nginxRawImageReference = "nginx:1.28.0-alpine@sha256:07273e8eb118b64e6d2c1e7e0f7404566bde3901e22871f42b68422c317904c7";
+          nginxRawImageReference = "nginx:1.29.2-alpine@sha256:7c1b9a91514d1eb5288d7cd6e91d9f451707911bfaea9307a3acbc811d4aa82e";
           nginxImageReference = parseDockerImageReference nginxRawImageReference;
           nginxImage = pkgs.dockerTools.pullImage {
             imageName = nginxImageReference.name;
             imageDigest = nginxImageReference.digest;
             finalImageTag = nginxImageReference.tag;
-            sha256 = "sha256-QT2eDDKD8AkWMvJTarMJ/751cEfpiWbM1u1Gllc+QkE=";
+            sha256 = "sha256-EHUeHY55q4il4qhIxcOrrop/ofyCsbfY68x1zeRnGFM=";
           };
         in
         {
