@@ -7,6 +7,11 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── .editorconfig
 ├── flake.lock
 ├── flake.nix
+├── .github
+│   ├── scripts
+│   │   └── update-docker-hashes.sh
+│   └── workflows
+│       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
 │   └── mahler
@@ -156,7 +161,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-45 directories, 107 files
+48 directories, 109 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
