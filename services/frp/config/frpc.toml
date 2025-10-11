@@ -25,28 +25,28 @@ remotePort = 443
 [[proxies]]
 name = "minecraft-tcp"
 type = "tcp"
-localIP = "172.31.0.3"
+localIP = "d578d980-534d-4d54-bea9-e208ff266475"
 localPort = 25565
 remotePort = 25565
 
 [[proxies]]
 name = "satisfactory-primary-tcp"
 type = "tcp"
-localIP = "172.31.0.5"
+localIP = "b23c616f-a3c8-42b0-ad1e-1962139c7523"
 localPort = 7777
 remotePort = 7777
 
 [[proxies]]
 name = "satisfactory-primary-udp"
 type = "udp"
-localIP = "172.31.0.5"
+localIP = "b23c616f-a3c8-42b0-ad1e-1962139c7523"
 localPort = 7777
 remotePort = 7777
 
 [[proxies]]
 name = "satisfactory-reliable-messaging-tcp"
 type = "tcp"
-localIP = "172.31.0.5"
+localIP = "b23c616f-a3c8-42b0-ad1e-1962139c7523"
 localPort = 8888
 remotePort = 8888
 
