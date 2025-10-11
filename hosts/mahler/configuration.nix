@@ -116,13 +116,29 @@
 
   # Open ports in the firewall.
   networking = {
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
+    interfaces.enp106s0f3u2 = {
+      useDHCP = false;
+      ipv4.addresses = [
+        {
+          address = "192.168.178.100";
+          prefixLength = 24;
+        }
+      ];
+    };
     firewall = {
       enable = true;
       allowedTCPPorts = [ 53 ]; # Allow TCP DNS
       allowedUDPPorts = [ 53 ]; # Allow UDP DNS
     };
   };
+
+  # enable systemd-resolved
+  services.resolved.enable = true;
+
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
