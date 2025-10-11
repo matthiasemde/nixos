@@ -150,10 +150,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   └── vscode-server
 │       └── flake.nix
 ├── SETUP.md
+├── tools
+│   ├── install-precommit-hook.sh
+│   └── pre-commit-hook.sh
 └── virtualization
     └── flake.nix
 
-44 directories, 105 files
+45 directories, 107 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
