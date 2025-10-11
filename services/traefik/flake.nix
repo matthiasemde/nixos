@@ -18,13 +18,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          traefikRawImageReference = "traefik:3.4.3@sha256:46f40f4c0c00282ea15748b57753fdaa47d719ab29ee3a121bab5296e0dc6898";
+          traefikRawImageReference = "traefik:v3.5.3@sha256:d6be8725d21b45bdd84b93ea01438256e0e3c94aa8fa51834fe87f37cd5d4af8";
           traefikImageReference = parseDockerImageReference traefikRawImageReference;
           traefikImage = pkgs.dockerTools.pullImage {
             imageName = traefikImageReference.name;
             imageDigest = traefikImageReference.digest;
             finalImageTag = traefikImageReference.tag;
-            sha256 = "sha256-/NqHpsUuGuLRmpP2wXyD9I3f3KyVWVs/pkRlMLFVSQQ=";
+            sha256 = "sha256-p3Y61pigO9cCCwQlku+go8vVpw4BBoAgK+TFFZl/nu4=";
           };
 
           nginxRawImageReference = "nginx:1.29.2-alpine@sha256:7c1b9a91514d1eb5288d7cd6e91d9f451707911bfaea9307a3acbc811d4aa82e";
