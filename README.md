@@ -4,6 +4,7 @@ This repository holds the configuration of my homelab powered by NixOS
 
 ```
 .
+├── AGENTS.md
 ├── .editorconfig
 ├── flake.lock
 ├── flake.nix
@@ -161,7 +162,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-48 directories, 109 files
+48 directories, 110 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
