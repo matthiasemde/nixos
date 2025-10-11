@@ -50,7 +50,8 @@
 
               # "/data/services/kopia/logs/dir:/app/logs"
               # Mount local folders to snapshot
-              "/data/services:/data:ro"
+              "/data/services:/data/services:ro"
+              "/data/nas:/data/nas:ro"
               # Mount repository location
               "/backup/kopia/repositories/main:/repository"
               # Mount path for browsing mounted snapshots
