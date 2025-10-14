@@ -5,6 +5,20 @@
     { self, nixpkgs }:
     let
       backendNetwork = "authentik-backend";
+      env = {
+        # SMTP Config
+        "AUTHENTIK_EMAIL__HOST" = "mail.privateemail.com";
+        "AUTHENTIK_EMAIL__PORT" = "465";
+        # "AUTHENTIK_EMAIL__USERNAME" = ""; # set via secret-mgmt
+        # "AUTHENTIK_EMAIL__PASSWORD" = ""; # set via secret-mgmt
+        # Use StartTLS
+        "AUTHENTIK_EMAIL__USE_TLS" = "false";
+        # Use SSL
+        "AUTHENTIK_EMAIL__USE_SSL" = "true";
+        "AUTHENTIK_EMAIL__TIMEOUT" = "30";
+        # Email address authentik will send from, should have a correct @domain
+        "AUTHENTIK_EMAIL__FROM" = "no-reply@emdecloud.de"; # Authentik Event < my.email.address@gmail.com >
+      };
     in
     {
       name = "authentik";
@@ -49,7 +63,7 @@
           authentik-db = {
             image = postgresImageReference.name + ":" + postgresImageReference.tag;
             imageFile = postgresImage;
-            environment = {
+            environment = env // {
               "POSTGRES_USER" = "authentik";
               # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
               "POSTGRES_DB" = "authentik";
@@ -87,7 +101,8 @@
             image = authentikImageReference.name + ":" + authentikImageReference.tag;
             imageFile = authentikImage;
             cmd = [ "server" ];
-            environment = {
+            extraOptions = [ "--dns=1.1.1.1" ];
+            environment = env // {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
               # "AUTHENTIK_POSTGRESQL__PASSWORD" = "password"; # set via secret-mgmt
@@ -124,7 +139,8 @@
             image = authentikImageReference.name + ":" + authentikImageReference.tag;
             imageFile = authentikImage;
             cmd = [ "worker" ];
-            environment = {
+            extraOptions = [ "--dns=1.1.1.1" ];
+            environment = env // {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
               # "AUTHENTIK_POSTGRESQL__PASSWORD" = "password"; # set via secret-mgmt
