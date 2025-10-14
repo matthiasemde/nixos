@@ -56,6 +56,31 @@
               # Configuration
               "PAPERLESS_CONSUMER_RECURSIVE" = "true";
               "PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS" = "true";
+
+              # SSO Configuration
+              "PAPERLESS_ENABLE_ALLAUTH" = "true";
+              "PAPERLESS_APPS" = "allauth.socialaccount.providers.openid_connect";
+              "PAPERLESS_SOCIALACCOUNT_PROVIDERS" = ''
+                {
+                  "openid_connect": {
+                    "APPS": [
+                      {
+                        "provider_id": "authentik",
+                        "name": "authentik",
+                        "client_id": "MbfRgCUPQJ5HUybc2X8mB52cYFvyCVNt2hXgHOCV",
+                        "settings": {
+                          "server_url": "https://auth.emdecloud.de/application/o/paperless/.well-known/openid-configuration",
+                          "claims": {"username": "email"}
+                        }
+                      }
+                    ],
+                    "OAUTH_PKCE_ENABLED": "True"
+                  }
+                }
+              '';
+              "PAPERLESS_AUTO_LOGIN" = "true";
+              "PAPERLESS_AUTO_CREATE" = "true";
+              "PAPERLESS_LOGOUT_REDIRECT_URL" = "https://auth.emdecloud.de/application/o/paperless/end-session/";
             };
             environmentFiles = getServiceEnvFiles "paperless";
             volumes = [
