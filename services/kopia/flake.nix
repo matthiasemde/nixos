@@ -8,6 +8,7 @@
       containers =
         {
           hostname,
+          mkTraefikLabels,
           getServiceEnvFiles,
           parseDockerImageReference,
           ...
@@ -75,18 +76,19 @@
               "0.0.0.0:51515"
             ];
 
-            labels = {
-              "traefik.enable" = "true";
-              "traefik.tcp.routers.kopia.rule" = "HostSNI(`kopia.emdecloud.de`)";
-              "traefik.tcp.routers.kopia.entrypoints" = "websecure";
-              "traefik.tcp.routers.kopia.tls.passthrough" = "true";
-              "traefik.tcp.services.kopia.loadbalancer.server.port" = "51515";
-
-              "homepage.group" = "Utilities";
-              "homepage.name" = "Kopia Server";
-              "homepage.icon" = "kopia";
-              "homepage.href" = "https://mahler:51515";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "kopia";
+                port = "51515";
+                passthrough = true;
+              })
+              // {
+                "homepage.group" = "Utilities";
+                "homepage.name" = "Kopia Server";
+                "homepage.icon" = "kopia";
+                "homepage.href" = "https://kopia.${hostname}.local";
+                "homepage.description" = "Deduplicating backup service";
+              };
           };
         };
     };

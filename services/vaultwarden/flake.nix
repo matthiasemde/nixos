@@ -6,7 +6,13 @@
     {
       name = "vaultwarden";
       containers =
-        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        {
+          domain,
+          mkTraefikLabels,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -26,7 +32,7 @@
             extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               # Server hostname
-              "DOMAIN" = "https://vaultwarden.emdecloud.de";
+              "DOMAIN" = "https://vaultwarden.${domain}";
               "SIGNUPS_ALLOWED" = "false";
               # "ADMIN_TOKEN" = "xxxxxxxxxxxx" # set via secret management;
               "ORG_CREATION_USERS" = "matthias@emdemail.de";
@@ -46,22 +52,19 @@
               "/data/services/vaultwarden/app:/data"
             ];
             networks = [ "traefik" ];
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.vaultwarden.rule" = "HostRegexp(`vaultwarden.*`)";
-              "traefik.http.routers.vaultwarden.entrypoints" = "websecure";
-              "traefik.http.routers.vaultwarden.tls.certresolver" = "myresolver";
-              "traefik.http.routers.vaultwarden.tls.domains[0].main" = "vaultwarden.emdecloud.de";
-              "traefik.http.services.vaultwarden.loadbalancer.server.port" = "80";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Life Management";
-              "homepage.name" = "Vaultwarden";
-              "homepage.icon" = "vaultwarden";
-              "homepage.href" = "https://vaultwarden.emdecloud.de";
-              "homepage.description" = "Password vault";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "vaultwarden";
+                port = "80";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Life Management";
+                "homepage.name" = "Vaultwarden";
+                "homepage.icon" = "vaultwarden";
+                "homepage.href" = "https://vaultwarden.${domain}";
+                "homepage.description" = "Password vault";
+              };
           };
         };
     };

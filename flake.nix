@@ -77,6 +77,7 @@
 
         specialArgs = {
           hostname = "mahler";
+          domain = "emdecloud.de";
           services = [
             homepage
             glances

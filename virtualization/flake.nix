@@ -10,11 +10,55 @@
           pkgs,
           lib,
           hostname,
+          domain,
           services,
           getServiceEnvFiles,
           ...
         }:
         let
+          mkTraefikLabels =
+            {
+              name,
+              port,
+              passthrough ? false,
+            }:
+            let
+              localRule = "Host(`${name}.${hostname}.local`)";
+              publicRule = "Host(`${name}.${domain}`)";
+              publicTcpRule = "HostSNI(`${name}.${domain}`)";
+
+              local = {
+                # 🛡️ Enable traffic
+                "traefik.enable" = "true";
+                "traefik.http.services.${name}.loadbalancer.server.port" = port;
+
+                # --- Local HTTP router ---
+                "traefik.http.routers.${name}-local.entrypoints" = "web";
+                "traefik.http.routers.${name}-local.rule" = localRule;
+                "traefik.http.routers.${name}-local.service" = name;
+              };
+
+              public =
+                if passthrough then
+                  {
+                    # --- Public HTTPS/TCP router ---
+                    "traefik.tcp.routers.${name}-public.entrypoints" = "websecure";
+                    "traefik.tcp.routers.${name}-public.rule" = publicTcpRule;
+                    "traefik.tcp.routers.${name}-public.tls.passthrough" = "true";
+                    "traefik.tcp.routers.${name}-public.service" = name;
+                  }
+                else
+                  {
+                    # --- Public HTTPS router ---
+                    "traefik.http.routers.${name}-public.entrypoints" = "websecure";
+                    "traefik.http.routers.${name}-public.rule" = publicRule;
+                    "traefik.http.routers.${name}-public.tls.certresolver" = "myresolver";
+                    "traefik.http.routers.${name}-public.tls.domains[0].main" = "${name}.${domain}";
+                    "traefik.http.routers.${name}-public.service" = name;
+                  };
+            in
+            local // public;
+
           # Parses a docker image string like:
           # "ghcr.io/gethomepage/homepage:v1.3.2@sha256:4f923b..."
           # into { name, tag, digest }
@@ -42,7 +86,15 @@
             let
               maybeContainers =
                 if lib.hasAttr "containers" service && builtins.isFunction service.containers then
-                  service.containers { inherit hostname getServiceEnvFiles parseDockerImageReference; }
+                  service.containers {
+                    inherit
+                      hostname
+                      domain
+                      mkTraefikLabels
+                      getServiceEnvFiles
+                      parseDockerImageReference
+                      ;
+                  }
                 else
                   { };
             in

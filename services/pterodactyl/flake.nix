@@ -4,7 +4,6 @@
   outputs =
     { self, nixpkgs }:
     let
-
       backendNetwork = "pterodactyl-backend";
     in
     {
@@ -17,7 +16,8 @@
       };
       containers =
         {
-          hostname,
+          domain,
+          mkTraefikLabels,
           getServiceEnvFiles,
           parseDockerImageReference,
           ...
@@ -113,22 +113,19 @@
           # ---------------------------
           pterodactyl-panel = panelBaseConfig // {
             environmentFiles = getServiceEnvFiles "pterodactyl";
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.pterodactyl.rule" = "HostRegexp(`pterodactyl.*`)";
-              "traefik.http.routers.pterodactyl.entrypoints" = "websecure";
-              "traefik.http.routers.pterodactyl.tls.certresolver" = "myresolver";
-              "traefik.http.routers.pterodactyl.tls.domains[0].main" = "pterodactyl.emdecloud.de";
-              "traefik.http.services.pterodactyl.loadbalancer.server.port" = "80";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Games";
-              "homepage.name" = "Pterodactyl";
-              "homepage.icon" = "pterodactyl";
-              "homepage.href" = "https://pterodactyl.emdecloud.de";
-              "homepage.description" = "Game server management";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "pterodactyl";
+                port = "80";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Games";
+                "homepage.name" = "Pterodactyl";
+                "homepage.icon" = "pterodactyl";
+                "homepage.href" = "https://pterodactyl.${domain}";
+                "homepage.description" = "Game server management";
+              };
           };
 
           # ---------------------------
@@ -192,13 +189,9 @@
               "/data/services/pterodactyl/daemon/config.yml:/etc/pterodactyl/config.yml"
             ];
             environmentFiles = getServiceEnvFiles "pterodactyl";
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.wings.rule" = "Host(`wings.pterodactyl.emdecloud.de`)";
-              "traefik.http.routers.wings.entrypoints" = "websecure";
-              "traefik.http.routers.wings.tls.certresolver" = "myresolver";
-              "traefik.http.services.wings.loadbalancer.server.port" = "8080";
+            labels = mkTraefikLabels {
+              name = "wings-pterodactyl";
+              port = "8080";
             };
           };
 

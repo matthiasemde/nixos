@@ -21,7 +21,13 @@
         };
       };
       containers =
-        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        {
+          domain,
+          mkTraefikLabels,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -75,26 +81,23 @@
               APP_LOG_LEVEL = "notice";
               AUDIT_LOG_LEVEL = "emergency";
               DB_CONNECTION = "sqlite";
-              APP_URL = "https://firefly.emdecloud.de";
+              APP_URL = "https://firefly.${domain}";
               TRUSTED_PROXIES = "**";
             };
             environmentFiles = getServiceEnvFiles name;
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.${appName}.rule" = "HostRegexp(`firefly.*`)";
-              "traefik.http.routers.${appName}.entrypoints" = "websecure";
-              "traefik.http.routers.${appName}.tls.certresolver" = "myresolver";
-              "traefik.http.routers.${appName}.tls.domains[0].main" = "firefly.emdecloud.de";
-              "traefik.http.services.${appName}.loadbalancer.server.port" = "8080";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Life Management";
-              "homepage.name" = "Firefly";
-              "homepage.icon" = "firefly";
-              "homepage.href" = "https://firefly.emdecloud.de";
-              "homepage.description" = "Finance managment";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "firefly";
+                port = "8080";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Life Management";
+                "homepage.name" = "Firefly";
+                "homepage.icon" = "firefly";
+                "homepage.href" = "https://firefly.${domain}";
+                "homepage.description" = "Finance managment";
+              };
           };
 
           ${fintsName} = {

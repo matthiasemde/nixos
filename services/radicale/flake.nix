@@ -37,7 +37,7 @@
     {
       name = "radicale";
       containers =
-        { hostname, getServiceEnvFiles, ... }:
+        { mkTraefikLabels, getServiceEnvFiles, ... }:
         {
           radicale = {
             image = "radicale:v1.0.0";
@@ -49,14 +49,9 @@
               "traefik"
             ];
             # environmentFiles = getServiceEnvFiles "radicale";
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.radicale.rule" = "HostRegexp(`radicale.*`)";
-              "traefik.http.routers.radicale.entrypoints" = "websecure";
-              "traefik.http.routers.radicale.tls.certresolver" = "myresolver";
-              "traefik.http.routers.radicale.tls.domains[0].main" = "radicale.emdecloud.de";
-              "traefik.http.services.radicale.loadbalancer.server.port" = "5232";
+            labels = mkTraefikLabels {
+              name = "radicale";
+              port = "5232";
             };
           };
         };

@@ -6,7 +6,13 @@
     {
       name = "homepage";
       containers =
-        { hostname, parseDockerImageReference, ... }:
+        {
+          hostname,
+          parseDockerImageReference,
+          domain,
+          mkTraefikLabels,
+          ...
+        }:
         let
           host = "home.${hostname}.local";
           system = "x86_64-linux";
@@ -58,18 +64,16 @@
             environment = {
               HOMEPAGE_ALLOWED_HOSTS = "*";
             };
-            labels = {
-              # Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.home.rule" = "HostRegexp(`homepage.*`)";
-              "traefik.http.routers.home.entrypoints" = "websecure";
-              "traefik.http.routers.home.tls.certresolver" = "myresolver";
-              "traefik.http.routers.home.tls.domains[0].main" = "homepage.emdecloud.de";
-              "traefik.http.routers.home.middlewares" = "auth";
-              "traefik.http.services.home.loadbalancer.server.port" = "3000";
-              "traefik.http.middlewares.auth.basicauth.realm" = "Interner Bereich";
-              "traefik.http.middlewares.auth.basicauth.users" = "thema:$apr1$/ntvZmAv$0Pc8l1GVJjJsLugI61Co21";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "homepage";
+                port = "3000";
+              })
+              // {
+                "traefik.http.routers.homepage-public.middlewares" = "auth";
+                "traefik.http.middlewares.auth.basicauth.realm" = "Interner Bereich";
+                "traefik.http.middlewares.auth.basicauth.users" = "thema:$apr1$/ntvZmAv$0Pc8l1GVJjJsLugI61Co21";
+              };
           };
         };
     };

@@ -15,7 +15,8 @@
       };
       containers =
         {
-          hostname,
+          domain,
+          mkTraefikLabels,
           getServiceEnvFiles,
           parseDockerImageReference,
           ...
@@ -80,22 +81,19 @@
               REDIS_HOSTNAME = "immich-redis";
             };
             environmentFiles = getServiceEnvFiles "immich";
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.immich.rule" = "HostRegexp(`immich.*`)";
-              "traefik.http.routers.immich.entrypoints" = "websecure";
-              "traefik.http.routers.immich.tls.certresolver" = "myresolver";
-              "traefik.http.routers.immich.tls.domains[0].main" = "immich.emdecloud.de";
-              "traefik.http.services.immich.loadbalancer.server.port" = "2283";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Media";
-              "homepage.name" = "Immich";
-              "homepage.icon" = "immich";
-              "homepage.href" = "https://immich.emdecloud.de";
-              "homepage.description" = "Home to all our memories";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "immich";
+                port = "2283";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Media";
+                "homepage.name" = "Immich";
+                "homepage.icon" = "immich";
+                "homepage.href" = "https://immich.${domain}";
+                "homepage.description" = "Home to all our memories";
+              };
           };
 
           immich-machine-learning = {

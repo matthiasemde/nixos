@@ -28,7 +28,13 @@
         };
       };
       containers =
-        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        {
+          domain,
+          mkTraefikLabels,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -119,20 +125,18 @@
               "traefik"
               backendNetwork
             ];
-            labels = {
-              "traefik.enable" = "true";
-              "traefik.http.routers.authentik.rule" = "HostRegexp(`auth.*`)";
-              "traefik.http.routers.authentik.entrypoints" = "websecure";
-              "traefik.http.routers.authentik.tls.certresolver" = "myresolver";
-              "traefik.http.routers.authentik.tls.domains[0].main" = "auth.emdecloud.de";
-              "traefik.http.services.authentik.loadbalancer.server.port" = "9000";
-
-              "homepage.group" = "Security";
-              "homepage.name" = "Authentik";
-              "homepage.icon" = "authentik";
-              "homepage.href" = "https://auth.emdecloud.de";
-              "homepage.description" = "SSO Provider";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "auth";
+                port = "9000";
+              })
+              // {
+                "homepage.group" = "Security";
+                "homepage.name" = "Authentik";
+                "homepage.icon" = "authentik";
+                "homepage.href" = "https://auth.${domain}";
+                "homepage.description" = "SSO Provider";
+              };
           };
 
           authentik-worker = {

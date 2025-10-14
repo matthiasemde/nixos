@@ -12,7 +12,12 @@
         };
       };
       containers =
-        { parseDockerImageReference, ... }:
+        {
+          domain,
+          mkTraefikLabels,
+          parseDockerImageReference,
+          ...
+        }:
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -44,22 +49,19 @@
             environment = {
               TZ = "Europe/Berlin";
             };
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.ha.rule" = "HostRegexp(`home-assistant.*`)";
-              "traefik.http.routers.ha.entrypoints" = "websecure";
-              "traefik.http.routers.ha.tls.certresolver" = "myresolver";
-              "traefik.http.routers.ha.tls.domains[0].main" = "home-assistant.emdecloud.de";
-              "traefik.http.services.ha.loadbalancer.server.port" = "8123";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Home Automation";
-              "homepage.name" = "Home Assistant";
-              "homepage.icon" = "home-assistant";
-              "homepage.href" = "https://home-assistant.emdecloud.de";
-              "homepage.description" = "Smart home control";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "home-assistant";
+                port = "8123";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Home Automation";
+                "homepage.name" = "Home Assistant";
+                "homepage.icon" = "home-assistant";
+                "homepage.href" = "https://home-assistant.${domain}";
+                "homepage.description" = "Smart home control";
+              };
           };
         };
     };

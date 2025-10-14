@@ -14,7 +14,13 @@
         };
       };
       containers =
-        { getServiceEnvFiles, parseDockerImageReference, ... }:
+        {
+          domain,
+          mkTraefikLabels,
+          getServiceEnvFiles,
+          parseDockerImageReference,
+          ...
+        }:
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
@@ -42,7 +48,7 @@
             imageFile = paperlessImage;
             extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
-              "PAPERLESS_URL" = "https://paperless.emdecloud.de";
+              "PAPERLESS_URL" = "https://paperless.${domain}";
               "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";
               "PAPERLESS_REDIS" = "redis://paperless-redis:6379";
 
@@ -94,22 +100,19 @@
               "traefik"
               backendNetwork
             ];
-            labels = {
-              # 🛡️ Traefik
-              "traefik.enable" = "true";
-              "traefik.http.routers.paperless.rule" = "HostRegexp(`paperless.*`)";
-              "traefik.http.routers.paperless.entrypoints" = "websecure";
-              "traefik.http.routers.paperless.tls.certresolver" = "myresolver";
-              "traefik.http.routers.paperless.tls.domains[0].main" = "paperless.emdecloud.de";
-              "traefik.http.services.paperless.loadbalancer.server.port" = "8000";
-
-              # 🏠 Homepage integration
-              "homepage.group" = "Life Management";
-              "homepage.name" = "Paperless";
-              "homepage.icon" = "paperless";
-              "homepage.href" = "https://paperless.emdecloud.de";
-              "homepage.description" = "Digitize documents";
-            };
+            labels =
+              (mkTraefikLabels {
+                name = "paperless";
+                port = "8000";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Life Management";
+                "homepage.name" = "Paperless";
+                "homepage.icon" = "paperless";
+                "homepage.href" = "https://paperless.${domain}";
+                "homepage.description" = "Digitize documents";
+              };
           };
 
           paperless-redis = {
