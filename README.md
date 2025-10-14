@@ -96,6 +96,15 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── KOPIA_SERVER_CONTROL_CREDENTIALS.env.age.nix
 │   │       ├── KOPIA_SERVER_CREDENTIALS.env.age
 │   │       └── KOPIA_SERVER_CREDENTIALS.env.age.nix
+│   ├── mealie
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── authentik-credentials.env.age
+│   │       ├── authentik-credentials.env.age.nix
+│   │       ├── db-credentials.env.age
+│   │       ├── db-credentials.env.age.nix
+│   │       ├── smtp-credentials.env.age
+│   │       └── smtp-credentials.env.age.nix
 │   ├── nas
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -156,7 +165,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-45 directories, 107 files
+47 directories, 114 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
