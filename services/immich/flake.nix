@@ -68,7 +68,7 @@
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/immich/upload:/usr/src/app/upload"
               "/data/nas/files/Bilder:/usr/src/app/external/familie:ro"
-              "/data/nas/home/Matthias/Bilder:/usr/src/app/external/matthias:ro"
+              "/data/nas/home/Matthias/Pictures:/usr/src/app/external/matthias:ro"
               "/data/nas/home/Theresa/Bilder:/usr/src/app/external/theresa:ro"
             ];
             networks = [
