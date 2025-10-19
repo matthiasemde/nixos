@@ -50,7 +50,8 @@
             environment = {
               # Base URL
               "BASE_URL" = "https://mealie.${domain}";
-
+              "DEFAULT_GROUP" = "Default";
+              "DEFAULT_HOUSEHOLD" = "Default";
               # User/Group Settings
               "PUID" = "1000";
               "PGID" = "1000";
