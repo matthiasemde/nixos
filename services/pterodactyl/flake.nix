@@ -52,13 +52,13 @@
             sha256 = "sha256-bmhCwN7Hjt2Ypho/i6E8u8aKJMagAQIcdQFdc3ztKC0=";
           };
 
-          redisRawImageReference = "redis:7@sha256:88e81357a782cf72ad2c4a8bac4391d193bae19ab119bb1bff3ea9344ab675be";
+          redisRawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
           redisImageReference = parseDockerImageReference redisRawImageReference;
           redisImage = pkgs.dockerTools.pullImage {
             imageName = redisImageReference.name;
             imageDigest = redisImageReference.digest;
             finalImageTag = redisImageReference.tag;
-            sha256 = "sha256-VigxNiQYrKw8IeKNGTEi01chwwccka286qdmelz6Idc=";
+            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
           };
 
           panelBaseConfig = {
