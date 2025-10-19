@@ -191,7 +191,7 @@
             environmentFiles = getServiceEnvFiles "pterodactyl";
             labels = mkTraefikLabels {
               name = "wings-pterodactyl";
-              port = "8080";
+              port = "443";
             };
           };
 
