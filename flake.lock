@@ -506,11 +506,11 @@
     },
     "nixpkgs_21": {
       "locked": {
-        "lastModified": 1760164275,
-        "narHash": "sha256-gKl2Gtro/LNf8P+4L3S2RsZ0G390ccd5MyXYrTdMCFE=",
+        "lastModified": 1760782043,
+        "narHash": "sha256-+4A1SFln9wOCoUZM0mQfKefP1uRVmjz6bV5SPbl1Q/4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "362791944032cb532aabbeed7887a441496d5e6e",
+        "rev": "36226520e9f7a35bf341cbe3b6a1ff9047bec6d9",
         "type": "github"
       },
       "original": {
@@ -547,6 +547,20 @@
       }
     },
     "nixpkgs_24": {
+      "locked": {
+        "lastModified": 1760164275,
+        "narHash": "sha256-gKl2Gtro/LNf8P+4L3S2RsZ0G390ccd5MyXYrTdMCFE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "362791944032cb532aabbeed7887a441496d5e6e",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_25": {
       "locked": {
         "lastModified": 1682134069,
         "narHash": "sha256-TnI/ZXSmRxQDt2sjRYK/8j8iha4B4zP2cnQCZZ3vp7k=",
@@ -721,6 +735,7 @@
         "radicale": "radicale",
         "secret-mgmt": "secret-mgmt",
         "traefik": "traefik",
+        "uptime-kuma": "uptime-kuma",
         "vaultwarden": "vaultwarden",
         "virtualization": "virtualization",
         "vscode-server": "vscode-server"
@@ -800,9 +815,23 @@
       },
       "parent": []
     },
-    "vaultwarden": {
+    "uptime-kuma": {
       "inputs": {
         "nixpkgs": "nixpkgs_21"
+      },
+      "locked": {
+        "path": "./services/uptime-kuma",
+        "type": "path"
+      },
+      "original": {
+        "path": "./services/uptime-kuma",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "vaultwarden": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_22"
       },
       "locked": {
         "path": "./services/vaultwarden",
@@ -816,7 +845,7 @@
     },
     "virtualization": {
       "inputs": {
-        "nixpkgs": "nixpkgs_22"
+        "nixpkgs": "nixpkgs_23"
       },
       "locked": {
         "path": "./virtualization",
@@ -831,7 +860,7 @@
     "vscode": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_24"
+        "nixpkgs": "nixpkgs_25"
       },
       "locked": {
         "lastModified": 1753541826,
@@ -849,7 +878,7 @@
     },
     "vscode-server": {
       "inputs": {
-        "nixpkgs": "nixpkgs_23",
+        "nixpkgs": "nixpkgs_24",
         "vscode": "vscode"
       },
       "locked": {

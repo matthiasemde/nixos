@@ -131,7 +131,7 @@
                 port = "9000";
               })
               // {
-                "homepage.group" = "Security";
+                "homepage.group" = "Utilities";
                 "homepage.name" = "Authentik";
                 "homepage.icon" = "authentik";
                 "homepage.href" = "https://auth.${domain}";
