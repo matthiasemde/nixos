@@ -25,13 +25,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
+          postgresRawImageReference = "postgres:17@sha256:ae3afa4af0906431de8856bf80a8bcf8a9ea6b3609f9e025f927b949ac93467d";
           postgresImageReference = parseDockerImageReference postgresRawImageReference;
           postgresImage = pkgs.dockerTools.pullImage {
             imageName = postgresImageReference.name;
             imageDigest = postgresImageReference.digest;
             finalImageTag = postgresImageReference.tag;
-            sha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
+            sha256 = "sha256-2Nqz+MGNn5nzCYCYETWv8JBN2odoq+RuvJ2LGnWT5d8=";
           };
 
           redisRawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
@@ -45,7 +45,7 @@
         in
         {
           nextcloud-app = {
-            image = "nextcloud-derived:v1.1.1";
+            image = "nextcloud-derived:v32.0.0";
             volumes = [
               "/data/services/nextcloud/app:/var/www/html"
             ];
