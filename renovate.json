@@ -60,6 +60,11 @@
       "matchUpdateTypes": [
         "major"
       ],
+      "labels": [
+        "major",
+        "nix-flake",
+        "docker-image"
+      ],
       "automerge": false
     },
     {
@@ -75,6 +80,8 @@
         "patch"
       ],
       "labels": [
+        "minor/patch",
+        "nix-flake",
         "docker-image"
       ],
       "automerge": true,
@@ -88,6 +95,17 @@
         "digest"
       ],
       "enabled": false
+    },
+    {
+      "description": "Ignore Kopia development releases (format: YYYYMMDD.X.XXXXX)",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "kopia/kopia"
+      ],
+      "allowedVersions": "!/^\\d{8}\\./",
+      "versioning": "semver"
     }
   ],
   "customManagers": [
