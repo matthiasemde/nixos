@@ -64,7 +64,6 @@
           immich-app = {
             image = immichAppImageReference.name + ":" + immichAppImageReference.tag;
             imageFile = immichAppImage;
-            extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/immich/upload:/usr/src/app/upload"

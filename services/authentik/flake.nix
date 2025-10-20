@@ -107,7 +107,6 @@
             image = authentikImageReference.name + ":" + authentikImageReference.tag;
             imageFile = authentikImage;
             cmd = [ "server" ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = env // {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
@@ -143,7 +142,6 @@
             image = authentikImageReference.name + ":" + authentikImageReference.tag;
             imageFile = authentikImage;
             cmd = [ "worker" ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = env // {
               "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";

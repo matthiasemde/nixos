@@ -99,7 +99,7 @@
     enable = true;
   };
 
-  services.udev.packages = [pkgs.yubikey-personalization];
+  services.udev.packages = [ pkgs.yubikey-personalization ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -116,19 +116,6 @@
 
   # Open ports in the firewall.
   networking = {
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-    ];
-    interfaces.enp106s0f3u2 = {
-      useDHCP = false;
-      ipv4.addresses = [
-        {
-          address = "192.168.178.100";
-          prefixLength = 24;
-        }
-      ];
-    };
     firewall = {
       enable = true;
       allowedTCPPorts = [ 53 ]; # Allow TCP DNS
@@ -136,13 +123,9 @@
     };
   };
 
-  # enable systemd-resolved
-  services.resolved.enable = true;
-
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  environment.etc = {
+    "resolv.conf".text = "nameserver 192.168.178.1\n";
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

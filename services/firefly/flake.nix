@@ -104,7 +104,6 @@
             image = fintsImageReference.name + ":" + fintsImageReference.tag;
             imageFile = fintsImage;
             # ports = [ "8123:8080" ]; # you only need to enable this during configuration
-            extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/run/agenix/firefly-gls.json:/data/configurations/gls.json"
               "/run/agenix/firefly-gls-tagesgeldkonto.json:/data/configurations/gls-tagesgeldkonto.json"
@@ -122,7 +121,6 @@
             image = alpineImageReference.name + ":" + alpineImageReference.tag;
             imageFile = alpineImage;
             volumes = [ "/etc/localtime:/etc/localtime:ro" ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             cmd = [
               "sh"
               "-c"

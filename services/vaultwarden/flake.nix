@@ -29,7 +29,6 @@
           vaultwarden = {
             image = vaultwardenImageReference.name + ":" + vaultwardenImageReference.tag;
             imageFile = vaultwardenImage;
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               # Server hostname
               "DOMAIN" = "https://vaultwarden.${domain}";

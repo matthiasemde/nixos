@@ -46,7 +46,6 @@
           paperless-app = {
             image = paperlessImageReference.name + ":" + paperlessImageReference.tag;
             imageFile = paperlessImage;
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               "PAPERLESS_URL" = "https://paperless.${domain}";
               "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";

@@ -71,7 +71,6 @@
               backendNetwork
               "traefik"
             ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               # App Settings
               APP_ENV = "production";
@@ -181,7 +180,6 @@
               "traefik"
               "pterodactyl_nw"
             ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/var/run/docker.sock:/var/run/docker.sock"

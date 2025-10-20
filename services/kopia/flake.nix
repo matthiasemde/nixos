@@ -33,7 +33,6 @@
               "traefik"
             ];
             ports = [ "51515:51515" ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             ##########################
             ### The SYS_ADMIN capabilities are only required for
             ### mounting backups into the local file system.

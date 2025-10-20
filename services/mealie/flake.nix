@@ -46,7 +46,6 @@
           mealie-app = {
             image = mealieImageReference.name + ":" + mealieImageReference.tag;
             imageFile = mealieImage;
-            extraOptions = [ "--dns=1.1.1.1" ];
             environment = {
               # Base URL
               "BASE_URL" = "https://mealie.${domain}";

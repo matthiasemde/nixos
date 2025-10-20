@@ -45,7 +45,6 @@
               "443:443"
               "8080:8080"
             ];
-            extraOptions = [ "--dns=1.1.1.1" ];
             networks = [
               "traefik"
               "frp-ingress"
