@@ -58,6 +58,10 @@
                     "traefik.http.routers.${name}-public.tls.certresolver" = "myresolver";
                     "traefik.http.routers.${name}-public.tls.domains[0].main" = "${name}.${domain}";
                     "traefik.http.routers.${name}-public.service" = name;
+
+                    "traefik.http.routers.${name}-public-http.rule" = publicRule;
+                    "traefik.http.routers.${name}-public-http.middlewares" = "redirect-to-https@docker";
+                    "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme" = "https";
                   };
             in
             local // public;
