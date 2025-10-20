@@ -51,13 +51,13 @@
             sha256 = "sha256-pRgJXPCztxizPzsRTPvBbNAxLC4XXBtIMKtz3joyLPk=";
           };
 
-          immichDatabaseRawImageReference = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:41eacbe83eca995561fe43814fd4891e16e39632806253848efaf04d3c8a8b84";
+          immichDatabaseRawImageReference = "ghcr.io/immich-app/postgres:16-vectorchord0.4.3-pgvectors0.2.0@sha256:1a078b237c1d9b420b0ee59147386b4aa60d3a07a8e6a402fc84a57e41b043a4";
           immichDatabaseImageReference = parseDockerImageReference immichDatabaseRawImageReference;
           immichDatabaseImage = pkgs.dockerTools.pullImage {
             imageName = immichDatabaseImageReference.name;
             imageDigest = immichDatabaseImageReference.digest;
             finalImageTag = immichDatabaseImageReference.tag;
-            sha256 = "sha256-kEW12MDS2g1naTj4NZCUuEiuP39zEZXeuvTqIcJHZYs=";
+            sha256 = "sha256-ncgVTBG0lwUr3x+yyXv3Exxrv/z89yUXa9xdYOQlU5Y=";
           };
         in
         {
