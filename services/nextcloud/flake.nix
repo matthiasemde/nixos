@@ -47,7 +47,9 @@
           nextcloud-app = {
             image = "nextcloud-derived:v32.0.0";
             volumes = [
-              "/data/services/nextcloud/app:/var/www/html"
+              "/data/services/nextcloud/app/config:/var/www/html/config"
+              "/data/services/nextcloud/app/data:/var/www/html/data"
+              "/data/services/nextcloud/app/apps:/var/www/html/apps"
             ];
             networks = [
               backendNetwork
@@ -59,12 +61,14 @@
               POSTGRES_USER = "nextcloud";
               # POSTGRES_PASSWORD = "secure-password" # set via secret management;
               REDIS_HOST = "nextcloud-redis";
-              NEXTCLOUD_ADMIN_USER = "admin";
+              # NEXTCLOUD_ADMIN_USER = "admin";
               # NEXTCLOUD_ADMIN_PASSWORD = "adminpassword" # set via secret management;
               NEXTCLOUD_TRUSTED_DOMAINS = "nextcloud.${domain} nextcloud.${hostname}.local";
+              TRUSTED_PROXIES = "172.16.0.0/12";
               # Necessary to allow clients to connect through the reverse proxy
               OVERWRITEPROTOCOL = "https";
               OVERWRITECLIURL = "https://nextcloud.${domain}";
+              FORWARDED_FOR_HEADERS = "HTTP_X_FORWARDED_FOR";
             };
             environmentFiles = getServiceEnvFiles "nextcloud";
             labels =
@@ -73,6 +77,12 @@
                 port = "80";
               })
               // {
+                # HSTS middleware
+                "traefik.http.routers.nextcloud-public.middlewares" = "nextcloud-headers@docker";
+                "traefik.http.middlewares.nextcloud-headers.headers.stsSeconds" = "15552000";
+                "traefik.http.middlewares.nextcloud-headers.headers.stsIncludeSubdomains" = "true";
+                "traefik.http.middlewares.nextcloud-headers.headers.stsPreload" = "true";
+
                 # 🏠 Homepage integration
                 "homepage.group" = "Media";
                 "homepage.name" = "Nextcloud";
