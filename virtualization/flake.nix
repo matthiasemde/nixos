@@ -21,6 +21,7 @@
               name,
               port,
               passthrough ? false,
+              isPublic ? true,
             }:
             let
               localRule = "Host(`${name}.${hostname}.local`)";
@@ -39,7 +40,9 @@
               };
 
               public =
-                if passthrough then
+                if !isPublic then
+                  { }
+                else if passthrough then
                   {
                     # --- Public HTTPS/TCP router ---
                     "traefik.tcp.routers.${name}-public.entrypoints" = "websecure";
