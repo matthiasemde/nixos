@@ -60,6 +60,16 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       └── FRP_TOKEN.env.age.nix
 │   ├── glances
 │   │   └── flake.nix
+│   ├── grafana
+│   │   ├── config
+│   │   │   ├── datasources.yml
+│   │   │   └── prometheus.yml
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── authentik-credentials.env.age
+│   │       ├── authentik-credentials.env.age.nix
+│   │       ├── smtp-credentials.env.age
+│   │       └── smtp-credentials.env.age.nix
 │   ├── home-assistant
 │   │   ├── config
 │   │   │   ├── automations.yaml
@@ -170,7 +180,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-48 directories, 118 files
+51 directories, 125 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

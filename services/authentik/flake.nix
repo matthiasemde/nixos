@@ -47,16 +47,16 @@
             sha256 = "sha256-WaBINdtyR4hKfZs5VW47p+WVrQuwqHkYEWIhw4pWs88=";
           };
 
-          postgresRawImageReference = "docker.io/library/postgres:18-alpine@sha256:f898ac406e1a9e05115cc2efcb3c3abb3a92a4c0263f3b6f6aaae354cbb1953a";
+          postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
           postgresImageReference = parseDockerImageReference postgresRawImageReference;
           postgresImage = pkgs.dockerTools.pullImage {
             imageName = postgresImageReference.name;
             imageDigest = postgresImageReference.digest;
             finalImageTag = postgresImageReference.tag;
-            sha256 = "sha256-nfMKArdM+b4I01C6dg9Sp5q5VTdDFsAZlMGYqDb0stc=";
+            sha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
           };
 
-          redisRawImageReference = "docker.io/library/redis:8@sha256:b83648c7ab6752e1f52b88ddf5dabc11987132336210d26758f533fb01325865";
+          redisRawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
           redisImageReference = parseDockerImageReference redisRawImageReference;
           redisImage = pkgs.dockerTools.pullImage {
             imageName = redisImageReference.name;
@@ -66,7 +66,7 @@
           };
         in
         {
-          authentik-db = {
+          authentik-database = {
             image = postgresImageReference.name + ":" + postgresImageReference.tag;
             imageFile = postgresImage;
             environment = env // {
@@ -76,7 +76,7 @@
             };
             environmentFiles = getServiceEnvFiles "authentik";
             volumes = [
-              "/data/services/authentik/db:/var/lib/postgresql/data"
+              "/data/services/authentik/database:/var/lib/postgresql/18/docker"
             ];
             networks = [ backendNetwork ];
             labels = {
@@ -108,7 +108,7 @@
             imageFile = authentikImage;
             cmd = [ "server" ];
             environment = env // {
-              "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
+              "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
               # "AUTHENTIK_POSTGRESQL__PASSWORD" = "password"; # set via secret-mgmt
               "AUTHENTIK_POSTGRESQL__USER" = "authentik";
@@ -143,7 +143,7 @@
             imageFile = authentikImage;
             cmd = [ "worker" ];
             environment = env // {
-              "AUTHENTIK_POSTGRESQL__HOST" = "authentik-db";
+              "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
               "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
               # "AUTHENTIK_POSTGRESQL__PASSWORD" = "password"; # set via secret-mgmt
               "AUTHENTIK_POSTGRESQL__USER" = "authentik";

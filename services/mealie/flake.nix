@@ -122,7 +122,7 @@
           mealie-database = {
             image = postgresImageReference.name + ":" + postgresImageReference.tag;
             imageFile = postgresImage;
-            volumes = [ "/data/services/mealie/database:/var/lib/postgresql/data" ];
+            volumes = [ "/data/services/mealie/database:/var/lib/postgresql/18/docker" ];
             networks = [ backendNetwork ];
             environment = {
               "POSTGRES_DB" = "mealie";
