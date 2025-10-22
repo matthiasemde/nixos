@@ -23,6 +23,13 @@ remotePort = 443
 # customDomains = ["home.vps.emdecloud.de"]
 
 [[proxies]]
+name = "traefik-https-federation"
+type = "tcp"
+localIP = "traefik"
+localPort = 8448
+remotePort = 8448
+
+[[proxies]]
 name = "minecraft-tcp"
 type = "tcp"
 localIP = "d578d980-534d-4d54-bea9-e208ff266475"

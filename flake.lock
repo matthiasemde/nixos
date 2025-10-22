@@ -520,11 +520,11 @@
     },
     "nixpkgs_21": {
       "locked": {
-        "lastModified": 1760872779,
-        "narHash": "sha256-c5C907Raf9eY8f1NUXYeju9aUDlm227s/V0OptEbypA=",
+        "lastModified": 1760934318,
+        "narHash": "sha256-/oUYsC0lUCBory65VK+UHqCCsCspbL1Vgfcf1KUYqVw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "63bdb5d90fa2fa11c42f9716ad1e23565613b07c",
+        "rev": "87848bf0cc4f87717fc813a4575f07330c3e743c",
         "type": "github"
       },
       "original": {
@@ -589,6 +589,20 @@
       }
     },
     "nixpkgs_26": {
+      "locked": {
+        "lastModified": 1760872779,
+        "narHash": "sha256-c5C907Raf9eY8f1NUXYeju9aUDlm227s/V0OptEbypA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "63bdb5d90fa2fa11c42f9716ad1e23565613b07c",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_27": {
       "locked": {
         "lastModified": 1682134069,
         "narHash": "sha256-TnI/ZXSmRxQDt2sjRYK/8j8iha4B4zP2cnQCZZ3vp7k=",
@@ -763,6 +777,7 @@
         "pterodactyl": "pterodactyl",
         "radicale": "radicale",
         "secret-mgmt": "secret-mgmt",
+        "synapse": "synapse",
         "traefik": "traefik",
         "uptime-kuma": "uptime-kuma",
         "vaultwarden": "vaultwarden",
@@ -781,6 +796,20 @@
       },
       "original": {
         "path": "./secret-mgmt",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "synapse": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_21"
+      },
+      "locked": {
+        "path": "./services/synapse",
+        "type": "path"
+      },
+      "original": {
+        "path": "./services/synapse",
         "type": "path"
       },
       "parent": []
@@ -832,7 +861,7 @@
     },
     "traefik": {
       "inputs": {
-        "nixpkgs": "nixpkgs_21"
+        "nixpkgs": "nixpkgs_22"
       },
       "locked": {
         "path": "./services/traefik",
@@ -846,7 +875,7 @@
     },
     "uptime-kuma": {
       "inputs": {
-        "nixpkgs": "nixpkgs_22"
+        "nixpkgs": "nixpkgs_23"
       },
       "locked": {
         "path": "./services/uptime-kuma",
@@ -860,7 +889,7 @@
     },
     "vaultwarden": {
       "inputs": {
-        "nixpkgs": "nixpkgs_23"
+        "nixpkgs": "nixpkgs_24"
       },
       "locked": {
         "path": "./services/vaultwarden",
@@ -874,7 +903,7 @@
     },
     "virtualization": {
       "inputs": {
-        "nixpkgs": "nixpkgs_24"
+        "nixpkgs": "nixpkgs_25"
       },
       "locked": {
         "path": "./virtualization",
@@ -889,7 +918,7 @@
     "vscode": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_26"
+        "nixpkgs": "nixpkgs_27"
       },
       "locked": {
         "lastModified": 1753541826,
@@ -907,7 +936,7 @@
     },
     "vscode-server": {
       "inputs": {
-        "nixpkgs": "nixpkgs_25",
+        "nixpkgs": "nixpkgs_26",
         "vscode": "vscode"
       },
       "locked": {

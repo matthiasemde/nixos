@@ -6,7 +6,7 @@
     {
       name = "traefik";
       networks = {
-        traefik = "";
+        traefik = "--ipv6";
       };
       containers =
         {

@@ -36,7 +36,7 @@
       name = "frp";
       dependencies = {
         networks = {
-          "frp-ingress" = "";
+          "frp-ingress" = "--ipv6";
         };
       };
       containers =

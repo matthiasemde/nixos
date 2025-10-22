@@ -1,0 +1,162 @@
+# Configuration file for Matrix Synapse
+# Reference: https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html
+report_stats: false
+
+server_name: "emdecloud.de"
+pid_file: /data/homeserver.pid
+
+# The public-facing base URL that clients use to access this Homeserver
+public_baseurl: https://matrix.emdecloud.de
+
+# Listener configuration
+listeners:
+  # Client API
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    bind_addresses: ['::', '0.0.0.0']
+    resources:
+      - names: [client, federation]
+        compress: false
+
+# Database configuration
+database:
+  name: psycopg2
+  args:
+    user: synapse
+    password: "{{ env.get('POSTGRES_PASSWORD') }}"
+    database: synapse
+    host: synapse-database
+    port: 5432
+    cp_min: 5
+    cp_max: 10
+
+# Redis configuration for replication and caching
+redis:
+  enabled: true
+  host: synapse-redis
+  port: 6379
+
+# Logging configuration
+log_config: "/data/log.config"
+
+# Media storage
+media_store_path: /data/media_store
+max_upload_size: 50M
+
+# Registration settings - Disabled for public registration, use SSO
+enable_registration: false
+enable_registration_without_verification: false
+registrations_require_3pid: []
+auto_join_rooms: []
+
+# Secrets (provided via environment variables managed by agenix)
+registration_shared_secret: "{{ env.get('SYNAPSE_REGISTRATION_SHARED_SECRET') }}"
+macaroon_secret_key: "{{ env.get('SYNAPSE_MACAROON_SECRET_KEY') }}"
+form_secret: "{{ env.get('SYNAPSE_FORM_SECRET') }}"
+
+# Authentik OIDC SSO Configuration
+oidc_providers:
+  - idp_id: authentik
+    idp_name: "Authentik SSO"
+    idp_icon: "mxc://auth.emdecloud.de/authentik-icon"
+    discover: true
+    issuer: "https://auth.emdecloud.de/application/o/matrix/"
+    client_id: "{{ env.get('AUTHENTIK_CLIENT_ID') }}"
+    client_secret: "{{ env.get('AUTHENTIK_CLIENT_SECRET') }}"
+    scopes: ["openid", "profile", "email"]
+    user_mapping_provider:
+      config:
+        localpart_template: "{{ '{{ user.preferred_username }}' }}"
+        display_name_template: "{{ '{{ user.name }}' }}"
+        email_template: "{{ '{{ user.email }}' }}"
+    allow_existing_users: true
+    enable_registration: true
+
+jwt_config:
+    enabled: true
+    secret: "*client_secret*"
+    algorithm: "RS256"
+
+# Rate limiting
+rc_message:
+  per_second: 0.2
+  burst_count: 10
+
+rc_registration:
+  per_second: 0.17
+  burst_count: 3
+
+rc_login:
+  address:
+    per_second: 0.17
+    burst_count: 3
+  account:
+    per_second: 0.17
+    burst_count: 3
+  failed_attempts:
+    per_second: 0.17
+    burst_count: 3
+
+# URL preview settings
+url_preview_enabled: true
+url_preview_ip_range_blacklist:
+  - '127.0.0.0/8'
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+  - '100.64.0.0/10'
+  - '169.254.0.0/16'
+  - '::1/128'
+  - 'fe80::/64'
+  - 'fc00::/7'
+
+max_spider_size: 10M
+
+# Signing Keys (auto-generated on first run)
+signing_key_path: "/data/keys/signing.key"
+
+# Trusted key servers for federation
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+# Enable metrics for monitoring
+enable_metrics: true
+
+email:
+  smtp_host: "mail.privateemail.com"
+  smtp_port: 465
+  smtp_user: "{{ env.get('SMTP_USERNAME') }}"
+  smtp_pass: "{{ env.get('SMTP_PASSWORD') }}"
+  notif_from: "Matrix"
+
+# TODO: Configure TURN server for VoIP (optional)
+# turn_uris: []
+# turn_shared_secret: ""
+# turn_user_lifetime: 86400000
+
+# Presence settings
+presence:
+  enabled: true
+
+# Push notification settings
+push:
+  include_content: true
+
+# Federation settings
+# federation_domain_whitelist: []
+# federation_ip_range_blacklist: []
+
+# User directory settings
+user_directory:
+  enabled: true
+  search_all_users: false
+
+# Retention settings
+# TODO: Configure message retention policies if needed
+# retention:
+#   enabled: true
+#   default_policy:
+#     min_lifetime: 1d
+#     max_lifetime: 7d

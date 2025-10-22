@@ -31,6 +31,7 @@
     mealie.url = "path:./services/mealie";
     uptime-kuma.url = "path:./services/uptime-kuma";
     grafana.url = "path:./services/grafana";
+    synapse.url = "path:./services/synapse";
   };
 
   outputs =
@@ -60,6 +61,7 @@
       mealie,
       uptime-kuma,
       grafana,
+      synapse,
       ...
     }:
     {
@@ -104,6 +106,7 @@
             mealie
             uptime-kuma
             grafana
+            synapse
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;

@@ -1,0 +1,20 @@
+{
+  "restrictBaseUrl": "http://matrix.mahler.local",
+  "externalAuthProvider": true,
+  "corsCredentials": "same-origin",
+  "asManagedUsers": [
+    "@.*:emdecloud\\.de$"
+  ],
+  "menu": [
+    {
+      "label": "Matrix Website",
+      "url": "https://matrix.org",
+      "icon": "mdi-web"
+    },
+    {
+      "label": "Element Web",
+      "url": "https://app.element.io",
+      "icon": "mdi-chat"
+    }
+  ]
+}

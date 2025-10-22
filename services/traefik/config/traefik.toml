@@ -28,6 +28,9 @@ address = ":80"
 [entryPoints.websecure]
 address = ":443"
 
+[entryPoints.federation]
+address = ":8448"
+
 [entryPoints.websecure.transport.respondingTimeouts]
 readTimeout = "600s"
 idleTimeout = "600s"
