@@ -21,13 +21,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          uptimeKumaRawImageReference = "louislam/uptime-kuma:2.0.0@sha256:e63226107e874e5a2e168268e0ab9a5e6438a0ca82c61c834c5e03816b07b8d8";
+          uptimeKumaRawImageReference = "louislam/uptime-kuma:2.0.1@sha256:60e6fe0c481b452633cef1a47c1096633b36e6871c5cd97ec61039de1706e1f3";
           uptimeKumaImageReference = parseDockerImageReference uptimeKumaRawImageReference;
           uptimeKumaImage = pkgs.dockerTools.pullImage {
             imageName = uptimeKumaImageReference.name;
             imageDigest = uptimeKumaImageReference.digest;
             finalImageTag = uptimeKumaImageReference.tag;
-            sha256 = "sha256-VtBXr2LadekIi15bSABIf6bNrdYgi/gwNRdndTjAU3M=";
+            sha256 = "sha256-dYsslnHT5AqQ9YkRPRFvl+yv1RUYerhpVdLZDZYOIIA=";
           };
         in
         {
