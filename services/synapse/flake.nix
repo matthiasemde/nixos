@@ -5,12 +5,14 @@
     { self, nixpkgs }:
     let
       backendNetwork = "synapse-backend";
+      authBackendNetwork = "matrix-auth-backend";
     in
     {
       name = "synapse";
       dependencies = {
         networks = {
           ${backendNetwork} = "";
+          ${authBackendNetwork} = "";
         };
       };
       containers =
@@ -52,6 +54,41 @@
             sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
           };
 
+          matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:v1.4.1@sha256:af3c8e1207d5b6ef575454a0211dab07ba816be219607f6568a52ab42978c23c";
+          matrixAuthImageReference = parseDockerImageReference matrixAuthRawImageReference;
+          matrixAuthImage = pkgs.dockerTools.pullImage {
+            imageName = matrixAuthImageReference.name;
+            imageDigest = matrixAuthImageReference.digest;
+            finalImageTag = matrixAuthImageReference.tag;
+            sha256 = "sha256-bZeTe2JXlx6jqHcTNNcKkIKIFhptCYzol11tvxLiCck=";
+          };
+
+          # Build custom docker image with shell + python + jinja
+          matrixAuthImageDerived =
+            let
+              # Build a Python interpreter with Jinja2 included
+              pythonEnv = pkgs.python3.withPackages (ps: [
+                ps.jinja2
+              ]);
+            in
+            pkgs.dockerTools.buildImage {
+              name = "matix-auth-derived";
+              tag = matrixAuthImageReference.tag;
+              fromImage = matrixAuthImage;
+              copyToRoot = pkgs.buildEnv {
+                name = "image-root";
+                paths = [
+                  pkgs.bash
+                  pkgs.coreutils
+                  pythonEnv
+                ];
+              };
+
+              config = {
+                Cmd = [ "/bin/bash" ];
+              };
+            };
+
           synapseAdminRawImageReference = "ghcr.io/etkecc/synapse-admin:v0.11.1-etke48@sha256:b0d794c33eaa862bfe968ffb02ab82747f1218e5f259568c40cbfff9dc07bf8c";
           synapseAdminImageReference = parseDockerImageReference synapseAdminRawImageReference;
           synapseAdminImage = pkgs.dockerTools.pullImage {
@@ -71,6 +108,56 @@
           };
         in
         {
+          # Matrix Authentication Service Database
+          matrix-auth-database = {
+            image = postgresImageReference.name + ":" + postgresImageReference.tag;
+            imageFile = postgresImage;
+            environment = {
+              "POSTGRES_USER" = "mas_user";
+              # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
+              "POSTGRES_DB" = "mas";
+            };
+            environmentFiles = getServiceEnvFiles "synapse";
+            volumes = [
+              "/data/services/synapse/matrix-auth-database:/var/lib/postgresql/18/docker"
+            ];
+            networks = [ authBackendNetwork ];
+            labels = {
+              "traefik.enable" = "false";
+            };
+          };
+
+          # Matrix Authentication Service
+          matrix-auth-app = {
+            image = "matix-auth-derived" + ":" + matrixAuthImageReference.tag;
+            imageFile = matrixAuthImageDerived;
+            environmentFiles = getServiceEnvFiles "synapse";
+            volumes = [
+              "${./config/matrix-auth-config.yaml.j2}:/data/config.yaml.j2:ro"
+              "${./render-config.py}:/render-config.py:ro"
+              "${./matrix-auth-entrypoint.sh}:/entrypoint.sh:ro"
+              "/run/agenix/synapse-matrix-auth-secrets.yaml:/data/secrets.yaml:ro"
+            ];
+            entrypoint = "/entrypoint.sh";
+            networks = [
+              "traefik"
+              authBackendNetwork
+            ];
+            labels =
+              (mkTraefikLabels {
+                name = "matrix-auth";
+                port = "8080";
+              })
+              // {
+                # 🏠 Homepage integration
+                "homepage.group" = "Communication";
+                "homepage.name" = "Matrix Auth Service";
+                "homepage.icon" = "matrix";
+                "homepage.href" = "https://matrix-auth.${domain}";
+                "homepage.description" = "Matrix Authentication Service";
+              };
+          };
+
           synapse-database = {
             image = postgresImageReference.name + ":" + postgresImageReference.tag;
             imageFile = postgresImage;
@@ -127,6 +214,7 @@
             networks = [
               "traefik"
               backendNetwork
+              authBackendNetwork
             ];
             labels =
               (mkTraefikLabels {
@@ -138,13 +226,6 @@
                 ];
               })
               // {
-                # --- Public federation router ---
-                "traefik.http.routers.matrix-federation.entrypoints" = "federation";
-                "traefik.http.routers.matrix-federation.rule" = "Host(`matrix.${domain}`)";
-                "traefik.http.routers.matrix-federation.tls.certresolver" = "myresolver";
-                "traefik.http.routers.matrix-federation.tls.domains[0].main" = "matrix.${domain}";
-                "traefik.http.routers.matrix-federation.service" = "matrix";
-
                 # 🏠 Homepage integration
                 "homepage.group" = "Media";
                 "homepage.name" = "Matrix Synapse";

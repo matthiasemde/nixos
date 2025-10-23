@@ -57,27 +57,33 @@ macaroon_secret_key: "{{ env.get('SYNAPSE_MACAROON_SECRET_KEY') }}"
 form_secret: "{{ env.get('SYNAPSE_FORM_SECRET') }}"
 
 # Authentik OIDC SSO Configuration
-oidc_providers:
-  - idp_id: authentik
-    idp_name: "Authentik SSO"
-    idp_icon: "mxc://auth.emdecloud.de/authentik-icon"
-    discover: true
-    issuer: "https://auth.emdecloud.de/application/o/matrix/"
-    client_id: "{{ env.get('AUTHENTIK_CLIENT_ID') }}"
-    client_secret: "{{ env.get('AUTHENTIK_CLIENT_SECRET') }}"
-    scopes: ["openid", "profile", "email"]
-    user_mapping_provider:
-      config:
-        localpart_template: "{{ '{{ user.preferred_username }}' }}"
-        display_name_template: "{{ '{{ user.name }}' }}"
-        email_template: "{{ '{{ user.email }}' }}"
-    allow_existing_users: true
-    enable_registration: true
+#oidc_providers:
+#  - idp_id: authentik
+#    idp_name: "Authentik"
+#    idp_icon: "mxc://auth.emdecloud.de/authentik-icon"
+#    discover: true
+#    issuer: "https://auth.emdecloud.de/application/o/matrix/"
+#    client_id: "{{ env.get('AUTHENTIK_CLIENT_ID') }}"
+#    client_secret: "{{ env.get('AUTHENTIK_CLIENT_SECRET') }}"
+#    scopes: ["openid", "profile", "email"]
+#    user_mapping_provider:
+#      config:
+#        localpart_template: "{{ '{{ user.preferred_username }}' }}"
+#        display_name_template: "{{ '{{ user.name }}' }}"
+#        email_template: "{{ '{{ user.email }}' }}"
+#    allow_existing_users: true
+#    enable_registration: true
 
-jwt_config:
-    enabled: true
-    secret: "*client_secret*"
-    algorithm: "RS256"
+#jwt_config:
+#    enabled: true
+#    secret: "*client_secret*"
+#    algorithm: "RS256"
+
+matrix_authentication_service:
+  enabled: true
+  endpoint: http://matrix-auth-app:8080/
+  secret: "{{ env.get('MATRIX_SECRET') }}"
+
 
 # Rate limiting
 rc_message:

@@ -1,0 +1,107 @@
+http:
+  public_base: https://matrix-auth.emdecloud.de/
+  listeners:
+    - name: web
+      resources:
+        # Serves the .well-known/openid-configuration document
+        - name: discovery
+        # Serves the human-facing pages, such as the login page
+        - name: human
+        # Serves the OAuth 2.0/OIDC endpoints
+        - name: oauth
+        # Serves the Matrix C-S API compatibility endpoints
+        - name: compat
+        # Serve the GraphQL API used by the frontend,
+        # and optionally the GraphQL playground
+        - name: graphql
+        # playground: true
+        # Serve the given folder on the /assets/ path
+        - name: assets
+        # path: ./share/assets/
+        # Serve the admin API on the /api/admin/v1/ path. Disabled by default
+        #- name: adminapi
+      binds:
+        - address: '[::]:8080'
+  # trusted_proxies:
+  # - 192.168.0.0/16
+
+database:
+  host: matrix-auth-database
+  port: 5432
+  username: mas_user
+  password: "{{ env.get('POSTGRES_PASSWORD') }}"
+  database: mas
+
+email:
+  # smtp_host: "mail.privateemail.com"
+  # smtp_port: 465
+  # smtp_user: "{{ env.get('SMTP_USERNAME') }}"
+  # smtp_pass: "{{ env.get('SMTP_PASSWORD') }}"
+  # from: '"Authentication Service" <root@localhost>'
+  # reply_to: '"Authentication Service" <root@localhost>'
+
+  # Default transport: don't send any emails
+  transport: blackhole
+
+# The "secrets" section is configured in matrix-auth-secrets.yaml
+# secrets:
+#   encryption: aaaa
+#   keys:
+#   - key: |
+#       -----BEGIN RSA PRIVATE KEY-----
+#       aaa=
+#       -----END RSA PRIVATE KEY-----
+#   - key: |
+#       -----BEGIN EC PRIVATE KEY-----
+#       aaa=
+#       -----END EC PRIVATE KEY-----
+#   - key: |
+#       -----BEGIN EC PRIVATE KEY-----
+#       aaa=
+#       -----END EC PRIVATE KEY-----
+#   - key: |
+#       -----BEGIN EC PRIVATE KEY-----
+#       aaa=
+#       -----END EC PRIVATE KEY-----
+
+passwords:
+  enabled: false
+  schemes:
+  - version: 1
+    algorithm: bcrypt
+
+matrix:
+  kind: synapse
+  homeserver: emdecloud.de
+  secret: "{{ env.get('MATRIX_SECRET') }}"
+  endpoint: http://synapse-app:8008/
+
+upstream_oauth2:
+  providers:
+    - id: 01HFRQFT5QFMJFGF01P7JAV2ME
+      synapse_idp_id: oidc-authentik
+      issuer: "https://auth.emdecloud.de/application/o/matrix/"
+      human_name: Authentik
+      client_id: "{{ env.get('AUTHENTIK_CLIENT_ID') }}"
+      client_secret: "{{ env.get('AUTHENTIK_CLIENT_SECRET') }}"
+      token_endpoint_auth_method: client_secret_basic
+      scope: "openid profile email"
+      fetch_userinfo: true
+      claims_imports:
+        localpart:
+          # on_conflict: add # should not be needed
+          action: require
+          template: "{{ '{{ user.preferred_username }}' }}"
+        displayname:
+          action: force
+          template: "{{ '{{ user.name }}' }}"
+        email:
+          action: force
+          template: "{{ '{{ user.email }}' }}"
+      forward_login_hint: false
+      on_backchannel_logout: logout_browser_only
+
+branding:
+  service_name: "Emdecloud Matrix Auth Service"
+  # policy_uri: "https://emdecloud.de/privacy"
+  # tos_uri: "https://emdecloud.de/terms"

@@ -4,11 +4,22 @@ This directory contains the NixOS configuration for the Matrix Synapse homeserve
 
 ## Architecture
 
-The service consists of four containers:
+The service consists of six containers:
 - **synapse-app**: The main Matrix Synapse server
 - **synapse-database**: PostgreSQL database for persistent storage
 - **synapse-redis**: Redis for caching and replication
 - **synapse-admin**: Web-based admin interface for managing the homeserver
+- **matrix-auth-app**: Matrix Authentication Service (next-gen auth per MSC3861)
+- **matrix-auth-database**: PostgreSQL database for MAS authentication data
+
+## Next-Generation Authentication
+
+This setup includes **Matrix Authentication Service (MAS)** which implements [MSC3861](https://github.com/matrix-org/matrix-doc/pull/3861) for next-generation Matrix authentication. MAS provides:
+
+- **Modern OAuth2/OIDC flows** replacing legacy Matrix authentication
+- **Seamless Authentik integration** with your existing SSO infrastructure
+- **Enhanced security** with proper token management and session handling
+- **Future-proof architecture** aligned with Matrix specification evolution
 
 ## Configuration
 
@@ -17,12 +28,13 @@ The service consists of four containers:
   - Uses Jinja2 template syntax for environment variable substitution (e.g., `{{ POSTGRES_PASSWORD }}`)
   - The official Synapse Docker image processes these templates at startup
   - **Enhanced**: Now includes Authentik group-based admin role mapping
-- `config/log.config`: Logging configuration  
+- `config/log.config`: Logging configuration
 - `config/synapse-admin-config.json`: Configuration for the Synapse Admin web interface
 
 ### Secrets
 The following secrets need to be generated and encrypted using agenix in the `services/synapse/secrets/` directory:
 
+#### Core Synapse Secrets
 1. **POSTGRES_PASSWORD.env.age**: PostgreSQL database password
 2. **SYNAPSE_REGISTRATION_SHARED_SECRET.env.age**: For registering users via the API
 3. **SYNAPSE_MACAROON_SECRET_KEY.env.age**: For generating access tokens
@@ -30,19 +42,32 @@ The following secrets need to be generated and encrypted using agenix in the `se
 5. **AUTHENTIK_CLIENT_ID.env.age**: Authentik OAuth2 client ID for SSO
 6. **AUTHENTIK_CLIENT_SECRET.env.age**: Authentik OAuth2 client secret for SSO
 
+#### Matrix Authentication Service (MAS) Secrets
+7. **MAS_POSTGRES_PASSWORD.env.age**: MAS PostgreSQL database password
+8. **MAS_ENCRYPTION_KEY.env.age**: MAS data encryption key (32 random bytes, base64 encoded)
+9. **MAS_SIGNING_KEY.env.age**: MAS JWT signing key (RS256 private key, PEM format)
+10. **MAS_KEY_ID.env.age**: MAS signing key identifier (random string)
+11. **MAS_MATRIX_SECRET.env.age**: Shared secret between MAS and Synapse
+12. **MAS_MATRIX_CLIENT_ID.env.age**: OAuth2 client ID for Synapse -> MAS communication
+13. **MAS_MATRIX_CLIENT_SECRET.env.age**: OAuth2 client secret for Synapse -> MAS
+14. **MAS_ADMIN_TOKEN.env.age**: Admin token for MAS administrative operations
+15. **MAS_AUTHENTIK_PROVIDER_ID.env.age**: ULID identifier for Authentik provider in MAS
+
 ## Traefik Integration
 
 The service is configured with **enhanced security routing** following Synapse documentation best practices:
 
 ### Matrix Server Routes
 - **Public Client API**: `https://matrix.<domain>` - Restricted to `/_matrix` and `/_synapse/client` paths only
-- **Admin API**: `https://matrix.<domain>/_synapse/admin` - Accessible for administration (requires authentication)
-- **Federation**: `https://matrix.<domain>:8448` - Full Matrix federation (port 8448)
-- **Local Access**: `https://matrix.<host>.local` - Full access for local administration
+- **Admin API**: `http://matrix.<domain>/_synapse/admin` - Accessible for administration (requires authentication)
+- **Local Access**: `http://matrix.<host>.local` - Full access for local administration
 
-### Synapse Admin Interface  
-- **Public Access**: `https://synapse-admin.<domain>` - Web-based admin interface
-- **Local Access**: `https://synapse-admin.<host>.local` - Direct local access
+### Matrix Authentication Service Routes
+- **Public Access**: `https://matrix-auth.<domain>` - MAS authentication interface with Authentik SSO
+- **Local Access**: `http://matrix-auth.<host>.local` - Direct local access
+
+### Synapse Admin Interface
+- **Local Access**: `http://synapse-admin.<host>.local` - Direct local access
 
 This configuration follows the [Synapse reverse proxy documentation](https://element-hq.github.io/synapse/latest/reverse_proxy.html) which recommends only exposing `/_matrix` and `/_synapse/client` endpoints publicly, while keeping `/_synapse/admin` accessible but secured.
 
@@ -83,14 +108,6 @@ The admin interface is pre-configured to:
 - Include custom menu items for Matrix resources
 - Protect system users from accidental modification
 
-## Data Storage
-
-The service stores data in the following locations:
-- `/data/services/synapse/database`: PostgreSQL database
-- `/data/services/synapse/redis`: Redis persistence
-- `/data/services/synapse/app`: Synapse data including media store and signing keys
-
-## TODOs
 
 ### Required Setup Steps
 
@@ -101,32 +118,9 @@ The service stores data in the following locations:
   sudo chown -R 991:991 /data/services/synapse/data  # Synapse runs as UID 991
   ```
 
-- [x] **Configure database connection**: Ensure the database password is properly encrypted and available
-
 - [x] **Generate signing keys**: On first run, Synapse will auto-generate signing keys in `/data/services/synapse/app/keys/`
 
-### DNS Configuration
 
-- [x] **Set up DNS entries** for federation to work properly:
-  - `matrix.<host>.local` → Internal IP
-  - `synapse.<host>.local` → Internal IP
-  - For external federation, you'll need public DNS entries and proper port forwarding
-
-- [ ] **Configure SRV records** (if using federation):
-  ```
-  _matrix._tcp.<host>.local. 3600 IN SRV 10 0 8448 synapse.<host>.local.
-  ```
-
-### Client Registration
-
-- [ ] **Configure registration settings** in `config/homeserver.yaml`:
-  - Set `enable_registration: true` if you want open registration
-  - Or use the registration shared secret to register users manually
-
-- [ ] **Register the first admin user**:
-  ```bash
-  docker exec -it synapse-app register_new_matrix_user -c /data/homeserver.yaml -u admin -p password -a http://localhost:8008
-  ```
 
 ### Optional Enhancements
 
@@ -145,15 +139,6 @@ The service stores data in the following locations:
 - [ ] **Set up proper firewall rules** for federation (port 8448)
 - [ ] **Review security settings** in the Synapse documentation
 - [ ] **Set up regular backups** of the database and media store
-
-## Federation
-
-For federation to work properly with other Matrix homeservers:
-
-1. Your server must be reachable on port 8448 (or you must configure delegation)
-2. DNS must be properly configured with SRV records
-3. TLS certificates must be valid for the domain
-4. The server_name in homeserver.yaml should match your domain
 
 ## Useful Commands
 
