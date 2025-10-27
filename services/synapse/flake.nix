@@ -6,6 +6,7 @@
     let
       backendNetwork = "synapse-backend";
       authBackendNetwork = "matrix-auth-backend";
+      matrixRtcNetwork = "matrix-rtc-backend";
     in
     {
       name = "synapse";
@@ -13,6 +14,7 @@
         networks = {
           ${backendNetwork} = "";
           ${authBackendNetwork} = "";
+          ${matrixRtcNetwork} = "";
         };
       };
       containers =
@@ -105,6 +107,44 @@
             imageDigest = nginxImageReference.digest;
             finalImageTag = nginxImageReference.tag;
             sha256 = "sha256-EHUeHY55q4il4qhIxcOrrop/ofyCsbfY68x1zeRnGFM=";
+          };
+
+          # LiveKit SFU for Element Call MatrixRTC
+          livekitRawImageReference = "livekit/livekit-server:v1.9.2@sha256:8ac8a6391618603622f8df8373a774ee1c4c56c91a83500eaae58ba1c05f17a3";
+          livekitImageReference = parseDockerImageReference livekitRawImageReference;
+          livekitImage = pkgs.dockerTools.pullImage {
+            imageName = livekitImageReference.name;
+            imageDigest = livekitImageReference.digest;
+            finalImageTag = livekitImageReference.tag;
+            sha256 = "sha256-Q46UqB4XNdH1EUql7M/GDZTtHq2S7STaajqfkduWhRE=";
+          };
+
+          livekitImageDerived = pkgs.dockerTools.buildImage {
+            name = "livekit-derived";
+            tag = livekitImageReference.tag;
+            fromImage = livekitImage;
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [
+                pkgs.bash
+                pkgs.coreutils
+                pkgs.curlMinimal
+              ];
+            };
+
+            config = {
+              Cmd = [ "/bin/bash" ];
+            };
+          };
+
+          # Element Call JWT Service for MatrixRTC auth
+          elementCallJwtRawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.3.0@sha256:52357326970d3f3e3cf6e9c33766e49cf2665e2cd57842e29a5c298514bd2e58";
+          elementCallJwtImageReference = parseDockerImageReference elementCallJwtRawImageReference;
+          elementCallJwtImage = pkgs.dockerTools.pullImage {
+            imageName = elementCallJwtImageReference.name;
+            imageDigest = elementCallJwtImageReference.digest;
+            finalImageTag = elementCallJwtImageReference.tag;
+            sha256 = "sha256-7ebWodUNDJqZlen9vAW6kOJH2Zsz3eQ53hQpfn7c8iw=";
           };
         in
         {
@@ -215,6 +255,7 @@
               "traefik"
               backendNetwork
               authBackendNetwork
+              matrixRtcNetwork
             ];
             labels =
               (mkTraefikLabels {
@@ -237,9 +278,24 @@
 
           synapse-wellknown =
             let
-              wellknownFile = pkgs.writeTextFile {
+              wellknownServerFile = pkgs.writeTextFile {
                 name = "matrix-wellknown-server";
                 text = "{ \"m.server\": \"matrix.${domain}:443\" }";
+              };
+
+              wellknownClientFile = pkgs.writeTextFile {
+                name = "matrix-wellknown-client";
+                text = builtins.toJSON {
+                  "m.homeserver" = {
+                    "base_url" = "https://matrix.${domain}";
+                  };
+                  "org.matrix.msc4143.rtc_foci" = [
+                    {
+                      "type" = "livekit";
+                      "livekit_service_url" = "https://matrix-rtc-jwt.${domain}";
+                    }
+                  ];
+                };
               };
             in
             {
@@ -248,11 +304,15 @@
               networks = [
                 "traefik"
               ];
-              volumes = [ "${wellknownFile}:/usr/share/nginx/html/.well-known/matrix/server:ro" ];
+              volumes = [
+                "${wellknownServerFile}:/usr/share/nginx/html/.well-known/matrix/server:ro"
+                "${wellknownClientFile}:/usr/share/nginx/html/.well-known/matrix/client:ro"
+                "${./config/wellknown-nginx.conf}:/etc/nginx/nginx.conf:ro"
+              ];
               labels = {
                 "traefik.enable" = "true";
                 "traefik.http.routers.matrix-wellknown.rule" =
-                  "Host(`${domain}`) && PathPrefix(`/.well-known/matrix/server`)";
+                  "Host(`${domain}`) && (PathPrefix(`/.well-known/matrix/server`) || PathPrefix(`/.well-known/matrix/client`))";
                 "traefik.http.routers.matrix-wellknown.entrypoints" = "websecure";
                 "traefik.http.routers.matrix-wellknown.tls.certresolver" = "myresolver";
                 "traefik.http.routers.matrix-wellknown.tls.domains[0].main" = domain;
@@ -284,6 +344,54 @@
                 "homepage.href" = "http://synapse-admin.${hostname}.local";
                 "homepage.description" = "Matrix homeserver admin interface";
               };
+          };
+
+          # LiveKit SFU for MatrixRTC backend
+          livekit-sfu = {
+            image = "livekit-derived:" + livekitImageReference.tag;
+            imageFile = livekitImageDerived;
+            environmentFiles = getServiceEnvFiles "synapse";
+            volumes = [
+              "${./config/livekit-config.yaml}:/etc/livekit-pre.yaml:ro"
+              "${./livekit-entrypoint.sh}:/entrypoint.sh:ro"
+            ];
+            entrypoint = "/entrypoint.sh";
+            networks = [
+              "traefik"
+              "frp-ingress"
+              matrixRtcNetwork
+            ];
+            labels = (
+              mkTraefikLabels {
+                name = "matrix-rtc-sfu";
+                port = "7880";
+              }
+            );
+          };
+
+          # Element Call JWT Auth Service for MatrixRTC
+          element-call-jwt = {
+            image = elementCallJwtImageReference.name + ":" + elementCallJwtImageReference.tag;
+            imageFile = elementCallJwtImage;
+            environment = {
+              "LIVEKIT_JWT_PORT" = "8080";
+              "LIVEKIT_URL" = "https://matrix-rtc-sfu.${domain}";
+              # "LIVEKIT_KEY" = ""; # Set via secret-mgmt
+              # "LIVEKIT_SECRET" = ""; # Set via secret-mgmt
+              "LIVEKIT_FULL_ACCESS_HOMESERVERS" = domain;
+            };
+            environmentFiles = getServiceEnvFiles "synapse";
+            networks = [
+              "traefik"
+              matrixRtcNetwork
+            ];
+            labels = (
+              mkTraefikLabels {
+                name = "matrix-rtc-jwt";
+                port = "8080";
+                corsAllowPost = true;
+              }
+            );
           };
         };
     };

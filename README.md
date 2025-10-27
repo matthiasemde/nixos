@@ -155,11 +155,15 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── synapse
 │   │   ├── config
 │   │   │   ├── homeserver.yaml.j2
+│   │   │   ├── livekit-config.yaml
 │   │   │   ├── log.config
 │   │   │   ├── matrix-auth-config.yaml.j2
-│   │   │   └── synapse-admin-config.json
+│   │   │   ├── synapse-admin-config.json
+│   │   │   └── wellknown-nginx.conf
+│   │   ├── ELEMENT_CALL_README.md
 │   │   ├── entrypoint.sh
 │   │   ├── flake.nix
+│   │   ├── livekit-entrypoint.sh
 │   │   ├── matrix-auth-entrypoint.sh
 │   │   ├── README.md
 │   │   ├── render-config.py
@@ -171,6 +175,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── database-credentials.env.age
 │   │       ├── database-credentials.env.age.nix
 │   │       ├── homeserver.yaml.age.nix
+│   │       ├── livekit-credentials.env.age
+│   │       ├── livekit-credentials.env.age.nix
 │   │       ├── matrix-auth-secrets.yaml.age
 │   │       ├── matrix-auth-secrets.yaml.age.nix
 │   │       ├── matrix-secret.env.age
@@ -180,6 +186,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── traefik
 │   │   ├── config
 │   │   │   ├── error.html
+│   │   │   ├── middlewares.toml
 │   │   │   ├── nginx.conf
 │   │   │   └── traefik.toml
 │   │   ├── flake.nix
@@ -205,7 +212,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-54 directories, 147 files
+54 directories, 154 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

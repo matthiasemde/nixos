@@ -53,6 +53,7 @@
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"
               "${./config/traefik.toml}:/traefik.toml:ro"
+              "${./config/middlewares.toml}:/etc/traefik/middlewares.toml:ro"
               "/data/services/traefik/certs:/certs"
             ];
             cmd = [

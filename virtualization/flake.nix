@@ -20,12 +20,15 @@
             {
               name,
               port,
+              specialSubdomain ? null,
               passthrough ? false,
               isPublic ? true,
               allowedPaths ? null,
+              corsAllowPost ? false,
             }:
             let
-              localRule = "Host(`${name}.${hostname}.local`)";
+              subdomain = if specialSubdomain != null then specialSubdomain else name;
+              localRule = "Host(`${subdomain}.${hostname}.local`)";
 
               # Build path rules from allowedPaths array
               pathRules =
@@ -38,8 +41,8 @@
                 else
                   "";
 
-              publicRule = "Host(`${name}.${domain}`)${pathRules}";
-              publicTcpRule = "HostSNI(`${name}.${domain}`)";
+              publicRule = "Host(`${subdomain}.${domain}`)${pathRules}";
+              publicTcpRule = "HostSNI(`${subdomain}.${domain}`)";
 
               local = {
                 # 🛡️ Enable traffic
@@ -64,12 +67,20 @@
                     "traefik.tcp.routers.${name}-public.service" = name;
                   }
                 else
-                  {
+                  let
+                    corsMiddleware =
+                      if corsAllowPost then
+                        { "traefik.http.routers.${name}-public.middlewares" = "cors-allow-post@file"; }
+                      else
+                        { };
+                  in
+                  corsMiddleware
+                  // {
                     # --- Public HTTPS router ---
                     "traefik.http.routers.${name}-public.entrypoints" = "websecure";
                     "traefik.http.routers.${name}-public.rule" = publicRule;
                     "traefik.http.routers.${name}-public.tls.certresolver" = "myresolver";
-                    "traefik.http.routers.${name}-public.tls.domains[0].main" = "${name}.${domain}";
+                    "traefik.http.routers.${name}-public.tls.domains[0].main" = "${subdomain}.${domain}";
                     "traefik.http.routers.${name}-public.service" = name;
 
                     "traefik.http.routers.${name}-public-http.rule" = publicRule;

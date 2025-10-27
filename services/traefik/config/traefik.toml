@@ -28,9 +28,6 @@ address = ":80"
 [entryPoints.websecure]
 address = ":443"
 
-[entryPoints.federation]
-address = ":8448"
-
 [entryPoints.websecure.transport.respondingTimeouts]
 readTimeout = "600s"
 idleTimeout = "600s"
@@ -67,7 +64,7 @@ level = "ERROR"
 # Optional
 # Default: os.Stdout
 #
-filePath = "log/traefik.log"
+# filePath = "/log/traefik.log"
 
 # Format is either "json" or "common".
 #
@@ -167,3 +164,10 @@ network = "traefik"
 # Default: true
 #
 # exposedByDefault = false
+
+################################################################
+# Load configurations from middleware.toml
+################################################################
+[providers.file]
+filename = "/etc/traefik/middlewares.toml"
+watch = true
