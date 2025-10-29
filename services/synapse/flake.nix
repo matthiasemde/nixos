@@ -100,13 +100,13 @@
             sha256 = "sha256-5r22gCLJxgSNNasvXcFNc1Jc31oFzsuLcplE+4HuUaQ=";
           };
 
-          nginxRawImageReference = "nginx:1.29.2-alpine@sha256:7c1b9a91514d1eb5288d7cd6e91d9f451707911bfaea9307a3acbc811d4aa82e";
+          nginxRawImageReference = "nginx:1.29.3-alpine@sha256:b23ea6c10814fccb32ac20485c74168ebefa1c3544a3dddfcb33494d24270df8";
           nginxImageReference = parseDockerImageReference nginxRawImageReference;
           nginxImage = pkgs.dockerTools.pullImage {
             imageName = nginxImageReference.name;
             imageDigest = nginxImageReference.digest;
             finalImageTag = nginxImageReference.tag;
-            sha256 = "sha256-EHUeHY55q4il4qhIxcOrrop/ofyCsbfY68x1zeRnGFM=";
+            sha256 = "sha256-qrQIBp2EbKw3Aicu424rbu26v2T1LZgHVQ+hJKKZQxE=";
           };
 
           # LiveKit SFU for Element Call MatrixRTC
