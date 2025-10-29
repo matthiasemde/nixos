@@ -22,6 +22,11 @@
   "nix": {
     "enabled": true
   },
+  "postUpgradeTasks": {
+    "enabled": true,
+    "commands": ["./.github/scripts/update-docker-hashes.sh"],
+    "fileFilters": ["services/*/flake.nix"]
+  },
   "packageRules": [
     {
       "matchManagers": [
