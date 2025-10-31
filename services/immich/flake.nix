@@ -24,13 +24,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          immichAppRawImageReference = "ghcr.io/immich-app/immich-server:v2.1.0@sha256:d38db1507ecbc2f5c5bac3eb7d042f1ab7fa2eae8452bf809b2db612f859b905";
+          immichAppRawImageReference = "ghcr.io/immich-app/immich-server:v2.2.0@sha256:90627507693076ec068415daba4d617e48a876ad8069c8cc7e1bc1fdd6f9392b";
           immichAppImageReference = parseDockerImageReference immichAppRawImageReference;
           immichAppImage = pkgs.dockerTools.pullImage {
             imageName = immichAppImageReference.name;
             imageDigest = immichAppImageReference.digest;
             finalImageTag = immichAppImageReference.tag;
-            sha256 = "sha256-MQGtOsgDLT/qo5gFjt5foD50OymGEgHTyXjzu+Verv4=";
+            sha256 = "sha256-6/qPGaNO1/neGLbDNyI2qnQddLC6HHZjnXhmhKf3RxE=";
           };
 
           immichMLRawImageReference = "ghcr.io/immich-app/immich-machine-learning:v2.2.0@sha256:5df77af74af072f1552720d72f1838f63a60d7173d4187ab014686ccd18b567e";
