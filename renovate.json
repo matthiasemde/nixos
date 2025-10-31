@@ -22,11 +22,6 @@
   "nix": {
     "enabled": true
   },
-  "postUpgradeTasks": {
-    "enabled": true,
-    "commands": ["./.github/scripts/update-docker-hashes.sh"],
-    "fileFilters": ["services/*/flake.nix"]
-  },
   "packageRules": [
     {
       "matchManagers": [
@@ -73,7 +68,7 @@
       "automerge": false
     },
     {
-      "description": "Automerge minor and patch Docker image updates",
+      "description": "Label minor and patch Docker image updates (automerge handled by GitHub Actions)",
       "matchManagers": [
         "custom.regex"
       ],
@@ -89,7 +84,7 @@
         "nix-flake",
         "docker-image"
       ],
-      "automerge": true,
+      "automerge": false,
       "prPriority": 3
     },
     {
