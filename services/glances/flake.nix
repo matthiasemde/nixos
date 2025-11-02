@@ -15,13 +15,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          glancesRawImageReference = "nicolargo/glances:4.3.3@sha256:fae2cee5c9497b46a72e52261b2e825fe6c0e5de2f295829411e3d5ccf24ee5c";
+          glancesRawImageReference = "nicolargo/glances:4.4.0@sha256:f7439475dc86cf23446035002871f6a643c88b729cb39717e2c97926ecae8da1";
           glancesImageReference = parseDockerImageReference glancesRawImageReference;
           glancesImage = pkgs.dockerTools.pullImage {
             imageName = glancesImageReference.name;
             imageDigest = glancesImageReference.digest;
             finalImageTag = glancesImageReference.tag;
-            sha256 = "sha256-EN7P6BVjAEtZBIuasAJ2GsuQ+7Ci9gTW+/CpUfok3Qo=";
+            sha256 = "sha256-ACodrWvEJ9dfcyygCqw0NCr49IJt82v9nbomxBT5Eyo=";
           };
         in
         {
