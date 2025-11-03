@@ -33,13 +33,13 @@
             sha256 = "sha256-WRek+1sJTV7x/GBDFb0wAutRcCv/X1tMkCJ0MG8rNQg=";
           };
 
-          immichMLRawImageReference = "ghcr.io/immich-app/immich-machine-learning:v2.2.1@sha256:590a76bba3d88ccf78b03cde0c0fb8788f7d76ae6caf90ad33a34b5b4cc35f11";
+          immichMLRawImageReference = "ghcr.io/immich-app/immich-machine-learning:v2.2.2@sha256:848b097e1250695ceaa371824b441356847140328bcfb921bdd5e3459878d535";
           immichMLImageReference = parseDockerImageReference immichMLRawImageReference;
           immichMLImage = pkgs.dockerTools.pullImage {
             imageName = immichMLImageReference.name;
             imageDigest = immichMLImageReference.digest;
             finalImageTag = immichMLImageReference.tag;
-            sha256 = "sha256-t3W9+/haoMDF7sfeq3gYNELsO2Ei8Rk7gGkwtX7C3dg=";
+            sha256 = "sha256-b6/F5B+IayccVFFAN0RcsOSSSyX0//o0bbrLgui39ec=";
           };
 
           immichRedisRawImageReference = "docker.io/valkey/valkey:8-bookworm@sha256:fec42f399876eb6faf9e008570597741c87ff7662a54185593e74b09ce83d177";
