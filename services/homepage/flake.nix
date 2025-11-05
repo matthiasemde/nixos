@@ -23,13 +23,13 @@
             cp -r ${./config}/* $out/app/config
           '';
 
-          homepageRawImageReference = "ghcr.io/gethomepage/homepage:v1.6.0@sha256:4ab33a0b91f382c07c6734c6102b16594e8d386347f0704460172fcd16f11443";
+          homepageRawImageReference = "ghcr.io/gethomepage/homepage:v1.6.1@sha256:8c7ec6a3c9094af7ac0686aa361fed3129264a8ed2c17594d5114a5e8342f7c9";
           homepageImageReference = parseDockerImageReference homepageRawImageReference;
           homepageImage = pkgs.dockerTools.pullImage {
             imageName = homepageImageReference.name;
             imageDigest = homepageImageReference.digest;
             finalImageTag = homepageImageReference.tag;
-            sha256 = "sha256-gn7l+6c+QZpg7UO4+hu3U3a+8ZNSHiR9XBw43xswj8s=";
+            sha256 = "sha256-axQl9isVzPgzHmwK2J88QxYa7bVavivPe1ut3HaTbak=";
           };
 
           # Build custom docker image with baked-in config
