@@ -29,13 +29,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          synapseRawImageReference = "matrixdotorg/synapse:v1.141.0@sha256:562adbfc3df12d1024c7277b9807086ed79d8d5fabe24187a31d787af050a6a4";
+          synapseRawImageReference = "matrixdotorg/synapse:v1.142.0@sha256:f33543130e015d85c27a6d736e2ae013a845954203f4b0163c5f170123f2b3b1";
           synapseImageReference = parseDockerImageReference synapseRawImageReference;
           synapseImage = pkgs.dockerTools.pullImage {
             imageName = synapseImageReference.name;
             imageDigest = synapseImageReference.digest;
             finalImageTag = synapseImageReference.tag;
-            sha256 = "sha256-s9j8C1iTj6MXpDICk2Ab3fatAeLWQTbo0AA2fACFXPA=";
+            sha256 = "sha256-EWhnTwkomuQeV65PbAd+a/c3cYiw0DJtGK4pQ+MBQbs=";
           };
 
           postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
