@@ -24,13 +24,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          mealieRawImageReference = "ghcr.io/mealie-recipes/mealie:v3.4.0@sha256:0e1135bf0e6eeec8ad7d449bdbfcb7416e80c8cdd17ee15f95d57e61301b0f62";
+          mealieRawImageReference = "ghcr.io/mealie-recipes/mealie:v3.5.0@sha256:865160f14ed8c36093dbd86c7e0d1cc69dd1a184cfc6631cdf2d4cdf1d00ba29";
           mealieImageReference = parseDockerImageReference mealieRawImageReference;
           mealieImage = pkgs.dockerTools.pullImage {
             imageName = mealieImageReference.name;
             imageDigest = mealieImageReference.digest;
             finalImageTag = mealieImageReference.tag;
-            sha256 = "sha256-FwzCw9/Vltos4xMm1pfHOtZaWEOMf9kxAvmZM8h5jLs=";
+            sha256 = "sha256-VnDE9bfV5yrim+rRYYWIod8r+xmaVHNQ7N9Yqawqzbs=";
           };
 
           postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
