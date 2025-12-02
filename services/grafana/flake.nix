@@ -33,13 +33,13 @@
           };
 
           # Prometheus
-          prometheusRawImageReference = "prom/prometheus:v3.7.3@sha256:49214755b6153f90a597adcbff0252cc61069f8ab69ce8411285cd4a560e8038";
+          prometheusRawImageReference = "prom/prometheus:v3.8.0@sha256:d936808bdea528155c0154a922cd42fd75716b8bb7ba302641350f9f3eaeba09";
           prometheusImageReference = parseDockerImageReference prometheusRawImageReference;
           prometheusImage = pkgs.dockerTools.pullImage {
             imageName = prometheusImageReference.name;
             imageDigest = prometheusImageReference.digest;
             finalImageTag = prometheusImageReference.tag;
-            sha256 = "sha256-iJ52BpBqSBrbZDy1hHNF/4nmFtd3Zi3Ez2VxB4AehIk=";
+            sha256 = "sha256-+SB+UtWbgnJzC7Fcj1y86u0LjnFw9W7Yz7w43dfjvSw=";
           };
         in
         {
