@@ -5,11 +5,6 @@
     { self, nixpkgs }:
     {
       name = "uptime-kuma";
-      dependencies = {
-        networks = {
-          "monitoring" = "";
-        };
-      };
       containers =
         {
           hostname,
@@ -37,6 +32,7 @@
             networks = [
               "traefik"
             ];
+            extraOptions = [ "--dns=1.1.1.1" ];
             volumes = [
               "/data/services/uptime-kuma:/app/data"
             ];
