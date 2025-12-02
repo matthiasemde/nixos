@@ -16,13 +16,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          kopiaRawImageReference = "kopia/kopia:0.22.2@sha256:883b0f357cafbf2d9ea828a1336951fa8998cf6b63ea55fdf57b1f22447e7f47";
+          kopiaRawImageReference = "kopia/kopia:0.22.3@sha256:4dcc208c1b191770bf4d0854f8deec06b4a16b35be4b63abdcfa9755cee7960e";
           kopiaImageReference = parseDockerImageReference kopiaRawImageReference;
           kopiaImage = pkgs.dockerTools.pullImage {
             imageName = kopiaImageReference.name;
             imageDigest = kopiaImageReference.digest;
             finalImageTag = kopiaImageReference.tag;
-            sha256 = "sha256-8UYcXl/q4xtsjLG/xXaGlIHbJB9Stc9t6utXesKt7jk=";
+            sha256 = "sha256-3n872YeNFZWoFZ2Pw8jDnHQawTju2NtlBMmlcvF6eJM=";
           };
         in
         {
