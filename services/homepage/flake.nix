@@ -59,7 +59,6 @@
             ];
             networks = [
               "traefik"
-              "glances"
             ];
             environment = {
               HOMEPAGE_ALLOWED_HOSTS = "*";

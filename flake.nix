@@ -13,7 +13,6 @@
     ## Virtualization / Services
     virtualization.url = "path:./virtualization";
     homepage.url = "path:./services/homepage";
-    glances.url = "path:./services/glances";
     traefik.url = "path:./services/traefik";
     frp.url = "path:./services/frp";
     adguard.url = "path:./services/adguard";
@@ -41,7 +40,6 @@
       vscode-server,
       virtualization,
       homepage,
-      glances,
       traefik,
       frp,
       adguard,
@@ -88,7 +86,6 @@
           domain = "emdecloud.de";
           services = [
             homepage
-            glances
             traefik
             frp
             adguard

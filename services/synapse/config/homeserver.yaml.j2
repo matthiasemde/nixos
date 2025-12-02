@@ -20,6 +20,11 @@ listeners:
       - names: [client, federation]
         compress: false
 
+  # Prometheus metrics
+  - port: 9000
+    type: metrics
+    bind_addresses: ['0.0.0.0']
+
 # Database configuration
 database:
   name: psycopg2

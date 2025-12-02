@@ -58,8 +58,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── FRP_TOKEN.env.age
 │   │       └── FRP_TOKEN.env.age.nix
-│   ├── glances
-│   │   └── flake.nix
 │   ├── grafana
 │   │   ├── config
 │   │   │   ├── datasources.yml
@@ -141,6 +139,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       └── smtp-credentials.env.age.nix
 │   ├── pterodactyl
 │   │   ├── flake.nix
+│   │   ├── README.md
 │   │   └── secrets
 │   │       ├── db_credentials.env.age
 │   │       ├── db_credentials.env.age.nix
@@ -212,7 +211,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-54 directories, 154 files
+53 directories, 154 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

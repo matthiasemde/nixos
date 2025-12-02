@@ -3,10 +3,14 @@
 
   outputs =
     { self, nixpkgs }:
+    let
+      backendNetwork = "grafana-backend";
+    in
     {
       name = "grafana";
       dependencies = {
         networks = {
+          ${backendNetwork} = "";
           "monitoring" = "";
         };
       };
@@ -47,8 +51,9 @@
             image = grafanaImageReference.name + ":" + grafanaImageReference.tag;
             imageFile = grafanaImage;
             networks = [
-              "monitoring"
+              backendNetwork
               "traefik"
+              "monitoring"
             ];
             environmentFiles = getServiceEnvFiles "grafana";
             volumes = [
@@ -101,6 +106,7 @@
             image = prometheusImageReference.name + ":" + prometheusImageReference.tag;
             imageFile = prometheusImage;
             networks = [
+              backendNetwork
               "monitoring"
               "traefik"
             ];

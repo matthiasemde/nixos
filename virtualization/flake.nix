@@ -168,6 +168,11 @@
           # Register activation scripts for file and networks
           system.activationScripts = lib.listToAttrs (fileScripts ++ networkScripts);
 
+          # Configure the docker daemon to expose metrics on port 9323
+          virtualisation.docker.daemon.settings = {
+            metrics-addr = "0.0.0.0:9323";
+          };
+
           # Declare all containers under oci-containers
           virtualisation.oci-containers = {
             backend = "docker";

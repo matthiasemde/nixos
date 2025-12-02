@@ -125,12 +125,12 @@
       "loadavg"
       "meminfo"
       "netdev"
-      "stat"
-      "time"
-      "vmstat"
-      "logind"
-      "interrupts"
-      "ksmd"
+      # "stat"
+      # "time"
+      # "vmstat"
+      # "logind"
+      # "interrupts"
+      # "ksmd"
     ];
   };
 
@@ -138,9 +138,10 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 
+      allowedTCPPorts = [
         53    # Allow TCP DNS
         9100  # Prometheus Node Exporter
+        9323  # Prometheus Docker metrics
       ];
       allowedUDPPorts = [ 53 ]; # Allow UDP DNS
     };

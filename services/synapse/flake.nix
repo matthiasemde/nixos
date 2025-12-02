@@ -256,6 +256,7 @@
               backendNetwork
               authBackendNetwork
               matrixRtcNetwork
+              "monitoring"
             ];
             labels =
               (mkTraefikLabels {
