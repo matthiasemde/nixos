@@ -21,13 +21,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          homeAssistantRawImageReference = "ghcr.io/home-assistant/home-assistant:2025.11@sha256:8949aa75a417c0a71208255c999bfb3eea3e909ff2eab4ac4ca26a2cbd886f05";
+          homeAssistantRawImageReference = "ghcr.io/home-assistant/home-assistant:2025.12@sha256:8951fcbb794da8f261e1639c668639bc90f9520b48099b5715f6d5fbfef08a0e";
           homeAssistantImageReference = parseDockerImageReference homeAssistantRawImageReference;
           homeAssistantImage = pkgs.dockerTools.pullImage {
             imageName = homeAssistantImageReference.name;
             imageDigest = homeAssistantImageReference.digest;
             finalImageTag = homeAssistantImageReference.tag;
-            sha256 = "sha256-uLNifB38XV7lli63zEnuenFXh/n6NJNc3vgA49h9Njo=";
+            sha256 = "sha256-TntB8xv+2S+a7WOWo95AhQPpyPDDH6BJy9iXmuVfPhA=";
           };
         in
         {
