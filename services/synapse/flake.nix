@@ -138,13 +138,13 @@
           };
 
           # Element Call JWT Service for MatrixRTC auth
-          elementCallJwtRawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.3.0@sha256:52357326970d3f3e3cf6e9c33766e49cf2665e2cd57842e29a5c298514bd2e58";
+          elementCallJwtRawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.4.0@sha256:aba31cef052cedbf263f5e642dfb49476f779b46d0244d5b9337022033c4b66d";
           elementCallJwtImageReference = parseDockerImageReference elementCallJwtRawImageReference;
           elementCallJwtImage = pkgs.dockerTools.pullImage {
             imageName = elementCallJwtImageReference.name;
             imageDigest = elementCallJwtImageReference.digest;
             finalImageTag = elementCallJwtImageReference.tag;
-            sha256 = "sha256-7ebWodUNDJqZlen9vAW6kOJH2Zsz3eQ53hQpfn7c8iw=";
+            sha256 = "sha256-9TWz4VTuIno5UkYjQ7EI6X8XcTKhQc+1RLvXHyxp82g=";
           };
         in
         {
