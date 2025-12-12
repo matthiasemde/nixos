@@ -1,4 +1,4 @@
-FROM nextcloud:32.0.2-apache@sha256:ac08482d73ffd85d94069ba291bbd5fb39a70ff21502030a2e3e2d89a7246a48
+FROM nextcloud:32.0.3-apache@sha256:54993ed39dc77f7a6ade142b1625972cb7a9393074325373402d47231314afbb
 
 # Fix a bug in the dockerfile where a deprecated functioni is called. Can be removed if the bug is fixed
 RUN sed -i 's/maintenance:install/app:install/g' /entrypoint.sh
