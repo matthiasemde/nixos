@@ -24,13 +24,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          paperlessRawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.1@sha256:98528e58787e48c73748608e8d4c03b1692c185e69fc237c00c44d3b4f68b335";
+          paperlessRawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.2@sha256:8cbd8ce3ef1857bd144026a7e7192d0889188352b5271631e42ff069ccceeb74";
           paperlessImageReference = parseDockerImageReference paperlessRawImageReference;
           paperlessImage = pkgs.dockerTools.pullImage {
             imageName = paperlessImageReference.name;
             imageDigest = paperlessImageReference.digest;
             finalImageTag = paperlessImageReference.tag;
-            sha256 = "sha256-kL9cQyr+7HGkYOD38nruotoWMj7gkpzLs3fux3fW6Jc=";
+            sha256 = "sha256-bHZA+1phu/rgZ0crcbSU30rAH2Q2pl1lxxZ3WRCIzP0=";
           };
 
           redisRawImageReference = "docker.io/library/redis:8@sha256:b83648c7ab6752e1f52b88ddf5dabc11987132336210d26758f533fb01325865";
