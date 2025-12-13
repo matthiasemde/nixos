@@ -21,13 +21,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          navidromeRawImageReference = "deluan/navidrome:0.58.0@sha256:7bad89fbf2a0a311989b932090cd0d87fc239b03b5d16b1cbad975a79b275271";
+          navidromeRawImageReference = "deluan/navidrome:0.59.0@sha256:4edc8a1de3e042f30b78a478325839f4395177eb8201c27543dccc0eba674f23";
           navidromeImageReference = parseDockerImageReference navidromeRawImageReference;
           navidromeImage = pkgs.dockerTools.pullImage {
             imageName = navidromeImageReference.name;
             imageDigest = navidromeImageReference.digest;
             finalImageTag = navidromeImageReference.tag;
-            sha256 = "sha256-gqHFoDTkXsy6glM8kizYdd/OTKnNWrKSXYG7o93JR34=";
+            sha256 = "sha256-TxN/hanbf9TsQK/bjCLt49z+ewp34J26G4ZptYGL2QM=";
           };
         in
         {
