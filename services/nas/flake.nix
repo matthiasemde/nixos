@@ -27,7 +27,11 @@
             }
             {
               name = "paperless";
-              path = "/tmp/paperless-consumer";
+              path = "/data/nas/paperless-consumer";
+            }
+            {
+              name = "navidrome";
+              path = "/data/nas/navidrome";
             }
           ];
         in
@@ -45,6 +49,9 @@
             package = pkgs.samba;
             settings = {
               global = {
+                "follow symlinks" = "yes";
+                "wide links" = "yes";
+                "unix extensions" = "no";
                 security = "user";
                 "map to guest" = "Bad User";
               };

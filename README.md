@@ -120,6 +120,10 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── fileshare-pw.age
 │   │       └── fileshare-pw.age.nix
+│   ├── navidrome
+│   │   ├── flake.nix
+│   │   ├── music-sync.sh
+│   │   └── README.md
 │   ├── nextcloud
 │   │   ├── Dockerfile
 │   │   ├── flake.nix
@@ -211,7 +215,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-53 directories, 154 files
+54 directories, 155 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

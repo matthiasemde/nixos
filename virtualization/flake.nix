@@ -25,6 +25,7 @@
               isPublic ? true,
               allowedPaths ? null,
               corsAllowPost ? false,
+              useForwardAuth ? false,
             }:
             let
               subdomain = if specialSubdomain != null then specialSubdomain else name;
@@ -73,8 +74,14 @@
                         { "traefik.http.routers.${name}-public.middlewares" = "cors-allow-post@file"; }
                       else
                         { };
+                    forwardAuthMiddleware =
+                      if useForwardAuth then
+                        { "traefik.http.routers.${name}-public.middlewares" = "authentik-forward-auth@file"; }
+                      else
+                        { };
                   in
                   corsMiddleware
+                  // forwardAuthMiddleware
                   // {
                     # --- Public HTTPS router ---
                     "traefik.http.routers.${name}-public.entrypoints" = "websecure";
@@ -140,6 +147,7 @@
             {
               files = (acc.files or { }) // (deps.files or { });
               networks = (acc.networks or { }) // (deps.networks or { });
+              systemServices = (acc.systemServices or { }) // (deps.systemServices or { });
             }
           ) { } services;
 
@@ -163,10 +171,30 @@
               ${pkgs.docker}/bin/docker network create ${opts} ${networkName}
             '';
           }) mergedDependencies.networks;
+
+          # Build a list of Docker-network-creation attributes
+          systemServices = lib.mapAttrsToList (serviceName: script: {
+            name = serviceName;
+            value = {
+              wantedBy = [ "multi-user.target" ];
+              after = [ "network.target" ];
+
+              serviceConfig = {
+                Type = "simple";
+                Restart = "on-failure";
+                RestartSec = "30s";
+              };
+
+              script = script;
+            };
+          }) mergedDependencies.systemServices;
         in
         {
           # Register activation scripts for file and networks
           system.activationScripts = lib.listToAttrs (fileScripts ++ networkScripts);
+
+          # Register system services
+          systemd.services = lib.listToAttrs (systemServices);
 
           # Configure the docker daemon to expose metrics on port 9323
           virtualisation.docker.daemon.settings = {

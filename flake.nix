@@ -31,6 +31,7 @@
     uptime-kuma.url = "path:./services/uptime-kuma";
     grafana.url = "path:./services/grafana";
     synapse.url = "path:./services/synapse";
+    navidrome.url = "path:./services/navidrome";
   };
 
   outputs =
@@ -60,6 +61,7 @@
       uptime-kuma,
       grafana,
       synapse,
+      navidrome,
       ...
     }:
     {
@@ -104,6 +106,7 @@
             uptime-kuma
             grafana
             synapse
+            navidrome
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
