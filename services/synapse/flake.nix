@@ -56,13 +56,13 @@
             sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
           };
 
-          matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.7.0@sha256:83c5da4bd06772b4b98b18b7702485aefc26f1ce4787110687f1358a4291c7a3";
+          matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.8.0@sha256:b06aa8e1c89094819a4849729b39932a735bdfd5039b38ffe4022f88176efb4d";
           matrixAuthImageReference = parseDockerImageReference matrixAuthRawImageReference;
           matrixAuthImage = pkgs.dockerTools.pullImage {
             imageName = matrixAuthImageReference.name;
             imageDigest = matrixAuthImageReference.digest;
             finalImageTag = matrixAuthImageReference.tag;
-            sha256 = "sha256-lI1ThAFuosX54IVBK/uB0NhKUBoTjhP2I+Vdo8l9u6U=";
+            sha256 = "sha256-OFkw4TxenN53qu6+rcdDycjsLaRyxoY9Y5FcZEm88RM=";
           };
 
           # Build custom docker image with shell + python + jinja
