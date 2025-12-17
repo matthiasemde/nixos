@@ -38,13 +38,13 @@
         let
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-          authentikRawImageReference = "ghcr.io/goauthentik/server:2025.10.2@sha256:8322e449feefcc2416f0401038d5a1a28552c4403b079a59d3b4d978d8f3f530";
+          authentikRawImageReference = "ghcr.io/goauthentik/server:2025.10.3@sha256:d2b66e851246e7299219b72a4ed43630a2c2bac3745eb665834b72963d836e64";
           authentikImageReference = parseDockerImageReference authentikRawImageReference;
           authentikImage = pkgs.dockerTools.pullImage {
             imageName = authentikImageReference.name;
             imageDigest = authentikImageReference.digest;
             finalImageTag = authentikImageReference.tag;
-            sha256 = "sha256-M35SfbuUxbGiWGZQRsRZtF9hIZgufdQhBpk0xX9NyrY=";
+            sha256 = "sha256-J+p1ll1adunZWM2RSk4riD9+cpkNB3cDb5r++eVeswM=";
           };
 
           postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
