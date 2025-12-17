@@ -27,13 +27,13 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           # Grafana
-          grafanaRawImageReference = "grafana/grafana:12.3.0@sha256:e68a7df1a54586485a83d826740b36964df54b3a2a87c114b6d6989a24a7dd39";
+          grafanaRawImageReference = "grafana/grafana:12.3.1@sha256:adaf2d6b44c7e2b711b931b98be153778d313806582a24eab21178804fac2976";
           grafanaImageReference = parseDockerImageReference grafanaRawImageReference;
           grafanaImage = pkgs.dockerTools.pullImage {
             imageName = grafanaImageReference.name;
             imageDigest = grafanaImageReference.digest;
             finalImageTag = grafanaImageReference.tag;
-            sha256 = "sha256-uv2yeV6wv0jXETt524HbeWvPJTkxmezP6EBECd8FR0Q=";
+            sha256 = "sha256-d9VJVVf3wsC4RSqjJxu9e6xJ72EVI0Iis0DqaypsDTc=";
           };
 
           # Prometheus
