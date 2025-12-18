@@ -110,13 +110,13 @@
           };
 
           # LiveKit SFU for Element Call MatrixRTC
-          livekitRawImageReference = "livekit/livekit-server:v1.9.8@sha256:ae6f913f12677b95898b1c9e3ff0e3c8ca2655c662c045dea706007fe19bcf9e";
+          livekitRawImageReference = "livekit/livekit-server:v1.9.9@sha256:d8b1107d9234af8c84f5f219e02401fc176023a3564dab1550c6d14befa596de";
           livekitImageReference = parseDockerImageReference livekitRawImageReference;
           livekitImage = pkgs.dockerTools.pullImage {
             imageName = livekitImageReference.name;
             imageDigest = livekitImageReference.digest;
             finalImageTag = livekitImageReference.tag;
-            sha256 = "sha256-exiv4jSE1dOYfqCHnldCs/jks5pN/xUAPJ8CDhC3UOU=";
+            sha256 = "sha256-I3zZvUOvkVzzXQk5aDI51xbg30as/OJXzEOtTsNMtP0=";
           };
 
           livekitImageDerived = pkgs.dockerTools.buildImage {
