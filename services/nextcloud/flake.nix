@@ -45,7 +45,7 @@
         in
         {
           nextcloud-app = {
-            image = "nextcloud-derived:v32.0.0";
+            image = "nextcloud-derived:v32.0.3-r0";
             volumes = [
               "/data/services/nextcloud/app/config:/var/www/html/config"
               "/data/services/nextcloud/app/data:/var/www/html/data"

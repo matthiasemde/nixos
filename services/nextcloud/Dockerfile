@@ -1,8 +1,5 @@
 FROM nextcloud:32.0.3-apache@sha256:54993ed39dc77f7a6ade142b1625972cb7a9393074325373402d47231314afbb
 
-# Fix a bug in the dockerfile where a deprecated functioni is called. Can be removed if the bug is fixed
-RUN sed -i 's/maintenance:install/app:install/g' /entrypoint.sh
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         smbclient libsmbclient-dev supervisor && \
@@ -14,7 +11,8 @@ RUN mkdir /var/log/supervisord /var/run/supervisord
 
 # Add cron job to scan files every five minutes
 # The file www-data is already part of the image and registered with busybox crontab
-RUN echo '*/5 * * * * php -f /var/www/html/occ files:scan --path="admin/files/NAS (Files)"' >> /var/spool/cron/crontabs/www-data
+RUN echo '*/5 * * * * php -f /var/www/html/occ files:scan --path="matthiasemde/files/NAS (Files)"' >> /var/spool/cron/crontabs/www-data
+RUN echo '*/5 * * * * php -f /var/www/html/occ files:scan --path="matthiasemde/files/NAS (Navidrome)"' >> /var/spool/cron/crontabs/www-data
 RUN echo '*/5 * * * * php -f /var/www/html/occ files:scan --path="matthiasemde/files/NAS (Home)"' >> /var/spool/cron/crontabs/www-data
 RUN echo '*/5 * * * * php -f /var/www/html/occ files:scan --path="theresaemde/files/NAS (Home)"' >> /var/spool/cron/crontabs/www-data
 
