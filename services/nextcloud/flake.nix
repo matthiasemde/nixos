@@ -19,30 +19,8 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          postgresRawImageReference = "postgres:17@sha256:ae3afa4af0906431de8856bf80a8bcf8a9ea6b3609f9e025f927b949ac93467d";
-          postgresImageReference = parseDockerImageReference postgresRawImageReference;
-          postgresImage = pkgs.dockerTools.pullImage {
-            imageName = postgresImageReference.name;
-            imageDigest = postgresImageReference.digest;
-            finalImageTag = postgresImageReference.tag;
-            sha256 = "sha256-2Nqz+MGNn5nzCYCYETWv8JBN2odoq+RuvJ2LGnWT5d8=";
-          };
-
-          redisRawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
-          redisImageReference = parseDockerImageReference redisRawImageReference;
-          redisImage = pkgs.dockerTools.pullImage {
-            imageName = redisImageReference.name;
-            imageDigest = redisImageReference.digest;
-            finalImageTag = redisImageReference.tag;
-            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
-          };
-        in
         {
           nextcloud-app = {
             image = "nextcloud-derived:v32.0.3-r0";
@@ -93,8 +71,8 @@
           };
 
           nextcloud-database = {
-            image = postgresImageReference.name + ":" + postgresImageReference.tag;
-            imageFile = postgresImage;
+            rawImageReference = "postgres:17@sha256:ae3afa4af0906431de8856bf80a8bcf8a9ea6b3609f9e025f927b949ac93467d";
+            nixSha256 = "sha256-2Nqz+MGNn5nzCYCYETWv8JBN2odoq+RuvJ2LGnWT5d8=";
             volumes = [ "/data/services/nextcloud/database:/var/lib/postgresql/data" ];
             networks = [ backendNetwork ];
             environment = {
@@ -110,8 +88,8 @@
           };
 
           nextcloud-redis = {
-            image = redisImageReference.name + ":" + redisImageReference.tag;
-            imageFile = redisImage;
+            rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
+            nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
             networks = [ backendNetwork ];
             labels = {
               # 🛡️ Traefik (disabled)

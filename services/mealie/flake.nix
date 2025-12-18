@@ -18,34 +18,12 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          mealieRawImageReference = "ghcr.io/mealie-recipes/mealie:v3.7.0@sha256:f078ccf1f5150a6d45a785c03704b48ef19c298bd260773dc4c9ce61d0c4562f";
-          mealieImageReference = parseDockerImageReference mealieRawImageReference;
-          mealieImage = pkgs.dockerTools.pullImage {
-            imageName = mealieImageReference.name;
-            imageDigest = mealieImageReference.digest;
-            finalImageTag = mealieImageReference.tag;
-            sha256 = "sha256-qS3QkhOvkmtzDdZgDEDj8SC6D5GRkjPqX6kq3MUvmhk=";
-          };
-
-          postgresRawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
-          postgresImageReference = parseDockerImageReference postgresRawImageReference;
-          postgresImage = pkgs.dockerTools.pullImage {
-            imageName = postgresImageReference.name;
-            imageDigest = postgresImageReference.digest;
-            finalImageTag = postgresImageReference.tag;
-            sha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
-          };
-        in
         {
           mealie-app = {
-            image = mealieImageReference.name + ":" + mealieImageReference.tag;
-            imageFile = mealieImage;
+            rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.7.0@sha256:f078ccf1f5150a6d45a785c03704b48ef19c298bd260773dc4c9ce61d0c4562f";
+            nixSha256 = "sha256-qS3QkhOvkmtzDdZgDEDj8SC6D5GRkjPqX6kq3MUvmhk=";
             environment = {
               # Base URL
               "BASE_URL" = "https://mealie.${domain}";
@@ -120,8 +98,8 @@
           };
 
           mealie-database = {
-            image = postgresImageReference.name + ":" + postgresImageReference.tag;
-            imageFile = postgresImage;
+            rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
+            nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
             volumes = [ "/data/services/mealie/database:/var/lib/postgresql/18/docker" ];
             networks = [ backendNetwork ];
             environment = {

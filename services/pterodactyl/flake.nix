@@ -19,51 +19,12 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
         let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          pterodactylPanelRawImageReference = "ccarney16/pterodactyl-panel:v1.11.11@sha256:9bcf170fb6dfd40665e825cb37bc1532e9ab4828868a5e9af3c08ac7f8a4840d";
-          pterodactylPanelImageReference = parseDockerImageReference pterodactylPanelRawImageReference;
-          pterodactylPanelImage = pkgs.dockerTools.pullImage {
-            imageName = pterodactylPanelImageReference.name;
-            imageDigest = pterodactylPanelImageReference.digest;
-            finalImageTag = pterodactylPanelImageReference.tag;
-            sha256 = "sha256-7H5ybzd6RzlPsxFZKUp1bmiLfG9Q6we021FW5nQCPk4=";
-          };
-
-          pterodactylDaemonRawImageReference = "ccarney16/pterodactyl-daemon:v1.11.13@sha256:e0d870157253f9919831372abd687e86b2fce4204fad2957dea38e976692197d";
-          pterodactylDaemonImageReference = parseDockerImageReference pterodactylDaemonRawImageReference;
-          pterodactylDaemonImage = pkgs.dockerTools.pullImage {
-            imageName = pterodactylDaemonImageReference.name;
-            imageDigest = pterodactylDaemonImageReference.digest;
-            finalImageTag = pterodactylDaemonImageReference.tag;
-            sha256 = "sha256-qIHlP9PHfO4aHgP+JyFm9mIxdT1pAM8Ep1XtyaDz+oU=";
-          };
-
-          mariadbRawImageReference = "mariadb:12.1.2@sha256:e1bcd6f85781f4a875abefb11c4166c1d79e4237c23de597bf0df81fec225b40";
-          mariadbImageReference = parseDockerImageReference mariadbRawImageReference;
-          mariadbImage = pkgs.dockerTools.pullImage {
-            imageName = mariadbImageReference.name;
-            imageDigest = mariadbImageReference.digest;
-            finalImageTag = mariadbImageReference.tag;
-            sha256 = "sha256-xQtplkcgVSbJWWYESB4U4JTepdYShbL/ShcQd0TkrvQ=";
-          };
-
-          redisRawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
-          redisImageReference = parseDockerImageReference redisRawImageReference;
-          redisImage = pkgs.dockerTools.pullImage {
-            imageName = redisImageReference.name;
-            imageDigest = redisImageReference.digest;
-            finalImageTag = redisImageReference.tag;
-            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
-          };
-
           panelBaseConfig = {
-            image = pterodactylPanelImageReference.name + ":" + pterodactylPanelImageReference.tag;
-            imageFile = pterodactylPanelImage;
+            rawImageReference = "ccarney16/pterodactyl-panel:v1.11.11@sha256:9bcf170fb6dfd40665e825cb37bc1532e9ab4828868a5e9af3c08ac7f8a4840d";
+            nixSha256 = "sha256-7H5ybzd6RzlPsxFZKUp1bmiLfG9Q6we021FW5nQCPk4=";
             volumes = [
               "/data/services/pterodactyl/panel:/data:z"
             ];
@@ -131,8 +92,8 @@
           # Database
           # ---------------------------
           pterodactyl-database = {
-            image = mariadbImageReference.name + ":" + mariadbImageReference.tag;
-            imageFile = mariadbImage;
+            rawImageReference = "mariadb:12.1.2@sha256:e1bcd6f85781f4a875abefb11c4166c1d79e4237c23de597bf0df81fec225b40";
+            nixSha256 = "sha256-xQtplkcgVSbJWWYESB4U4JTepdYShbL/ShcQd0TkrvQ=";
             volumes = [
               "/data/services/pterodactyl/database:/var/lib/mysql:z"
             ];
@@ -158,8 +119,8 @@
           # Redis
           # ---------------------------
           pterodactyl-redis = {
-            image = redisImageReference.name + ":" + redisImageReference.tag;
-            imageFile = redisImage;
+            rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
+            nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
             networks = [ backendNetwork ];
             labels = {
               # 🛡️ Traefik (disabled)
@@ -171,8 +132,8 @@
           # Wings
           # ---------------------------
           pterodactyl-daemon = {
-            image = pterodactylDaemonImageReference.name + ":" + pterodactylDaemonImageReference.tag;
-            imageFile = pterodactylDaemonImage;
+            rawImageReference = "ccarney16/pterodactyl-daemon:v1.11.13@sha256:e0d870157253f9919831372abd687e86b2fce4204fad2957dea38e976692197d";
+            nixSha256 = "sha256-qIHlP9PHfO4aHgP+JyFm9mIxdT1pAM8Ep1XtyaDz+oU=";
             # privileged = true;
             networks = [
               backendNetwork

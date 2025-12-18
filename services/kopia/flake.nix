@@ -10,25 +10,12 @@
           hostname,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          kopiaRawImageReference = "kopia/kopia:0.22.3@sha256:4dcc208c1b191770bf4d0854f8deec06b4a16b35be4b63abdcfa9755cee7960e";
-          kopiaImageReference = parseDockerImageReference kopiaRawImageReference;
-          kopiaImage = pkgs.dockerTools.pullImage {
-            imageName = kopiaImageReference.name;
-            imageDigest = kopiaImageReference.digest;
-            finalImageTag = kopiaImageReference.tag;
-            sha256 = "sha256-3n872YeNFZWoFZ2Pw8jDnHQawTju2NtlBMmlcvF6eJM=";
-          };
-        in
         {
           kopia = {
-            image = kopiaImageReference.name + ":" + kopiaImageReference.tag;
-            imageFile = kopiaImage;
+            rawImageReference = "kopia/kopia:0.22.3@sha256:4dcc208c1b191770bf4d0854f8deec06b4a16b35be4b63abdcfa9755cee7960e";
+            nixSha256 = "sha256-3n872YeNFZWoFZ2Pw8jDnHQawTju2NtlBMmlcvF6eJM=";
             networks = [
               "traefik"
             ];

@@ -15,25 +15,12 @@
         {
           domain,
           mkTraefikLabels,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          homeAssistantRawImageReference = "ghcr.io/home-assistant/home-assistant:2025.12@sha256:8951fcbb794da8f261e1639c668639bc90f9520b48099b5715f6d5fbfef08a0e";
-          homeAssistantImageReference = parseDockerImageReference homeAssistantRawImageReference;
-          homeAssistantImage = pkgs.dockerTools.pullImage {
-            imageName = homeAssistantImageReference.name;
-            imageDigest = homeAssistantImageReference.digest;
-            finalImageTag = homeAssistantImageReference.tag;
-            sha256 = "sha256-TntB8xv+2S+a7WOWo95AhQPpyPDDH6BJy9iXmuVfPhA=";
-          };
-        in
         {
           home-assistant = {
-            image = homeAssistantImageReference.name + ":" + homeAssistantImageReference.tag;
-            imageFile = homeAssistantImage;
+            rawImageReference = "ghcr.io/home-assistant/home-assistant:2025.12@sha256:8951fcbb794da8f261e1639c668639bc90f9520b48099b5715f6d5fbfef08a0e";
+            nixSha256 = "sha256-TntB8xv+2S+a7WOWo95AhQPpyPDDH6BJy9iXmuVfPhA=";
             volumes = [
               "/etc/logs/home-assistant.log:/config/home-assistant.log"
               "/etc/localtime:/etc/localtime:ro"

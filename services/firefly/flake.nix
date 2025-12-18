@@ -25,43 +25,12 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          fireflyRawImageReference = "fireflyiii/core:version-6.4.0@sha256:1938b4385ba33e647cc6c1de0234f858ac963229c0156e10f8d1f6b16de10efa";
-          fireflyImageReference = parseDockerImageReference fireflyRawImageReference;
-          fireflyImage = pkgs.dockerTools.pullImage {
-            imageName = fireflyImageReference.name;
-            imageDigest = fireflyImageReference.digest;
-            finalImageTag = fireflyImageReference.tag;
-            sha256 = "sha256-lbRGYi6OT3wVu5w2ylQQROxVj6S6SIW1IaV0oZHKjpk=";
-          };
-
-          fintsRawImageReference = "docker.io/benkl/firefly-iii-fints-importer:latest@sha256:c8abed41fdcd5f1f234ee1141c2f006c60b5e1865640fc1e45de738b4bbdef23";
-          fintsImageReference = parseDockerImageReference fintsRawImageReference;
-          fintsImage = pkgs.dockerTools.pullImage {
-            imageName = fintsImageReference.name;
-            imageDigest = fintsImageReference.digest;
-            finalImageTag = fintsImageReference.tag;
-            sha256 = "sha256-R/zqzFFGZwiSuzM17OFsdEYCLkJ0zC50pAuxVad6FSM=";
-          };
-
-          alpineRawImageReference = "alpine:3.23.2@sha256:c93cec902b6a0c6ef3b5ab7c65ea36beada05ec1205664a4131d9e8ea13e405d";
-          alpineImageReference = parseDockerImageReference alpineRawImageReference;
-          alpineImage = pkgs.dockerTools.pullImage {
-            imageName = alpineImageReference.name;
-            imageDigest = alpineImageReference.digest;
-            finalImageTag = alpineImageReference.tag;
-            sha256 = "sha256-OGF7lmDWGB6zg63bYyV1UDTWHCzTejvlZJw5w47CElY=";
-          };
-        in
         {
           ${appName} = {
-            image = fireflyImageReference.name + ":" + fireflyImageReference.tag;
-            imageFile = fireflyImage;
+            rawImageReference = "fireflyiii/core:version-6.4.0@sha256:1938b4385ba33e647cc6c1de0234f858ac963229c0156e10f8d1f6b16de10efa";
+            nixSha256 = "sha256-lbRGYi6OT3wVu5w2ylQQROxVj6S6SIW1IaV0oZHKjpk=";
             volumes = [
               "/data/services/firefly/app/upload:/var/www/html/storage/upload"
               "/data/services/firefly/app/database/database.sqlite:/var/www/html/storage/database/database.sqlite"
@@ -101,8 +70,8 @@
           };
 
           ${fintsName} = {
-            image = fintsImageReference.name + ":" + fintsImageReference.tag;
-            imageFile = fintsImage;
+            rawImageReference = "docker.io/benkl/firefly-iii-fints-importer:latest@sha256:c8abed41fdcd5f1f234ee1141c2f006c60b5e1865640fc1e45de738b4bbdef23";
+            nixSha256 = "sha256-R/zqzFFGZwiSuzM17OFsdEYCLkJ0zC50pAuxVad6FSM=";
             # ports = [ "8123:8080" ]; # you only need to enable this during configuration
             volumes = [
               "/run/agenix/firefly-gls.json:/data/configurations/gls.json"
@@ -118,8 +87,8 @@
           };
 
           ${cronName} = {
-            image = alpineImageReference.name + ":" + alpineImageReference.tag;
-            imageFile = alpineImage;
+            rawImageReference = "alpine:3.23.2@sha256:c93cec902b6a0c6ef3b5ab7c65ea36beada05ec1205664a4131d9e8ea13e405d";
+            nixSha256 = "sha256-OGF7lmDWGB6zg63bYyV1UDTWHCzTejvlZJw5w47CElY=";
             volumes = [ "/etc/localtime:/etc/localtime:ro" ];
             cmd = [
               "sh"

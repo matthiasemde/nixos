@@ -18,38 +18,14 @@
         {
           hostname,
           domain,
-          parseDockerImageReference,
           mkTraefikLabels,
           getServiceEnvFiles,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          # Grafana
-          grafanaRawImageReference = "grafana/grafana:12.3.1@sha256:adaf2d6b44c7e2b711b931b98be153778d313806582a24eab21178804fac2976";
-          grafanaImageReference = parseDockerImageReference grafanaRawImageReference;
-          grafanaImage = pkgs.dockerTools.pullImage {
-            imageName = grafanaImageReference.name;
-            imageDigest = grafanaImageReference.digest;
-            finalImageTag = grafanaImageReference.tag;
-            sha256 = "sha256-d9VJVVf3wsC4RSqjJxu9e6xJ72EVI0Iis0DqaypsDTc=";
-          };
-
-          # Prometheus
-          prometheusRawImageReference = "prom/prometheus:v3.8.1@sha256:2b6f734e372c1b4717008f7d0a0152316aedd4d13ae17ef1e3268dbfaf68041b";
-          prometheusImageReference = parseDockerImageReference prometheusRawImageReference;
-          prometheusImage = pkgs.dockerTools.pullImage {
-            imageName = prometheusImageReference.name;
-            imageDigest = prometheusImageReference.digest;
-            finalImageTag = prometheusImageReference.tag;
-            sha256 = "sha256-0Ub7lLnPKqXdUZ83okRou9epOsb5iZPMyMGz45ZMOaU=";
-          };
-        in
         {
           grafana = {
-            image = grafanaImageReference.name + ":" + grafanaImageReference.tag;
-            imageFile = grafanaImage;
+            rawImageReference = "grafana/grafana:12.3.1@sha256:adaf2d6b44c7e2b711b931b98be153778d313806582a24eab21178804fac2976";
+            nixSha256 = "sha256-d9VJVVf3wsC4RSqjJxu9e6xJ72EVI0Iis0DqaypsDTc=";
             networks = [
               backendNetwork
               "traefik"
@@ -103,8 +79,8 @@
           };
 
           prometheus = {
-            image = prometheusImageReference.name + ":" + prometheusImageReference.tag;
-            imageFile = prometheusImage;
+            rawImageReference = "prom/prometheus:v3.8.1@sha256:2b6f734e372c1b4717008f7d0a0152316aedd4d13ae17ef1e3268dbfaf68041b";
+            nixSha256 = "sha256-0Ub7lLnPKqXdUZ83okRou9epOsb5iZPMyMGz45ZMOaU=";
             networks = [
               backendNetwork
               "monitoring"

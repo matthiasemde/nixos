@@ -18,34 +18,12 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          paperlessRawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.3@sha256:57ad9565bff3bdf2378ab1dcc21ea649dfd68ee58e0eeca2bfba0120a26563e8";
-          paperlessImageReference = parseDockerImageReference paperlessRawImageReference;
-          paperlessImage = pkgs.dockerTools.pullImage {
-            imageName = paperlessImageReference.name;
-            imageDigest = paperlessImageReference.digest;
-            finalImageTag = paperlessImageReference.tag;
-            sha256 = "sha256-WyQPjoKuHZsCNen2bQgTmqShINhlzO1Y+aGbhK3nkLE=";
-          };
-
-          redisRawImageReference = "docker.io/library/redis:8@sha256:b83648c7ab6752e1f52b88ddf5dabc11987132336210d26758f533fb01325865";
-          redisImageReference = parseDockerImageReference redisRawImageReference;
-          redisImage = pkgs.dockerTools.pullImage {
-            imageName = redisImageReference.name;
-            imageDigest = redisImageReference.digest;
-            finalImageTag = redisImageReference.tag;
-            sha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
-          };
-        in
         {
           paperless-app = {
-            image = paperlessImageReference.name + ":" + paperlessImageReference.tag;
-            imageFile = paperlessImage;
+            rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.3@sha256:57ad9565bff3bdf2378ab1dcc21ea649dfd68ee58e0eeca2bfba0120a26563e8";
+            nixSha256 = "sha256-WyQPjoKuHZsCNen2bQgTmqShINhlzO1Y+aGbhK3nkLE=";
             environment = {
               "PAPERLESS_URL" = "https://paperless.${domain}";
               "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";
@@ -117,8 +95,8 @@
           };
 
           paperless-redis = {
-            image = redisImageReference.name + ":" + redisImageReference.tag;
-            imageFile = redisImage;
+            rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
+            nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
             volumes = [
               "/data/services/paperless/redis:/data"
             ];

@@ -119,6 +119,40 @@
               digest = digest;
             };
 
+          # Process container definitions and handle Docker image references
+          processContainers =
+            rawContainers:
+            lib.mapAttrs (
+              containerName: containerConfig:
+              let
+                # Check if this container uses rawImageReference
+                hasRawImage = builtins.hasAttr "rawImageReference" containerConfig;
+                hasNixSha = builtins.hasAttr "nixSha256" containerConfig;
+              in
+              if hasRawImage && hasNixSha then
+                let
+                  imageRef = parseDockerImageReference containerConfig.rawImageReference;
+                  imageFile = pkgs.dockerTools.pullImage {
+                    imageName = imageRef.name;
+                    imageDigest = imageRef.digest;
+                    finalImageTag = imageRef.tag;
+                    sha256 = containerConfig.nixSha256;
+                  };
+                  # Remove raw fields and add processed fields
+                  processedConfig = builtins.removeAttrs containerConfig [
+                    "rawImageReference"
+                    "nixSha256"
+                  ];
+                in
+                processedConfig
+                // {
+                  image = imageRef.name + ":" + imageRef.tag;
+                  imageFile = imageFile;
+                }
+              else
+                containerConfig
+            ) rawContainers;
+
           mergedContainers = lib.foldl' (
             acc: service:
             let
@@ -135,8 +169,9 @@
                   }
                 else
                   { };
+              processedContainers = processContainers maybeContainers;
             in
-            acc // maybeContainers
+            acc // processedContainers
           ) { } services;
 
           mergedDependencies = lib.foldl' (

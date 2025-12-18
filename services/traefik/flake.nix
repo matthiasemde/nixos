@@ -12,34 +12,12 @@
         {
           hostname,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          traefikRawImageReference = "traefik:v3.6.5@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd";
-          traefikImageReference = parseDockerImageReference traefikRawImageReference;
-          traefikImage = pkgs.dockerTools.pullImage {
-            imageName = traefikImageReference.name;
-            imageDigest = traefikImageReference.digest;
-            finalImageTag = traefikImageReference.tag;
-            sha256 = "sha256-GhB6MeOvLn94+YYWtkh7xB92nQPjzPgl3FEx7nPuWsc=";
-          };
-
-          nginxRawImageReference = "nginx:1.29.4-alpine@sha256:1e462d5b3fe0bc6647a9fbba5f47924b771254763e8a51b638842890967e477e";
-          nginxImageReference = parseDockerImageReference nginxRawImageReference;
-          nginxImage = pkgs.dockerTools.pullImage {
-            imageName = nginxImageReference.name;
-            imageDigest = nginxImageReference.digest;
-            finalImageTag = nginxImageReference.tag;
-            sha256 = "sha256-qgeS1JFHApzVUad0UvVF1pPuvdvg0o2+Q3g8GXu1By8=";
-          };
-        in
         {
           traefik = {
-            image = traefikImageReference.name + ":" + traefikImageReference.tag;
-            imageFile = traefikImage;
+            rawImageReference = "traefik:v3.6.5@sha256:2979bff651c98e70345dd886186a7a15ee3ce18b636af208d4ccbf2d56dbdddd";
+            nixSha256 = "sha256-GhB6MeOvLn94+YYWtkh7xB92nQPjzPgl3FEx7nPuWsc=";
             ports = [
               "80:80"
               "443:443"
@@ -69,8 +47,8 @@
           };
 
           error-pages = {
-            image = nginxImageReference.name + ":" + nginxImageReference.tag;
-            imageFile = nginxImage;
+            rawImageReference = "nginx:1.29.4-alpine@sha256:1e462d5b3fe0bc6647a9fbba5f47924b771254763e8a51b638842890967e477e";
+            nixSha256 = "sha256-qgeS1JFHApzVUad0UvVF1pPuvdvg0o2+Q3g8GXu1By8=";
             networks = [
               "traefik"
             ];

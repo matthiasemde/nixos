@@ -15,25 +15,12 @@
           domain,
           mkTraefikLabels,
           getServiceEnvFiles,
-          parseDockerImageReference,
           ...
         }:
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          navidromeRawImageReference = "deluan/navidrome:0.59.0@sha256:4edc8a1de3e042f30b78a478325839f4395177eb8201c27543dccc0eba674f23";
-          navidromeImageReference = parseDockerImageReference navidromeRawImageReference;
-          navidromeImage = pkgs.dockerTools.pullImage {
-            imageName = navidromeImageReference.name;
-            imageDigest = navidromeImageReference.digest;
-            finalImageTag = navidromeImageReference.tag;
-            sha256 = "sha256-TxN/hanbf9TsQK/bjCLt49z+ewp34J26G4ZptYGL2QM=";
-          };
-        in
         {
           navidrome = {
-            image = navidromeImageReference.name + ":" + navidromeImageReference.tag;
-            imageFile = navidromeImage;
+            rawImageReference = "deluan/navidrome:0.59.0@sha256:4edc8a1de3e042f30b78a478325839f4395177eb8201c27543dccc0eba674f23";
+            nixSha256 = "sha256-TxN/hanbf9TsQK/bjCLt49z+ewp34J26G4ZptYGL2QM=";
             environment = {
               ND_SCANSCHEDULE = "1h";
               ND_LOGLEVEL = "info";
