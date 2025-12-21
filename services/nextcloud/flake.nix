@@ -27,7 +27,7 @@
             volumes = [
               "/data/services/nextcloud/app/config:/var/www/html/config"
               "/data/services/nextcloud/app/data:/var/www/html/data"
-              "/data/services/nextcloud/app/apps:/var/www/html/apps"
+              "/data/services/nextcloud/app/custom_apps:/var/www/html/custom_apps"
             ];
             networks = [
               backendNetwork
