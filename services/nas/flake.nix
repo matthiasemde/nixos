@@ -33,6 +33,10 @@
               name = "navidrome";
               path = "/data/nas/navidrome";
             }
+            {
+              name = "audiobookshelf";
+              path = "/data/nas/audiobookshelf";
+            }
           ];
         in
         {

@@ -32,6 +32,7 @@
     grafana.url = "path:./services/grafana";
     synapse.url = "path:./services/synapse";
     navidrome.url = "path:./services/navidrome";
+    audiobookshelf.url = "path:./services/audiobookshelf";
   };
 
   outputs =
@@ -62,6 +63,7 @@
       grafana,
       synapse,
       navidrome,
+      audiobookshelf,
       ...
     }:
     {
@@ -107,6 +109,7 @@
             grafana
             synapse
             navidrome
+            audiobookshelf
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;

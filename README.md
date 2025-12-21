@@ -32,6 +32,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── config
 │   │   │   └── AdGuardHome.yaml
 │   │   └── flake.nix
+│   ├── audiobookshelf
+│   │   ├── flake.nix
+│   │   └── secrets
 │   ├── authentik
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -215,7 +218,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-54 directories, 155 files
+56 directories, 158 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
