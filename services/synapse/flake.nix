@@ -30,12 +30,13 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.8.0@sha256:b06aa8e1c89094819a4849729b39932a735bdfd5039b38ffe4022f88176efb4d";
+          matrixAuthNixSha256 = "sha256-OFkw4TxenN53qu6+rcdDycjsLaRyxoY9Y5FcZEm88RM=";
           matrixAuthImageReference = parseDockerImageReference matrixAuthRawImageReference;
           matrixAuthImage = pkgs.dockerTools.pullImage {
             imageName = matrixAuthImageReference.name;
             imageDigest = matrixAuthImageReference.digest;
             finalImageTag = matrixAuthImageReference.tag;
-            sha256 = "sha256-OFkw4TxenN53qu6+rcdDycjsLaRyxoY9Y5FcZEm88RM=";
+            sha256 = matrixAuthNixSha256;
           };
 
           # Build custom docker image with shell + python + jinja
@@ -66,12 +67,13 @@
 
           # LiveKit SFU for Element Call MatrixRTC
           livekitRawImageReference = "livekit/livekit-server:v1.9.9@sha256:d8b1107d9234af8c84f5f219e02401fc176023a3564dab1550c6d14befa596de";
+          livekitNixSha256 = "sha256-I3zZvUOvkVzzXQk5aDI51xbg30as/OJXzEOtTsNMtP0=";
           livekitImageReference = parseDockerImageReference livekitRawImageReference;
           livekitImage = pkgs.dockerTools.pullImage {
             imageName = livekitImageReference.name;
             imageDigest = livekitImageReference.digest;
             finalImageTag = livekitImageReference.tag;
-            sha256 = "sha256-I3zZvUOvkVzzXQk5aDI51xbg30as/OJXzEOtTsNMtP0=";
+            sha256 = livekitNixSha256;
           };
 
           livekitImageDerived = pkgs.dockerTools.buildImage {

@@ -115,10 +115,10 @@
         "/(^|/)flake\\.nix$/"
       ],
       "matchStrings": [
-        "RawImageReference\\s*=\\s*\"(?<depName>[a-zA-Z0-9._\\-/]+):(?<currentValue>[a-zA-Z0-9._-]+)@(?<currentDigest>sha256:[a-zA-Z0-9]+)\""
+        "awImageReference\\s*=\\s*\"(?<depName>[a-zA-Z0-9._\\-/]+):(?<currentValue>[a-zA-Z0-9._-]+)@(?<currentDigest>sha256:[a-zA-Z0-9]+)\""
       ],
       "datasourceTemplate": "docker",
-      "autoReplaceStringTemplate": "RawImageReference = \"{{{depName}}}:{{{newValue}}}@{{{newDigest}}}\""
+      "autoReplaceStringTemplate": "awImageReference = \"{{{depName}}}:{{{newValue}}}@{{{newDigest}}}\""
     }
   ]
 }

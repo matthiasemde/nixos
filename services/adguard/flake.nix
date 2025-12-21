@@ -28,12 +28,13 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           adguardRawImageReference = "adguard/adguardhome:v0.107.71@sha256:92929135ced2554aaf94706f766a98ad348f211df61b0704e2db7e8498cc00b7";
+          adguardNixSha256 = "sha256-rYuBsO4QCUNLpbTTMtuE4F6FYjTA56cjPthDTikEqNE=";
           adguardImageReference = parseDockerImageReference adguardRawImageReference;
           adguardImage = pkgs.dockerTools.pullImage {
             imageName = adguardImageReference.name;
             imageDigest = adguardImageReference.digest;
             finalImageTag = adguardImageReference.tag;
-            sha256 = "sha256-rYuBsO4QCUNLpbTTMtuE4F6FYjTA56cjPthDTikEqNE=";
+            sha256 = adguardNixSha256;
           };
 
           # Build custom docker image with baked-in config

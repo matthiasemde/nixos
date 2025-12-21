@@ -43,36 +43,40 @@ for flake in $modified_flakes; do
   temp_file=$(mktemp)
   cp "$flake" "$temp_file"
   
-  # Get the diff for this file to find which lines changed
-  # We're looking for changes to RawImageReference lines
-  changed_image_refs=$(git diff "origin/$BASE_BRANCH"...HEAD -- "$flake" | \
-    grep -E '^\+.*RawImageReference.*=.*".*@sha256:' | \
-    sed 's/^+//' || true)
+  # Get the diff for this file to find which image references changed
+  # Look for any lines with image:tag@sha256:digest pattern
+  changed_images=$(git diff "origin/$BASE_BRANCH"...HEAD -- "$flake" | \
+    grep -E '^\+.*"[^"]+@sha256:[^"]+"' | \
+    sed 's/^+//' | \
+    grep -oP '"[^"]+@sha256:[^"]+"' | \
+    tr -d '"' || true)
   
-  if [ -z "$changed_image_refs" ]; then
+  if [ -z "$changed_images" ]; then
     echo "No Docker image references were changed in $flake"
     rm "$temp_file"
     continue
   fi
   
-  # Extract all Docker image references from the file
-  # Pattern: rawImageReference = "image:tag@sha256:digest";
-  while IFS= read -r line; do
-    # Check if this specific line was changed in the PR
-    # by comparing against the changed_image_refs we found earlier
-    line_trimmed=$(echo "$line" | sed 's/^[[:space:]]*//')
+  echo "Changed images:"
+  echo "$changed_images"
+  echo ""
+  
+  # Collect all updates to apply at once
+  declare -A hash_updates
+  
+  # Find all image references in the file (pattern: "image:tag@sha256:digest")
+  # Use awk to get line numbers and image references
+  while IFS='|' read -r line_num image_ref; do
+    [ -z "$line_num" ] || [ -z "$image_ref" ] && continue
     
-    # Check if this image reference was actually changed in the diff
-    if ! echo "$changed_image_refs" | grep -qF "$line_trimmed"; then
-      # This image wasn't changed, skip it
+    # Check if this specific image was changed in the PR
+    if ! echo "$changed_images" | grep -qF "$image_ref"; then
       continue
     fi
     
     echo ""
-    echo -e "${YELLOW}Processing changed image reference${NC}"
-    
-    # Extract the full image reference
-    image_ref=$(echo "$line" | sed -E 's/.*"([^"]+)".*/\1/')
+    echo -e "${YELLOW}Processing image at line $line_num${NC}"
+    echo -e "${YELLOW}Image reference:${NC} $image_ref"
     
     # Parse image components
     # Format: registry/image:tag@sha256:digest
@@ -81,47 +85,48 @@ for flake in $modified_flakes; do
     image_tag=$(echo "$image_with_tag" | sed -E 's/.*:([^:]+)$/\1/')
     image_digest=$(echo "$image_ref" | sed -E 's/.*@(sha256:[a-f0-9]+).*/\1/')
     
-    echo ""
-    echo -e "${YELLOW}Image:${NC} $image_name"
+    echo -e "${YELLOW}Image name:${NC} $image_name"
     echo -e "${YELLOW}Tag:${NC} $image_tag"
     echo -e "${YELLOW}Digest:${NC} $image_digest"
     
-    # Use nix-prefetch-docker to get the correct SHA256 hash
-    echo -e "${YELLOW}Fetching Nix hash...${NC}"
-    
-    # Run nix-prefetch-docker and capture output
-    if ! nix_output=$(nix run nixpkgs#nix-prefetch-docker -- \
-      --image-name "$image_name" \
-      --image-digest "$image_digest" \
-      --final-image-tag "$image_tag" 2>&1); then
-      echo -e "${RED}Error: Failed to fetch hash for $image_name:$image_tag@$image_digest${NC}"
-      echo "$nix_output"
-      continue
+    # Check if we already fetched the hash for this image
+    cache_key="${image_name}:${image_tag}@${image_digest}"
+    if [ -n "${hash_updates[$cache_key]:-}" ]; then
+      nix_hash="${hash_updates[$cache_key]}"
+      echo -e "${GREEN}Using cached Nix hash:${NC} $nix_hash"
+    else
+      # Use nix-prefetch-docker to get the correct SHA256 hash
+      echo -e "${YELLOW}Fetching Nix hash...${NC}"
+      
+      if ! nix_output=$(nix run nixpkgs#nix-prefetch-docker -- \
+        --image-name "$image_name" \
+        --image-digest "$image_digest" \
+        --final-image-tag "$image_tag" 2>&1); then
+        echo -e "${RED}Error: Failed to fetch hash for $image_name:$image_tag@$image_digest${NC}"
+        echo "$nix_output"
+        continue
+      fi
+      
+      # Extract the sha256 hash from the output
+      nix_hash=$(echo "$nix_output" | grep -oP 'sha256-[A-Za-z0-9+/=]+' | head -1)
+      
+      if [ -z "$nix_hash" ]; then
+        echo -e "${RED}Warning: Could not extract hash from nix-prefetch-docker output${NC}"
+        echo "$nix_output"
+        continue
+      fi
+      
+      echo -e "${GREEN}Nix hash:${NC} $nix_hash"
+      
+      # Cache it
+      hash_updates[$cache_key]="$nix_hash"
     fi
     
-    # Extract the sha256 hash from the output
-    # nix-prefetch-docker outputs the hash in the format: sha256-...
-    nix_hash=$(echo "$nix_output" | grep -oP 'sha256-[A-Za-z0-9+/=]+' | head -1)
-    
-    if [ -z "$nix_hash" ]; then
-      echo -e "${RED}Warning: Could not extract hash from nix-prefetch-docker output${NC}"
-      echo "$nix_output"
-      continue
-    fi
-    
-    echo -e "${GREEN}Nix hash:${NC} $nix_hash"
-    
-    # Find the current hash - look for the nixSha256 line immediately following this rawImageReference
-    current_hash=$(awk -v line_num="$(grep -n "rawImageReference = \"$image_ref\"" "$temp_file" | cut -d: -f1 | head -1)" '
-      NR > line_num && /nixSha256 = "sha256-/ {
-        match($0, /nixSha256 = "([^"]+)"/, arr)
-        print arr[1]
-        exit
-      }
-    ' "$temp_file")
+    # Get the current hash from the original file (not temp_file which may have been modified)
+    current_hash=$(sed -n "$((line_num + 1))p" "$flake" | grep -oP 'sha256-[A-Za-z0-9+/=]+' || true)
     
     if [ -z "$current_hash" ]; then
-      echo -e "${RED}Warning: Could not find current hash for rawImageReference in $flake${NC}"
+      echo -e "${RED}Warning: Could not find nixSha256 line after image reference at line $line_num${NC}"
       continue
     fi
     
@@ -129,30 +134,24 @@ for flake in $modified_flakes; do
     
     # Update the hash if it's different
     if [ "$current_hash" != "$nix_hash" ]; then
-      echo -e "${GREEN}✓ Updating hash${NC}"
+      echo -e "${GREEN}✓ Updating hash at line $((line_num + 1))${NC}"
       
-      # Use awk to find and replace the nixSha256 line immediately following the rawImageReference
-      awk -v image_ref="$image_ref" -v new_hash="$nix_hash" '
-        /rawImageReference = "'"$image_ref"'"/ {
-          found_ref = 1
-          print
-          next
-        }
-        found_ref && /nixSha256 = "sha256-/ {
-          sub(/nixSha256 = "sha256-[^"]+";/, "nixSha256 = \"" new_hash "\";")
-          found_ref = 0
-          print
-          next
-        }
-        { print }
-      ' "$temp_file" > "${temp_file}.new" && mv "${temp_file}.new" "$temp_file"
+      # Use sed to replace the hash at the specific line
+      sed -i "$((line_num + 1))s|$current_hash|$nix_hash|" "$temp_file"
       
       CHANGES_MADE=true
     else
       echo -e "${GREEN}✓ Hash is already up to date${NC}"
     fi
     
-  done < <(grep -E '^[[:space:]]*rawImageReference[[:space:]]*=[[:space:]]*"[^"]+@sha256:[^"]+"' "$flake")
+  done < <(awk '
+    /"[^"]+@sha256:[^"]+"/ {
+      match($0, /"([^"]+@sha256:[^"]+)"/, arr)
+      if (arr[1] != "") {
+        print NR "|" arr[1]
+      }
+    }
+  ' "$flake")
   
   # If changes were made to this file, update it
   if ! cmp -s "$flake" "$temp_file"; then
