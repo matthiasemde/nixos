@@ -73,7 +73,7 @@
               "/data/services/paperless/app/data:/usr/src/paperless/data"
               "/data/services/paperless/app/media:/usr/src/paperless/media"
               "/data/services/paperless/app/export:/usr/src/paperless/export"
-              "/tmp/paperless-consumer:/usr/src/paperless/consume"
+              "/data/nas/paperless-consumer:/usr/src/paperless/consume"
             ];
             networks = [
               "traefik"
