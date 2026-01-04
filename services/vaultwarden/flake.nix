@@ -14,8 +14,8 @@
         }:
         {
           vaultwarden = {
-            rawImageReference = "vaultwarden/server:1.34.3@sha256:84fd8a47f58d79a1ad824c27be0a9492750c0fa5216b35c749863093bfa3c3d7";
-            nixSha256 = "sha256-vaSs3Ry6TXIYdjmxa5SGxbas8YZJJe87d35456/Dh2A=";
+            rawImageReference = "vaultwarden/server:1.35.1@sha256:1d43c6754a030861f960fd4dab47e1b33fc19f05bd5f8f597ab7236465a6f14b";
+            nixSha256 = "sha256-0bc1s1luQPFiwYH3THVFg91zJD6V8Ew/x+ciUSBZFzQ=";
             environment = {
               # Server hostname
               "DOMAIN" = "https://vaultwarden.${domain}";
