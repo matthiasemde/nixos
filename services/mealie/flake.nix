@@ -22,8 +22,8 @@
         }:
         {
           mealie-app = {
-            rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.7.0@sha256:f078ccf1f5150a6d45a785c03704b48ef19c298bd260773dc4c9ce61d0c4562f";
-            nixSha256 = "sha256-qS3QkhOvkmtzDdZgDEDj8SC6D5GRkjPqX6kq3MUvmhk=";
+            rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.9.2@sha256:00dc74d7166a26524dd31a2d3e035df714b6c36cbc7be12181f6d31ff480de13";
+            nixSha256 = "sha256-NUEdecB1s0cgFj4tXADfmZETPPNYWpcVrqgTSa2PMRo=";
             environment = {
               # Base URL
               "BASE_URL" = "https://mealie.${domain}";
