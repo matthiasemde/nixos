@@ -23,8 +23,8 @@
         }:
         let
           panelBaseConfig = {
-            rawImageReference = "ccarney16/pterodactyl-panel:v1.11.11@sha256:9bcf170fb6dfd40665e825cb37bc1532e9ab4828868a5e9af3c08ac7f8a4840d";
-            nixSha256 = "sha256-7H5ybzd6RzlPsxFZKUp1bmiLfG9Q6we021FW5nQCPk4=";
+            rawImageReference = "ccarney16/pterodactyl-panel:v1.12.0@sha256:0283aafa61190762f7b8da29e8a1f7bbd76dc4fc02efbbdf82f861470923bcb8";
+            nixSha256 = "sha256-1xNMwSknh2egnK48CNadht3I36Pj1BBQWtL+PTxtF58=";
             volumes = [
               "/data/services/pterodactyl/panel:/data:z"
             ];
