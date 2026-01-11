@@ -644,6 +644,20 @@
         "type": "indirect"
       }
     },
+    "nixpkgs_29": {
+      "locked": {
+        "lastModified": 1767364772,
+        "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "16c7794d0a28b5a37904d55bcca36003b9109aaa",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nixpkgs_3": {
       "locked": {
         "lastModified": 1767364772,
@@ -811,7 +825,8 @@
         "uptime-kuma": "uptime-kuma",
         "vaultwarden": "vaultwarden",
         "virtualization": "virtualization",
-        "vscode-server": "vscode-server"
+        "vscode-server": "vscode-server",
+        "woodpecker": "woodpecker"
       }
     },
     "secret-mgmt": {
@@ -974,6 +989,20 @@
       },
       "original": {
         "path": "./services/vscode-server",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "woodpecker": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_29"
+      },
+      "locked": {
+        "path": "./services/woodpecker",
+        "type": "path"
+      },
+      "original": {
+        "path": "./services/woodpecker",
         "type": "path"
       },
       "parent": []

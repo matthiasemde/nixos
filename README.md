@@ -208,17 +208,27 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── ADMIN_TOKEN.env.age.nix
 │   │       ├── smtp-credentials.env.age
 │   │       └── smtp-credentials.env.age.nix
-│   └── vscode-server
-│       └── flake.nix
+│   ├── vscode-server
+│   │   └── flake.nix
+│   └── woodpecker
+│       ├── flake.nix
+│       ├── README.md
+│       └── secrets
+│           ├── github-credentials.env.age
+│           ├── github-credentials.env.age.nix
+│           ├── service-credentials.env.age
+│           └── service-credentials.env.age.nix
 ├── SETUP.md
 ├── tools
+│   ├── deploy.sh
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
 │   └── pre-commit-hook.sh
-└── virtualization
-    └── flake.nix
+├── virtualization
+│   └── flake.nix
+└── .woodpecker.yml
 
-56 directories, 158 files
+56 directories, 156 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

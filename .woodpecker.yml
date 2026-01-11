@@ -1,0 +1,20 @@
+when:
+  branch: main
+  event: push
+
+steps:
+  - name: check-flake
+    image: nixos/nix:latest
+    commands:
+      - nix --version
+      - cd /home/matthias/infra
+      - nix flake check --no-build
+
+  - name: deploy
+    image: nixos/nix:latest
+    commands:
+      - cd /home/matthias/infra
+      - /home/matthias/infra/tools/deploy.sh
+    when:
+      - evaluate: 'CI_COMMIT_BRANCH == "main"'
+      - evaluate: 'CI_PIPELINE_EVENT == "push"'
