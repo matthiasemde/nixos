@@ -22,8 +22,8 @@
         }:
         {
           paperless-app = {
-            rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.3@sha256:57ad9565bff3bdf2378ab1dcc21ea649dfd68ee58e0eeca2bfba0120a26563e8";
-            nixSha256 = "sha256-WyQPjoKuHZsCNen2bQgTmqShINhlzO1Y+aGbhK3nkLE=";
+            rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.4@sha256:06ca6a6c2a21cfebcc7c5f2e0d38f892dba4bcb090b8781a55d003c63cce386a";
+            nixSha256 = "sha256-99LKBJEE73FPR6gxySGTUQHloAJuH868n2+YDaYcBjc=";
             environment = {
               "PAPERLESS_URL" = "https://paperless.${domain}";
               "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";
