@@ -22,6 +22,9 @@ scrape_configs:
   - job_name: "matrix-synapse"
     static_configs:
       - targets: ["synapse-app:9000"]
+
+  # Metrics from the satisfactory realtime monitoring
+  - job_name: "satisfactory-monitoring"
     static_configs:
-      - targets: ['mahler:9100']
-    scrape_interval: 15s
+      - targets: ["mahler:9000"]
+      # - targets: ["pterodactyl-frmcompanion:9000"]
