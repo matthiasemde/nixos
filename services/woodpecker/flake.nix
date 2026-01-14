@@ -23,8 +23,8 @@
         }:
         {
           woodpecker-server = {
-            rawImageReference = "woodpeckerci/woodpecker-server:v3.12.0@sha256:54a6bb827066f2cdebe5665c5b921b585369b6d8006f350d63ac2b9ed1ce86c6";
-            nixSha256 = "sha256-y6iv9fSpf024xCvWQOUgiqDc/l3YB6h9Oa7Im1Nujj8=";
+            rawImageReference = "woodpeckerci/woodpecker-server:v3.13.0@sha256:428eb0965754e25e67b8b086648438858b4fa64487b1cd3cc8e4101b396e459a";
+            nixSha256 = "sha256-bO1jqvRwn8os7MgSU8V/eKGi/6oQt1Tb8KIfn8t+NZ0=";
             environment = {
               "WOODPECKER_HOST" = "https://ci.${domain}";
               "WOODPECKER_OPEN" = "false";
