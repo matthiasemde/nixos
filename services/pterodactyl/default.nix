@@ -128,4 +128,23 @@ in
       "traefik.enable" = "false";
     };
   };
+
+  # ---------------------------
+  # Satisfactory Monitoring
+  # ---------------------------
+  # myVirtualization.containers.pterodactyl-frmcompanion = {
+  #   image = "featheredtoast/ficsit-remote-monitoring-companion:latest";
+  #   networks = [
+  #     "pterodactyl_nw"
+  #     "monitoring"
+  #   ];
+  #   environment = {
+  #     FRM_HOST = "b23c616f-a3c8-42b0-ad1e-1962139c7523";
+  #     FRM_PORT = "8080";
+  #   };
+  #   labels = {
+  #     # 🛡️ Traefik (disabled)
+  #     "traefik.enable" = "false";
+  #   };
+  # };
 }
