@@ -1,0 +1,41 @@
+when:
+  event: push
+
+steps:
+  - name: check-flake
+    image: nixos/nix:latest@sha256:081b65e50a5c4e6ef4a9094a462da3b83ff76bfec70236eb010047fcee36e11c
+    commands:
+      - nix --version
+      - nix flake --extra-experimental-features 'flakes nix-command' check --no-build
+
+  - name: trigger-deployment
+    image: nixos/nix:latest@sha256:081b65e50a5c4e6ef4a9094a462da3b83ff76bfec70236eb010047fcee36e11c
+    commands:
+      - |
+        echo "Triggering deployment on host..."
+
+        # Compute HMAC-SHA256 signature
+        SIGNATURE=$(echo -n "$PAYLOAD" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#openssl -c openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | cut -d' ' -f2)
+
+        RESPONSE=$(nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#curl -c curl \
+          -sS --connect-timeout 10 -X POST \
+          -H "X-Webhook-Signature: $SIGNATURE" \
+          http://mahler:9999/deploy)
+
+        echo "Raw response:"
+        echo "$RESPONSE"
+        echo ""
+        echo "Formatted response:"
+        echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq '.'
+
+        STATUS=$(echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq -r '.status // "unknown"')
+        if [ "$STATUS" != "success" ]; then
+          echo "Deployment failed with status: $STATUS"
+          exit 1
+        fi
+        echo "Deployment succeeded!"
+    environment:
+      WEBHOOK_SECRET:
+        from_secret: WEBHOOK_SECRET
+    when:
+      branch: main

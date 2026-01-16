@@ -69,8 +69,6 @@
             environmentFiles = getServiceEnvFiles "woodpecker";
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"
-              "/nix:/nix:ro"
-              "/home/matthias/infra:/home/matthias/infra"
             ];
             networks = [ backendNetwork ];
             labels = {

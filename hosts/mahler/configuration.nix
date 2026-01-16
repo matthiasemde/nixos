@@ -134,6 +134,33 @@
     ];
   };
 
+  # Deployment webhook listener
+  systemd.services.webhook-listener = let
+    repoDir = ../..;
+    webhookScript = ../../tools/webhook-listener.py;
+  in {
+    description = "NixOS Deployment Webhook Listener";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      Type = "simple";
+      User = "root";
+      WorkingDirectory = "${repoDir}";
+      ExecStart = "${pkgs.python3}/bin/python3 ${webhookScript}";
+      Restart = "always";
+      RestartSec = 10;
+
+      # Security
+      NoNewPrivileges = false;
+      PrivateTmp = true;
+
+      # Logging
+      StandardOutput = "journal";
+      StandardError = "journal";
+    };
+  };
+
   # Open ports in the firewall.
   networking = {
     firewall = {
@@ -142,6 +169,7 @@
         53    # Allow TCP DNS
         9100  # Prometheus Node Exporter
         9323  # Prometheus Docker metrics
+        9999  # Webhook
       ];
       allowedUDPPorts = [ 53 ]; # Allow UDP DNS
     };

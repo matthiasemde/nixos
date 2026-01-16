@@ -17,7 +17,10 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── hosts
 │   └── mahler
 │       ├── configuration.nix
-│       └── hardware-configuration.nix
+│       ├── hardware-configuration.nix
+│       └── secrets
+│           ├── WEBHOOK_SECRET.env.age
+│           └── WEBHOOK_SECRET.env.age.nix
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
@@ -33,8 +36,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   └── AdGuardHome.yaml
 │   │   └── flake.nix
 │   ├── audiobookshelf
-│   │   ├── flake.nix
-│   │   └── secrets
+│   │   └── flake.nix
 │   ├── authentik
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -146,7 +148,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       └── smtp-credentials.env.age.nix
 │   ├── pterodactyl
 │   │   ├── flake.nix
-│   │   ├── README.md
 │   │   └── secrets
 │   │       ├── db_credentials.env.age
 │   │       ├── db_credentials.env.age.nix
@@ -223,12 +224,15 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── deploy.sh
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
-│   └── pre-commit-hook.sh
+│   ├── pre-commit-hook.sh
+│   ├── webhook-listener.py
+│   └── webhook-listener.service
 ├── virtualization
 │   └── flake.nix
-└── .woodpecker.yml
+└── .woodpecker
+    └── deploy.yaml
 
-56 directories, 156 files
+59 directories, 169 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
