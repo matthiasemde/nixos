@@ -132,8 +132,8 @@
           # Wings
           # ---------------------------
           pterodactyl-daemon = {
-            rawImageReference = "ccarney16/pterodactyl-daemon:v1.12.0@sha256:8c0fa4445e67601f62fe2caa5b9bcf466841b0c02ef43718992f52ff64c3c8d0";
-            nixSha256 = "sha256-Db7B0j2UvcYHN9ttVG+MeDyYSdY/mjfuZrjPPU4g59Y=";
+            rawImageReference = "ccarney16/pterodactyl-daemon:v1.12.1@sha256:ee2e2e6c95be4118e875f9406af47ac2bf72d59e1a49af2e5a4ba6831ac583cc";
+            nixSha256 = "sha256-4QL86+ecVfaf/lPjRbZVIlTFJzIcXjjlFQ3nA+4gTpE=";
             # privileged = true;
             networks = [
               backendNetwork
