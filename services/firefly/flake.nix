@@ -70,8 +70,8 @@
           };
 
           ${fintsName} = {
-            rawImageReference = "docker.io/benkl/firefly-iii-fints-importer:latest@sha256:c8abed41fdcd5f1f234ee1141c2f006c60b5e1865640fc1e45de738b4bbdef23";
-            nixSha256 = "sha256-R/zqzFFGZwiSuzM17OFsdEYCLkJ0zC50pAuxVad6FSM=";
+            rawImageReference = "benkl/firefly-iii-fints-importer:2026-01-04@sha256:52601ec2429f4fe1f9b8898af274de77a899769c34f9d66e3b54f917117251de";
+            nixSha256 = "sha256-sttTBaP4t8ug2ewdt0bb2hqlgNQEkwHTkVHRoir6RyQ=";
             # ports = [ "8123:8080" ]; # you only need to enable this during configuration
             volumes = [
               "/run/agenix/firefly-gls.json:/data/configurations/gls.json"
