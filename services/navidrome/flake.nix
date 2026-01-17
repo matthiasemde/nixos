@@ -5,11 +5,6 @@
     { self, nixpkgs }:
     {
       name = "navidrome";
-      dependencies = {
-        systemServices = {
-          music-sync = builtins.readFile ./music-sync.sh;
-        };
-      };
       containers =
         {
           domain,

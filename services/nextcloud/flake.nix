@@ -4,7 +4,16 @@
   outputs =
     { self, nixpkgs }:
     let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
       backendNetwork = "nextcloud-backend";
+
+      externalStorage = {
+        files = "/data/nas/files";
+        home = "/data/nas/home";
+        navidrome = "/data/nas/navidrome";
+        audiobookshelf = "/data/nas/audiobookshelf";
+      };
     in
     {
       name = "nextcloud";
@@ -23,12 +32,14 @@
         }:
         {
           nextcloud-app = {
-            image = "nextcloud-derived:v32.0.3-r0";
+            rawImageReference = "nextcloud:32.0.3-apache@sha256:54993ed39dc77f7a6ade142b1625972cb7a9393074325373402d47231314afbb";
+            nixSha256 = "sha256-KQXAEtBnUwmaiPwAPsmSEH4zwQO9nluB5+V2CtDdeWo=";
             volumes = [
               "/data/services/nextcloud/app/config:/var/www/html/config"
               "/data/services/nextcloud/app/data:/var/www/html/data"
               "/data/services/nextcloud/app/custom_apps:/var/www/html/custom_apps"
-            ];
+            ]
+            ++ map (name: "${externalStorage.${name}}:/mnt/${name}") (builtins.attrNames externalStorage);
             networks = [
               backendNetwork
               "traefik"
@@ -91,6 +102,29 @@
             rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
             nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
             networks = [ backendNetwork ];
+            labels = {
+              # 🛡️ Traefik (disabled)
+              "traefik.enable" = "false";
+            };
+          };
+
+          nextcloud-cron = {
+            rawImageReference = "alpine:3.23.2@sha256:c93cec902b6a0c6ef3b5ab7c65ea36beada05ec1205664a4131d9e8ea13e405d";
+            nixSha256 = "sha256-OGF7lmDWGB6zg63bYyV1UDTWHCzTejvlZJw5w47CElY=";
+            volumes = [
+              "/etc/localtime:/etc/localtime:ro"
+              "/var/run/docker.sock:/var/run/docker.sock:ro"
+            ];
+            cmd = [
+              "sh"
+              "-c"
+              ''
+                apk add --no-cache docker tzdata && \
+                ( crontab -l 2>/dev/null; \
+                  echo "*/5 * * * * docker exec -u www-data nextcloud-app php -f /var/www/html/cron.php" ) | crontab - && \
+                crond -f -L /dev/stdout
+              ''
+            ];
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";
