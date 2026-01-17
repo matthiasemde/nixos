@@ -13,10 +13,10 @@ scrape_configs:
     static_configs:
       - targets: ["mahler:9100"]
 
-  # Metrics from the docker daemon
-  - job_name: "docker"
+  # Metrics from cAdvisor
+  - job_name: "cadvisor"
     static_configs:
-      - targets: ["mahler:9323"]
+      - targets: ["cadvisor:8080"]
 
   # Metrics from the matrix-synapse
   - job_name: "matrix-synapse"

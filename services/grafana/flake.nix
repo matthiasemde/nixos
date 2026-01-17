@@ -10,8 +10,8 @@
       name = "grafana";
       dependencies = {
         networks = {
-          ${backendNetwork} = "";
-          "monitoring" = "";
+          ${backendNetwork} = ""; # network for communcation between grafana and prometheus
+          "monitoring" = ""; # network for all services which expose a prometheus endpoint
         };
       };
       containers =
@@ -29,7 +29,6 @@
             networks = [
               backendNetwork
               "traefik"
-              "monitoring"
             ];
             environmentFiles = getServiceEnvFiles "grafana";
             volumes = [
@@ -107,13 +106,31 @@
                 isPublic = false;
               })
               // {
-
                 "homepage.group" = "Monitoring";
                 "homepage.name" = "Prometheus";
                 "homepage.icon" = "prometheus";
                 "homepage.href" = "http://prometheus.${hostname}.local";
                 "homepage.description" = "Metrics collection and storage";
               };
+          };
+
+          cadvisor = {
+            rawImageReference = "gcr.io/cadvisor/cadvisor:v0.52.1@sha256:f40e65878e25c2e78ea037f73a449527a0fb994e303dc3e34cb6b187b4b91435";
+            nixSha256 = "sha256-LrD875RTiMyqAvaeDg+czmCQMcdlMuQEnfdCVnnDypU=";
+            volumes = [
+              "/:/rootfs:ro"
+              "/var/run:/var/run:ro"
+              "/sys:/sys:ro"
+              "/var/lib/docker/:/var/lib/docker:ro"
+              "/dev/disk/:/dev/disk:ro"
+            ];
+            networks = [
+              backendNetwork
+            ];
+            cmd = [
+              "-enable_metrics=cpu,memory,oom_event,disk,diskIO,network"
+              "-store_container_labels=false"
+            ];
           };
         };
     };

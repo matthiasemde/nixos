@@ -231,20 +231,13 @@
           # Register system services
           systemd.services = lib.listToAttrs (systemServices);
 
-          # Configure the docker daemon to expose metrics on port 9323
-          virtualisation.docker.daemon.settings = {
-            metrics-addr = "0.0.0.0:9323";
-          };
-
           # Declare all containers under oci-containers
           virtualisation.oci-containers = {
             backend = "docker";
             containers = mergedContainers;
             # Switching to the dummy image can be useful in order to shut down
             # all services, while keeping the docker daemon activated
-            # containers = {
-            #   dummy.image = "hello-world";
-            # };
+            # containers.dummy.image = "hello-world";
           };
         };
     };
