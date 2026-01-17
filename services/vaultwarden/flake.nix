@@ -44,6 +44,11 @@
                 port = "80";
               })
               // {
+                "traefik.http.routers.vaultwarden-public.middlewares" = "block-admin";
+                "traefik.http.middlewares.block-admin.redirectregex.regex" = "^(https?://[^/]+)/admin.*";
+                "traefik.http.middlewares.block-admin.redirectregex.replacement" = "$\{1\}/";
+                "traefik.http.middlewares.block-admin.redirectregex.permanent" = "true";
+
                 # 🏠 Homepage integration
                 "homepage.group" = "Life Management";
                 "homepage.name" = "Vaultwarden";
