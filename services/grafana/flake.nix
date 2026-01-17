@@ -115,8 +115,8 @@
           };
 
           cadvisor = {
-            rawImageReference = "gcr.io/cadvisor/cadvisor:v0.52.1@sha256:f40e65878e25c2e78ea037f73a449527a0fb994e303dc3e34cb6b187b4b91435";
-            nixSha256 = "sha256-LrD875RTiMyqAvaeDg+czmCQMcdlMuQEnfdCVnnDypU=";
+            rawImageReference = "gcr.io/cadvisor/cadvisor:v0.55.1@sha256:3de2bd5203120b866d74a9b283b2ffb8ec382fbf9dc321814700c6ea6f44ec57";
+            nixSha256 = "sha256-zrzTAkITDXWe630Y/1+RO5J//NnR/R/LIC/RvQykapo=";
             volumes = [
               "/:/rootfs:ro"
               "/var/run:/var/run:ro"
