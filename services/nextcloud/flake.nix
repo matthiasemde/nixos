@@ -32,8 +32,8 @@
         }:
         {
           nextcloud-app = {
-            rawImageReference = "nextcloud:32.0.3-apache@sha256:54993ed39dc77f7a6ade142b1625972cb7a9393074325373402d47231314afbb";
-            nixSha256 = "sha256-KQXAEtBnUwmaiPwAPsmSEH4zwQO9nluB5+V2CtDdeWo=";
+            rawImageReference = "nextcloud:32.0.5-apache@sha256:78ae30695b550aee857d8714d395fcb0e8005fc2bfde8cd88ec7dee102660e69";
+            nixSha256 = "sha256-Plc2kxDWay9hDk1dqcVeqbTylcvBdS+BtreaFN1pFLg=";
             volumes = [
               "/data/services/nextcloud/app/config:/var/www/html/config"
               "/data/services/nextcloud/app/data:/var/www/html/data"
