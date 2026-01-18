@@ -2,6 +2,8 @@
 """
 Simple webhook listener for NixOS deployments.
 Listens for POST requests and triggers the activation script.
+
+Usage: webhook-listener.py <deploy-script-path> <repo-directory>
 """
 
 import hmac
@@ -12,6 +14,14 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import os
 
+# Parse command line arguments
+if len(sys.argv) != 3:
+    print("Usage: webhook-listener.py <deploy-script-path> <repo-directory>", file=sys.stderr)
+    sys.exit(1)
+
+DEPLOY_SCRIPT = sys.argv[1]
+REPO_DIR = sys.argv[2]
+
 # Read webhook secret from agenix-managed file
 SECRET_FILE = '/run/agenix/mahler-WEBHOOK_SECRET.env'
 try:
@@ -19,9 +29,8 @@ try:
         WEBHOOK_SECRET = f.read().strip().encode()
 except FileNotFoundError:
     print(f"Warning: Secret file {SECRET_FILE} not found. Webhook authentication disabled.")
-    exit
+    WEBHOOK_SECRET = b''
 
-DEPLOY_SCRIPT = './deploy.sh'
 PORT = 9999
 
 class WebhookHandler(BaseHTTPRequestHandler):
@@ -58,7 +67,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
         try:
             print("Triggering deployment...")
             result = subprocess.run(
-                [DEPLOY_SCRIPT],
+                [DEPLOY_SCRIPT, REPO_DIR],
                 capture_output=True,
                 text=True,
                 timeout=600  # 10 minutes max
@@ -67,8 +76,8 @@ class WebhookHandler(BaseHTTPRequestHandler):
             response = {
                 'status': 'success' if result.returncode == 0 else 'failed',
                 'returncode': result.returncode,
-                'stdout': result.stdout[-1000:],  # Last 1000 chars
-                'stderr': result.stderr[-1000:]
+                'stdout': result.stdout,
+                'stderr': result.stderr
             }
 
             self.send_response(200 if result.returncode == 0 else 500)
@@ -92,6 +101,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     print(f"Starting webhook listener on port {PORT}...")
     print(f"Deploy script: {DEPLOY_SCRIPT}")
+    print(f"Repository directory: {REPO_DIR}")
     print(f"Webhook secret configured: {bool(WEBHOOK_SECRET)}")
 
     server = HTTPServer(('0.0.0.0', PORT), WebhookHandler)

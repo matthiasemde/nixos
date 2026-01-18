@@ -223,14 +223,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
 │   ├── pre-commit-hook.sh
-│   ├── webhook-listener.py
-│   └── webhook-listener.service
+│   └── webhook-listener.py
 ├── virtualization
 │   └── flake.nix
 └── .woodpecker
     └── deploy.yaml
 
-59 directories, 169 files
+59 directories, 166 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

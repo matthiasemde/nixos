@@ -22,18 +22,20 @@ steps:
           -H "X-Webhook-Signature: $SIGNATURE" \
           http://mahler:9999/deploy)
 
-        echo "Raw response:"
-        echo "$RESPONSE"
-        echo ""
-        echo "Formatted response:"
-        echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq '.'
-
         STATUS=$(echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq -r '.status // "unknown"')
-        if [ "$STATUS" != "success" ]; then
+
+        if [ "$STATUS" = "success" ]; then
+          echo "Deployment succeeded!"
+          echo ""
+          echo "Deployment output:"
+          echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq -r '.stdout'
+        else
           echo "Deployment failed with status: $STATUS"
+          echo ""
+          echo "Full response:"
+          echo "$RESPONSE" | nix --extra-experimental-features 'flakes nix-command' shell nixpkgs#jq -c jq '.'
           exit 1
         fi
-        echo "Deployment succeeded!"
     environment:
       WEBHOOK_SECRET:
         from_secret: WEBHOOK_SECRET
