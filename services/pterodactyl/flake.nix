@@ -80,7 +80,7 @@
               })
               // {
                 # 🏠 Homepage integration
-                "homepage.group" = "Games";
+                "homepage.group" = "Fun & Games";
                 "homepage.name" = "Pterodactyl";
                 "homepage.icon" = "pterodactyl";
                 "homepage.href" = "https://pterodactyl.${domain}";

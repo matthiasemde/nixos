@@ -49,7 +49,7 @@
                 port = "8000";
               })
               // {
-                "homepage.group" = "Development";
+                "homepage.group" = "Utilities";
                 "homepage.name" = "Woodpecker CI";
                 "homepage.icon" = "woodpecker-ci";
                 "homepage.href" = "https://ci.${domain}";

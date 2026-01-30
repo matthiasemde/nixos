@@ -130,19 +130,10 @@
               "traefik"
               authBackendNetwork
             ];
-            labels =
-              (mkTraefikLabels {
-                name = "matrix-auth";
-                port = "8080";
-              })
-              // {
-                # 🏠 Homepage integration
-                "homepage.group" = "Communication";
-                "homepage.name" = "Matrix Auth Service";
-                "homepage.icon" = "matrix";
-                "homepage.href" = "https://matrix-auth.${domain}";
-                "homepage.description" = "Matrix Authentication Service";
-              };
+            labels = mkTraefikLabels {
+              name = "matrix-auth";
+              port = "8080";
+            };
           };
 
           synapse-database = {
@@ -286,7 +277,7 @@
               })
               // {
                 # 🏠 Homepage integration
-                "homepage.group" = "Media";
+                "homepage.group" = "Utilities";
                 "homepage.name" = "Synapse Admin";
                 "homepage.icon" = "matrix";
                 "homepage.href" = "http://synapse-admin.${hostname}.local";
