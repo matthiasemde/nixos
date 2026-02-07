@@ -238,8 +238,8 @@
               };
             in
             {
-              rawImageReference = "nginx:1.29.4-alpine@sha256:1e462d5b3fe0bc6647a9fbba5f47924b771254763e8a51b638842890967e477e";
-              nixSha256 = "sha256-qgeS1JFHApzVUad0UvVF1pPuvdvg0o2+Q3g8GXu1By8=";
+              rawImageReference = "nginx:1.29.5-alpine@sha256:05fcc6f6c80dc65c0f241f250677aad26e0962d118abaa65a513796862ff915d";
+              nixSha256 = "sha256-p+94y2vOQYXatNh9ldg4KrW4e50juQqYPpiV8fa2ALg=";
               networks = [
                 "traefik"
               ];
