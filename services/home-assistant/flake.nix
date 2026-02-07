@@ -19,8 +19,8 @@
         }:
         {
           home-assistant = {
-            rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.1@sha256:97d63b3d0028b6b52ad8e5ac7b014c3404e69bf1656b5489eec48b59184e0bc7";
-            nixSha256 = "sha256-s0z2Q2uiJSDq9ELr53mLo/u99CPBsiI6uT4ye/LA8z4=";
+            rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.2@sha256:17441c45ba14560b4ef727ee06aac4d605cf0dc0625fc4f2e043cb2551d72749";
+            nixSha256 = "sha256-537Ebdcsmif2IVJLEuxQw5T8Sb6nWfquaQdbZ67xhnw=";
             volumes = [
               "/etc/logs/home-assistant.log:/config/home-assistant.log"
               "/etc/localtime:/etc/localtime:ro"
