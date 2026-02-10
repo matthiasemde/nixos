@@ -22,8 +22,8 @@
         }:
         {
           immich-app = {
-            rawImageReference = "ghcr.io/immich-app/immich-server:v2.5.5@sha256:161b1ec8af9e0478797cfd75ea857c7e55af271fa7cea103cb30ab1ba5b418d8";
-            nixSha256 = "sha256-x/ACHOKBus9S2tMIrgIKE+O9TVw5vasChXEpYhS+5uA=";
+            rawImageReference = "ghcr.io/immich-app/immich-server:v2.5.6@sha256:aa163d2e1cc2b16a9515dd1fef901e6f5231befad7024f093d7be1f2da14341a";
+            nixSha256 = "sha256-VRqUD6mVub5qoIL6zt5iy4jk7rBm6Y4ddU/+o724q2g=";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/immich/upload:/usr/src/app/upload"
