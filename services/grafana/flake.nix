@@ -24,8 +24,8 @@
         }:
         {
           grafana = {
-            rawImageReference = "grafana/grafana:12.3.2@sha256:ba93c9d192e58b23e064c7f501d453426ccf4a85065bf25b705ab1e98602bfb1";
-            nixSha256 = "sha256-G5EepHFrImwj6x4eiVptXzTsvGtiSowt1dznhXO1eYM=";
+            rawImageReference = "grafana/grafana:12.3.3@sha256:9e1e77ade304069aee3196e9a4f210830e96e80ce9a2640891eccc324b152faf";
+            nixSha256 = "sha256-OhTmnRsqpgJbNxOD4zNUehEaX2l28HNxKJ9Nec2XLfs=";
             networks = [
               backendNetwork
               "traefik"
