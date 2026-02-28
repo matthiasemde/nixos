@@ -55,6 +55,10 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── gls.json.age.nix
 │   │       ├── gls-tagesgeldkonto.json.age
 │   │       └── gls-tagesgeldkonto.json.age.nix
+│   ├── fl-hofmusic
+│   │   ├── config
+│   │   │   └── nginx.conf
+│   │   └── flake.nix
 │   ├── frp
 │   │   ├── config
 │   │   │   └── frpc.toml

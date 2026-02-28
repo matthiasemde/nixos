@@ -35,6 +35,7 @@
     audiobookshelf.url = "path:./services/audiobookshelf";
     woodpecker.url = "path:./services/woodpecker";
     web-projects.url = "path:./services/web-projects";
+    fl-hofmusic.url = "path:./services/fl-hofmusic";
   };
 
   outputs =
@@ -68,6 +69,7 @@
       audiobookshelf,
       woodpecker,
       web-projects,
+      fl-hofmusic,
       ...
     }:
     {
@@ -116,6 +118,7 @@
             audiobookshelf
             woodpecker
             web-projects
+            fl-hofmusic
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
