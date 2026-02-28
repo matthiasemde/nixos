@@ -141,6 +141,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── openai-credentials.env.age.nix
 │   │       ├── smtp-credentials.env.age
 │   │       └── smtp-credentials.env.age.nix
+│   ├── microbin
+│   │   ├── .env
+│   │   └── flake.nix
 │   ├── nas
 │   │   ├── flake.nix
 │   │   └── secrets

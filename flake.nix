@@ -38,6 +38,7 @@
     fl-hofmusic.url = "path:./services/fl-hofmusic";
     lovebox.url = "path:./services/lovebox";
     outline.url = "path:./services/outline";
+    microbin.url = "path:./services/microbin";
   };
 
   outputs =
@@ -74,6 +75,7 @@
       fl-hofmusic,
       lovebox,
       outline,
+      microbin,
       ...
     }:
     {
@@ -125,6 +127,7 @@
             fl-hofmusic
             lovebox
             outline
+            microbin
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
