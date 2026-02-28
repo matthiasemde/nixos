@@ -188,6 +188,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── flake.nix
 │   │   ├── README.md
 │   │   └── users
+│   ├── silverbullet
+│   │   └── flake.nix
 │   ├── synapse
 │   │   ├── config
 │   │   │   ├── homeserver.yaml.j2

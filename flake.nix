@@ -39,6 +39,7 @@
     lovebox.url = "path:./services/lovebox";
     outline.url = "path:./services/outline";
     microbin.url = "path:./services/microbin";
+    silverbullet.url = "path:./services/silverbullet";
   };
 
   outputs =
@@ -76,6 +77,7 @@
       lovebox,
       outline,
       microbin,
+      silverbullet,
       ...
     }:
     {
@@ -128,6 +130,7 @@
             lovebox
             outline
             microbin
+            silverbullet
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
