@@ -1,0 +1,445 @@
+body {
+		font-family: 'Gayathri', serif;
+		margin: 0;
+    min-width: 380px;
+}
+
+.page {
+  width: 750px;
+  height: 100%;
+  margin: auto;
+}
+
+#title {
+	height: 150px;
+	padding-top: 20px;
+	margin-bottom: 20px;
+}
+
+#title img {
+	padding: 5px;
+	margin-left: 10px;
+	float: left;
+}
+
+#title h1 {
+	padding: 20px 5px 0 5px;
+	font-size: 30px;
+	margin: 0;
+	float: left;
+  line-height: 30px;
+  letter-spacing: 0.6px;
+}
+
+i.material-icons {
+  color: white;
+}
+
+.status_bar {
+	height: 35px;
+	color: #fff;
+	padding: 17px 20px 3px 20px;
+	font-size: 20px;
+	letter-spacing: 0.5px;
+	line-height: 80%;
+	position: relative;
+	z-index: 1;
+	background-color: #fb4049;
+}
+
+.status_bar span {
+	position: relative;
+	font-weight: 600;
+}
+
+.status_bar .status {
+	display: block;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.chat_window {
+	height: calc(100% - 55px);
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	background: url("heart-background.jpg") repeat;
+	background-size: 50%;
+	z-index: 0;
+}
+
+.chat_window ::-webkit-scrollbar {
+  transition: all .5s;
+  width: 5px;
+  height: 1px;
+  z-index: 10;
+}
+
+.chat_window ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat_window ::-webkit-scrollbar-thumb {
+  background: #b3ada7;
+}
+
+.chat_window .messages {
+	flex: 1 1 auto;
+	position: relative;
+  box-shadow: inset 0 10px 10px -10px #000;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+	padding: 0 16px;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.chat_window .messages:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.message {
+	background: #fb4049d9;
+  color: #fff;
+  clear: both;
+  line-height: 18px;
+  font-size: 15px;
+  padding: 8px;
+  position: relative;
+  margin: 8px 0;
+  max-width: 85%;
+  word-wrap: break-word;
+  z-index: -1;
+	border-radius: 5px 0px 5px 5px;
+	box-shadow: 0px 1px 1px 0px #00000069;
+	float: right;
+}
+
+.message:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+	border-style: solid;
+	border-width: 0px 0 10px 10px;
+	border-color: transparent #fb4049d9;
+	top: 0px;
+	right: -10px;
+}
+
+.metadata {
+	/*display: inline-block;*/
+	float: right;
+  padding: 0 0 0 7px;
+  position: relative;
+  bottom: -4px;
+}
+
+.metadata .time {
+  color: #ffffffc0;
+  font-size: 11px;
+  display: inline-block;
+}
+
+.metadata .read {
+  display: inline-block;
+  margin-left: 2px;
+  position: relative;
+  top: 4px;
+  height: 16px;
+  width: 0px;
+}
+
+.chat_form {
+	flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  overflow: hidden;
+  min-height: 48px;
+  width: 100%;
+  margin-bottom: 5px;  
+  z-index: 2;
+}
+
+.chat_form>* {
+  background: #fb4049;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  position: relative;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.chat_form>*:nth-last-child(2){
+  border-radius: 0 25px 25px 0;
+}
+
+button {
+  border: none;
+  padding: 5px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chat_form #emoji, .chat_form #cancel {
+    border-radius: 25px 0 0 25px;
+    flex: 0 0 auto;
+    margin-left: 8px;
+    width: 48px;
+}
+
+.chat_form #text {
+    flex: 1 1 auto;
+    justify-content: left;
+    align-items: center;
+    min-width: 0;
+}
+
+.chat_form #text textarea {
+    line-height: 20px;
+    color: white;
+    background-color: inherit;
+    font-family: 'Gayathri', serif;
+    resize: none;
+    font-size: 16px;
+    outline: none;
+    border: 0; /*1px solid #fff;*/
+    padding: 0;
+    padding-top: 5px;
+}
+
+.chat_form #text textarea::placeholder {
+    color: #fff;  
+}
+
+.chat_form #brightness {
+  flex: 1 0 auto;
+}
+
+.chat_form #brightness div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chat_form #brightness input {
+  text-align: center;
+  color: white;
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Gayathri', serif;
+  padding: 7px 0 0 0;
+  width: 30px;
+}
+
+.chat_form #brightness button.arrow {
+  padding: 0;
+} 
+
+.chat_form #brightness .arrow i {
+  font-size: 30px;
+  margin: -3px;
+} 
+
+.chat_form #imgPreview {
+    flex: 10 1 auto;
+}
+
+.chat_form .image {
+  flex: 0 0 auto;
+  border-radius: 0 25px 25px 0;
+  position: relative;
+  width: 48px;
+}
+
+.chat_form .send {
+  flex: 0 0 auto;
+  margin-left: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+
+.chat_form .send button {
+  padding-left: 9px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+button:active {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+/******************************
+*
+*   Styles for the overlay menu
+*
+*/
+
+.overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0, 0.8); /* Black w/opacity */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+  
+/* Position the content inside the overlay */
+.overlay-content {
+  position: relative;
+  margin-inline: auto;
+  min-height: 128px;
+  min-width: 256px;
+  max-width: 95%;
+}
+
+.overlay .buttonBar {
+  display: flex;
+  z-index: 1;
+  justify-content: center;  
+  margin-top: 40px;
+}
+
+.overlay .buttonBar button:first-child{
+  margin-right: 30px
+}
+
+.overlay .buttonBar button{
+  background: #fb4049;
+}
+
+.overlay .buttonBar button:hover {
+  background: #fc737a;
+}
+
+.overlay .buttonBar button:active {
+  background: #fda5a9;
+}
+
+.overlay .closebtn i {
+  font-size: 48px;
+}
+
+.overlay-content img {
+  max-width: 100%;
+}
+
+.overlay-content #cropWindow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border:rgba(255,255,255, 0.6) 1px solid;
+  box-sizing: border-box;
+  height: 128px;
+  width: 256px;
+  max-width: 100%;
+  cursor: move;
+  box-shadow: 0 0 0 9999px rgb(0 0 0 / 50%);
+}
+
+.cropWindowCorner {
+  position: absolute;
+  box-sizing: border-box;
+  height: 24px;
+  width: 24px;
+  border-color: white;
+  border-style: solid;
+}
+
+.cropWindowCorner#topLeft {
+  left: -1px;
+  top: -1px;
+  border-width: 2px 0 0 2px;
+  cursor: nw-resize;
+}
+
+.cropWindowCorner#topRight {
+  right: -1px;
+  top: -1px;
+  border-width: 2px 2px 0 0;
+  cursor: ne-resize;
+}
+
+.cropWindowCorner#bottomLeft {
+  left: -1px;
+  bottom: -1px;
+  border-width: 0 0 2px 2px;
+  cursor: sw-resize;
+}
+
+.cropWindowCorner#bottomRight {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 2px 2px 0;
+  cursor: se-resize;
+}
+
+
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+    .overlay .closebtn {
+        top: 15px;
+        right: 35px;
+    }
+    .overlay .closebtn i {
+        font-size: 24px;
+    }
+}
+
+/*****************************
+*
+*   Media querys
+*
+*/
+
+
+@media (max-width: 750px) {
+	.page {
+		width: 100%;
+	}
+}
+
+@media (max-height: 400px) {
+	#title {
+		display: none;
+	}
+	.chat_window {
+		height: calc(100% - 55px)
+	}
+}

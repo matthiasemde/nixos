@@ -113,6 +113,23 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── KOPIA_SERVER_CONTROL_CREDENTIALS.env.age.nix
 │   │       ├── KOPIA_SERVER_CREDENTIALS.env.age
 │   │       └── KOPIA_SERVER_CREDENTIALS.env.age.nix
+│   ├── lovebox
+│   │   ├── config
+│   │   │   ├── nginx.conf
+│   │   │   └── php-fpm.conf
+│   │   ├── flake.nix
+│   │   ├── secrets
+│   │   └── server
+│   │       ├── createBitmap.php
+│   │       ├── cropImage.php
+│   │       ├── favicon.ico
+│   │       ├── heart-background.jpg
+│   │       ├── index.php
+│   │       ├── inputEmoji.js
+│   │       ├── lovebox_logo.png
+│   │       ├── send.php
+│   │       ├── styles.css
+│   │       └── upload.php
 │   ├── mealie
 │   │   ├── flake.nix
 │   │   └── secrets

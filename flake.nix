@@ -36,6 +36,7 @@
     woodpecker.url = "path:./services/woodpecker";
     web-projects.url = "path:./services/web-projects";
     fl-hofmusic.url = "path:./services/fl-hofmusic";
+    lovebox.url = "path:./services/lovebox";
   };
 
   outputs =
@@ -70,6 +71,7 @@
       woodpecker,
       web-projects,
       fl-hofmusic,
+      lovebox,
       ...
     }:
     {
@@ -119,6 +121,7 @@
             woodpecker
             web-projects
             fl-hofmusic
+            lovebox
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
