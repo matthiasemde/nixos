@@ -209,6 +209,11 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       └── smtp-credentials.env.age.nix
 │   ├── vscode-server
 │   │   └── flake.nix
+│   ├── web-projects
+│   │   ├── config
+│   │   │   ├── index.html
+│   │   │   └── nginx.conf
+│   │   └── flake.nix
 │   └── woodpecker
 │       ├── flake.nix
 │       ├── README.md

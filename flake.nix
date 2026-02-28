@@ -34,6 +34,7 @@
     navidrome.url = "path:./services/navidrome";
     audiobookshelf.url = "path:./services/audiobookshelf";
     woodpecker.url = "path:./services/woodpecker";
+    web-projects.url = "path:./services/web-projects";
   };
 
   outputs =
@@ -66,6 +67,7 @@
       navidrome,
       audiobookshelf,
       woodpecker,
+      web-projects,
       ...
     }:
     {
@@ -113,6 +115,7 @@
             navidrome
             audiobookshelf
             woodpecker
+            web-projects
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
