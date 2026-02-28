@@ -37,6 +37,7 @@
     web-projects.url = "path:./services/web-projects";
     fl-hofmusic.url = "path:./services/fl-hofmusic";
     lovebox.url = "path:./services/lovebox";
+    outline.url = "path:./services/outline";
   };
 
   outputs =
@@ -72,6 +73,7 @@
       web-projects,
       fl-hofmusic,
       lovebox,
+      outline,
       ...
     }:
     {
@@ -122,6 +124,7 @@
             web-projects
             fl-hofmusic
             lovebox
+            outline
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
