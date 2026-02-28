@@ -30,6 +30,7 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── secrets
 │   ├── host-key.nix.mahler
 │   └── yubi-key.nix.mahler
+├── service-flake.nix.template
 ├── services
 │   ├── adguard
 │   │   ├── config
@@ -267,7 +268,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── .woodpecker
     └── deploy.yaml
 
-59 directories, 166 files
+71 directories, 193 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

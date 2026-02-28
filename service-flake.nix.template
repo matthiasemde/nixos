@@ -1,0 +1,38 @@
+{
+  description = "Service flake for <Service Name>";
+
+  outputs =
+    { self, nixpkgs }:
+    {
+      name = "<service-name>";
+      containers =
+        {
+          domain,
+          mkTraefikLabels,
+          ...
+        }:
+        {
+          <service-name> = {
+            rawImageReference = "<serviceImageName>:<serviceImageVersion>@<serviceImageDigest>";
+            nixSha256 = "";
+            networks = [ "traefik" ];
+            volumes = [
+              "/data/services/<service-name>:/etc/service/data"
+              "${./config/service.conf}:/etc/service/service.conf:ro"
+            ];
+            labels =
+              mkTraefikLabels {
+                name = "<service-name>";
+                port = "<service-port>";
+              }
+              // {
+                "homepage.group" = "<Service Group>";
+                "homepage.name" = "<Service Name>";
+                "homepage.icon" = "<serviceIcon>";
+                "homepage.href" = "https://<service-name>.${domain}";
+                "homepage.description" = "<Service Description>";
+              };
+          };
+        };
+    };
+}

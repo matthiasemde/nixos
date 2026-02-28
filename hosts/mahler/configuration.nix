@@ -135,36 +135,36 @@
   };
 
   # Deployment webhook listener
-  systemd.services.webhook-listener =
-    let
-      repoDir = ../..;
-      webhookScript = ../../tools/webhook-listener.py;
-      deployScript = ../../tools/deploy.sh;
-    in
-    {
-      description = "NixOS Deployment Webhook Listener";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
+  # systemd.services.webhook-listener =
+  #   let
+  #     repoDir = ../..;
+  #     webhookScript = ../../tools/webhook-listener.py;
+  #     deployScript = ../../tools/deploy.sh;
+  #   in
+  #   {
+  #     description = "NixOS Deployment Webhook Listener";
+  #     after = [ "network.target" ];
+  #     wantedBy = [ "multi-user.target" ];
 
-      serviceConfig = {
-        Type = "simple";
-        User = "root";
-        ExecStart = "${pkgs.python3}/bin/python3 -u ${webhookScript} ${deployScript} /home/matthias/infra";
-        Restart = "always";
-        RestartSec = 10;
+  #     serviceConfig = {
+  #       Type = "simple";
+  #       User = "root";
+  #       ExecStart = "${pkgs.python3}/bin/python3 -u ${webhookScript} ${deployScript} /home/matthias/infra";
+  #       Restart = "always";
+  #       RestartSec = 10;
 
-        # Ensure PATH includes system binaries
-        Environment = "PATH=/run/current-system/sw/bin PYTHONUNBUFFERED=1";
+  #       # Ensure PATH includes system binaries
+  #       Environment = "PATH=/run/current-system/sw/bin PYTHONUNBUFFERED=1";
 
-        # Security
-        NoNewPrivileges = false;
-        PrivateTmp = true;
+  #       # Security
+  #       NoNewPrivileges = false;
+  #       PrivateTmp = true;
 
-        # Logging
-        StandardOutput = "journal";
-        StandardError = "journal";
-      };
-    };
+  #       # Logging
+  #       StandardOutput = "journal";
+  #       StandardError = "journal";
+  #     };
+  #   };
 
   # Open ports in the firewall.
   networking = {

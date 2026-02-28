@@ -35,7 +35,7 @@
   };
 
   fileSystems."/backup" = {
-    device = "/dev/disk/by-label/backup";
+    device = "/dev/disk/by-uuid/eefdc71b-2e91-43d3-8599-5a013e4a81b1";
     fsType = "ext4";
   };
 

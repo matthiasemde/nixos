@@ -18,7 +18,7 @@
             --ipv6 \
             --subnet=fdfb:7759:b7ce::/64 \
             --gateway=fdfb:7759:b7ce::2e91:abff:fea2:270e \
-            -o parent=enp106s0f3u2 \
+            -o parent=enp6s0 \
           '';
         };
       };
