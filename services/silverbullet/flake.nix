@@ -13,8 +13,8 @@
         }:
         {
           silverbullet = {
-            rawImageReference = "ghcr.io/silverbulletmd/silverbullet:2.5.1@sha256:acb9c08cea39e963a5428f3db5aa4967137a65c1446405a4ba26df4d23884f73";
-            nixSha256 = "sha256-RQ5Y83AEDNJjRThI9LVqay8NKey3d6QvjmDADTKW2Sk=";
+            rawImageReference = "ghcr.io/silverbulletmd/silverbullet:2.5.2@sha256:c12db5d2408c0c41a9b7dd9dfa81dc33c0994f594771ef8e8d5be36333e23b55";
+            nixSha256 = "sha256-+/G2+SAG2s/+SnwqNOTz6aSU5rHKXakfxgtodJy6GBY=";
             networks = [ "traefik" ];
             volumes = [
               "/data/services/silverbullet/space:/space"
