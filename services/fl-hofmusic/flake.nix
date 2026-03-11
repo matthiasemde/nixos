@@ -14,8 +14,8 @@
         }:
         {
           fl-hofmusic = {
-            rawImageReference = "nginx:1.29.5-alpine@sha256:1d13701a5f9f3fb01aaa88cef2344d65b6b5bf6b7d9fa4cf0dca557a8d7702ba";
-            nixSha256 = "sha256-p+94y2vOQYXatNh9ldg4KrW4e50juQqYPpiV8fa2ALg=";
+            rawImageReference = "nginx:1.29.6-alpine@sha256:9a4a85e7006ced27ca077d759ffed671b8a094856703b0af15e2c28902800b1d";
+            nixSha256 = "sha256-721iRIX2RQ9cID4tHPoLsoeTaDDbjVtR8StdfQuk+A4=";
             networks = [
               "traefik"
             ];
