@@ -14,8 +14,8 @@
         }:
         {
           audiobookshelf = {
-            rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.32.1@sha256:a52dc5db694a5bf041ce38f285dd6c6a660a4b1b21e37ad6b6746433263b2ae5";
-            nixSha256 = "sha256-XYlkt0gH+Pxl2+sJQS0w6WcqnH8RuF6Ifq/Yb8Nuqdw=";
+            rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.33.0@sha256:41047b9985f9c38c92ae8b4b34ffd1d77fca36efdfe49c6b962ff2fc8ccae1e9";
+            nixSha256 = "sha256-R273fwEE9fCu3DvntGyl/t08Z6qFDYYbyta+SvpZBJI=";
             environment = {
               TZ = "Europe/Berlin";
             };
