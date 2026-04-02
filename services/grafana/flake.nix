@@ -78,8 +78,8 @@
           };
 
           prometheus = {
-            rawImageReference = "prom/prometheus:v3.10.0@sha256:4a61322ac1103a0e3aea2a61ef1718422a48fa046441f299d71e660a3bc71ae9";
-            nixSha256 = "sha256-F9kVULQ+94epS9mCQHsSncmPf4jSn9QogkyxyTeOpho=";
+            rawImageReference = "prom/prometheus:v3.11.0@sha256:dda13e28bf95a5e5ca5b8ed56852006094c1c8e8871d9c9dbeed30aa6e55271f";
+            nixSha256 = "sha256-FPabKQ+PxTunUpmgt2QNcWRvx279fccxZDhkhdKa78s=";
             networks = [
               backendNetwork
               "monitoring"
