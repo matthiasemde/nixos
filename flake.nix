@@ -136,5 +136,26 @@
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
         };
       };
+
+      nixosConfigurations.vogel = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ./hosts/vogel/configuration.nix
+
+          agenix.nixosModules.default
+          {
+            environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
+            age.identityPaths = [ "/home/matthias/nixos/secrets/host-key.nix.vogel" ];
+          }
+
+          secret-mgmt.nixosModules.default
+        ];
+
+        specialArgs = {
+          hostname = "vogel";
+          services = [ ];
+        };
+      };
     };
 }
