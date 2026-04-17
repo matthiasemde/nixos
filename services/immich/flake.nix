@@ -23,7 +23,7 @@
         {
           immich-app = {
             rawImageReference = "ghcr.io/immich-app/immich-server:v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5";
-            nixSha256 = "sha256-gk2+L9TS/3/icxEOIcS/kj83aFzHO/4KZ0nT0PVG2oQ=";
+            nixSha256 = "sha256-NYgLfm8rX8o3GYLoavG8i3gqwyKKLIeJLXGGYLZUazY=";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/immich/upload:/usr/src/app/upload"
@@ -57,7 +57,7 @@
 
           immich-machine-learning = {
             rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3";
-            nixSha256 = "sha256-5LTrhj51O87c119CWC+J56rv2CV7JMF6eAz/Yx8KupM=";
+            nixSha256 = "sha256-SAaFwRI8VQujL8tiEoRW33J57GqdeJ66Re/BdxRO9Hs=";
             volumes = [ "immich-ml-cache:/cache" ];
             networks = [ backendNetwork ];
             labels = {
