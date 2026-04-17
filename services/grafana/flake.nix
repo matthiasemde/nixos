@@ -24,7 +24,7 @@
         }:
         {
           grafana = {
-            rawImageReference = "grafana/grafana:12.4.3@sha256:2e986801428cd689c2358605289c90ab37d2b39e24808874971f54c99bcdc412";
+            rawImageReference = "grafana/grafana:13.0.1@sha256:0f86bada30d65ef9d0183b90c1e2682ac92d53d95da8bed322b984ea78a4a73a";
             nixSha256 = "sha256-5FBUjUcaIw12MJEyalAonEDYI/24RJPzJ4x2Pspb6K0=";
             networks = [
               backendNetwork
