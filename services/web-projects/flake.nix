@@ -14,7 +14,7 @@
         }:
         {
           web-projects = {
-            rawImageReference = "nginx:1.29.7-alpine@sha256:e3f5ac6fb2b0ab577300bad4a9df7d4d0632c4baaa7416ac84e56184cfde9f82";
+            rawImageReference = "nginx:1.30.0-alpine@sha256:f60d139a69209d4340f6621fc6a50c9843702214231522a3390432f8db0ed870";
             nixSha256 = "sha256-p/wXlo+5I07qOfGEvlSceEJBuQumGODGWUF8cQJVmjE=";
             networks = [
               "traefik"
