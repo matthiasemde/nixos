@@ -15,7 +15,7 @@
         {
           fl-hofmusic = {
             rawImageReference = "nginx:1.30.0-alpine@sha256:f60d139a69209d4340f6621fc6a50c9843702214231522a3390432f8db0ed870";
-            nixSha256 = "sha256-p/wXlo+5I07qOfGEvlSceEJBuQumGODGWUF8cQJVmjE=";
+            nixSha256 = "sha256-SOn2+cL+PhhEpMLCtwuLPNFg8Nm4slfGraQnEMr3MFU=";
             networks = [
               "traefik"
             ];
