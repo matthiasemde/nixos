@@ -310,8 +310,8 @@
 
           # Element Call JWT Auth Service for MatrixRTC
           element-call-jwt = {
-            rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.4.2@sha256:e9174b17c7b0048dba3899e50e2c3a6df8ec97657267a7cefa704076b89d3f96";
-            nixSha256 = "sha256-TjojxneqMqiWmGeWXzKmZWHXCzhLAHuK8lzZHL6j/ck=";
+            rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.4.3@sha256:19a3bde2dc597eb689d954d8dac4587e3ed7e990d63571b40526cc5810faf768";
+            nixSha256 = "sha256-fKcic2xmCSaTghrLSqeMPq8ZdtzfQGC6+WMrg4AHW1k=";
             environment = {
               "LIVEKIT_JWT_PORT" = "8080";
               "LIVEKIT_URL" = "https://matrix-rtc-sfu.${domain}";
