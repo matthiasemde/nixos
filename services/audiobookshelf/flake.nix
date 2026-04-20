@@ -15,7 +15,7 @@
         {
           audiobookshelf = {
             rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.33.2@sha256:a44ed89b3e845faa1f7d353f2cc89b2fcd8011737dd14075fa963cf9468da3a5";
-            nixSha256 = "sha256-vqjTXtWv3nLVUPxjkSZSCzgCQgZl8dKCwRa+S4Tfyw4=";
+            nixSha256 = "sha256-GHUZcN9o31StqHeXOGJfJ3JX3+RpTtCQaomO5tB+1d4=";
             environment = {
               TZ = "Europe/Berlin";
             };
