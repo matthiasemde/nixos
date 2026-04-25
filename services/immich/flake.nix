@@ -93,6 +93,29 @@
               "traefik.enable" = "false";
             };
           };
+
+          immich-kiosk = {
+            rawImageReference = "ghcr.io/damongolding/immich-kiosk:0.35.0@sha256:c3794fc2423746e14d87d0c9a1bfbadee959b3669c23c34c3e59d67fdd308830";
+            nixSha256 = "sha256-IAbVQ5ulCiO7gC74oLVAFCmocgR736QhNxOTOLHxuh0=";
+            environment = {
+              LANG = "de_DE";
+              TZ = "Europe/Berlin";
+              KIOSK_IMMICH_URL = "http://immich-app:2283";
+              KIOSK_DISABLE_UI = "true";
+              KIOSK_DURATION = "3600"; # 1 hour
+              KIOSK_BACKGROUND_BLUR_AMOUNT = "200";
+              KIOSK_BEHIND_PROXY = "true";
+            };
+            environmentFiles = getServiceEnvFiles "immich";
+            networks = [
+              backendNetwork
+              "traefik"
+            ];
+            labels = mkTraefikLabels {
+              name = "immich-kiosk";
+              port = "3000";
+            };
+          };
         };
     };
 }

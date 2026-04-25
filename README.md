@@ -107,6 +107,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── DB_PASSWORD.env.age
 │   │       ├── DB_PASSWORD.env.age.nix
+│   │       ├── kiosk-credentials.env.age
+│   │       ├── kiosk-credentials.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
 │   ├── kopia
@@ -167,6 +169,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
+│   ├── ollama
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── open-webui-oidc-credentials.env.age
+│   │       ├── open-webui-oidc-credentials.env.age.nix
+│   │       ├── open-webui-secrets.env.age
+│   │       └── open-webui-secrets.env.age.nix
 │   ├── outline
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -273,7 +282,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── .woodpecker
     └── deploy.yaml
 
-72 directories, 197 files
+74 directories, 202 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
