@@ -107,6 +107,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── DB_PASSWORD.env.age
 │   │       ├── DB_PASSWORD.env.age.nix
+│   │       ├── kiosk-credentials.env.age
+│   │       ├── kiosk-credentials.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
 │   ├── kopia
@@ -273,7 +275,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── .woodpecker
     └── deploy.yaml
 
-72 directories, 197 files
+72 directories, 199 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
