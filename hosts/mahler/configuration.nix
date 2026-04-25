@@ -57,6 +57,14 @@
     "flakes"
   ];
 
+  # Clean up nix store and remove old generations automatically
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  nix.optimise.automatic = true; # Optimize the Nix store periodically
+
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
