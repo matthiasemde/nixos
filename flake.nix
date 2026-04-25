@@ -40,6 +40,7 @@
     outline.url = "path:./services/outline";
     microbin.url = "path:./services/microbin";
     silverbullet.url = "path:./services/silverbullet";
+    ollama.url = "path:./services/ollama";
   };
 
   outputs =
@@ -78,6 +79,7 @@
       outline,
       microbin,
       silverbullet,
+      ollama,
       ...
     }:
     {
@@ -131,6 +133,7 @@
             outline
             microbin
             silverbullet
+            ollama
           ];
           getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
           getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
