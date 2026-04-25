@@ -107,6 +107,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── DB_PASSWORD.env.age
 │   │       ├── DB_PASSWORD.env.age.nix
+│   │       ├── kiosk-credentials.env.age
+│   │       ├── kiosk-credentials.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
 │   ├── kopia
