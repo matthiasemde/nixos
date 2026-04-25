@@ -15,12 +15,18 @@ This repository holds the configuration of my homelab powered by NixOS
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
-│   └── mahler
+│   ├── mahler
+│   │   ├── configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── secrets
+│   │       ├── WEBHOOK_SECRET.env.age
+│   │       └── WEBHOOK_SECRET.env.age.nix
+│   └── vogel
 │       ├── configuration.nix
 │       ├── hardware-configuration.nix
 │       └── secrets
-│           ├── WEBHOOK_SECRET.env.age
-│           └── WEBHOOK_SECRET.env.age.nix
+│           ├── smb-credentials.env.age
+│           └── smb-credentials.env.age.nix
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
@@ -119,7 +125,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── nginx.conf
 │   │   │   └── php-fpm.conf
 │   │   ├── flake.nix
-│   │   ├── secrets
 │   │   └── server
 │   │       ├── createBitmap.php
 │   │       ├── cropImage.php
@@ -162,6 +167,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
+│   ├── ollama
+│   │   ├── flake.nix
+│   │   └── secrets
+│   │       ├── open-webui-oidc-credentials.env.age
+│   │       ├── open-webui-oidc-credentials.env.age.nix
+│   │       ├── open-webui-secrets.env.age
+│   │       └── open-webui-secrets.env.age.nix
 │   ├── outline
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -268,7 +280,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── .woodpecker
     └── deploy.yaml
 
-71 directories, 193 files
+74 directories, 202 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
