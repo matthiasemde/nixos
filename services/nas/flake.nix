@@ -45,7 +45,7 @@
             group = "users";
           };
 
-          systemd.tmpfiles.rules = builtins.map (share: "d ${share.path} 0770 ${shareUser} users -") shares;
+          systemd.tmpfiles.rules = builtins.map (share: "d ${share.path} 0777 ${shareUser} users -") shares;
 
           services.samba = {
             enable = true;
