@@ -96,6 +96,8 @@
         in
         {
           # Matrix Authentication Service Database
+          # psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "UPDATE users SET can_request_admin=1 WHERE username='@matthiasemde:emdecloud.de'"
+          # psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "UPDATE users SET admin=1 WHERE name='@matthiasemde:emdecloud.de'"
           matrix-auth-database = {
             rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
             nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
@@ -130,10 +132,35 @@
               "traefik"
               authBackendNetwork
             ];
-            labels = mkTraefikLabels {
-              name = "matrix-auth";
-              port = "8080";
-            };
+            labels =
+              let
+                # MAS compat endpoints that must be routed to MAS instead of Synapse.
+                # Synapse returns 404 for these when matrix_authentication_service is enabled.
+                compatPaths = builtins.concatStringsSep " || " [
+                  "PathPrefix(`/_matrix/client/v3/login`)"
+                  "PathPrefix(`/_matrix/client/v3/logout`)"
+                  "PathPrefix(`/_matrix/client/v3/refresh`)"
+                ];
+              in
+              (mkTraefikLabels {
+                name = "matrix-auth";
+                port = "8080";
+              })
+              // {
+                "traefik.http.routers.matrix-auth-compat-local.entrypoints" = "web";
+                "traefik.http.routers.matrix-auth-compat-local.rule" =
+                  "Host(`matrix.${hostname}.local`) && (${compatPaths})";
+                "traefik.http.routers.matrix-auth-compat-local.service" = "matrix-auth-compat";
+
+                "traefik.http.routers.matrix-auth-compat-public.entrypoints" = "websecure";
+                "traefik.http.routers.matrix-auth-compat-public.rule" =
+                  "Host(`matrix.${domain}`) && (${compatPaths})";
+                "traefik.http.routers.matrix-auth-compat-public.tls.certresolver" = "myresolver";
+                "traefik.http.routers.matrix-auth-compat-public.tls.domains[0].main" = "matrix.${domain}";
+                "traefik.http.routers.matrix-auth-compat-public.service" = "matrix-auth-compat";
+
+                "traefik.http.services.matrix-auth-compat.loadbalancer.server.port" = "8080";
+              };
           };
 
           synapse-database = {
@@ -306,6 +333,27 @@
                 port = "7880";
               }
             );
+          };
+
+          # ntfy push notification server (UnifiedPush gateway for Matrix clients)
+          synapse-ntfy = {
+            rawImageReference = "binwiederhier/ntfy:v2.20@sha256:186adf196099f45886bb8950d9ec42c17969d0fa99e0f1a414a92afcc085b478";
+            nixSha256 = "sha256-FGRdyO6vDrptEVJSNswTp2Bpm+fVg0Zs+no9m3x1Tx8=";
+            environment = {
+              "NTFY_BASE_URL" = "https://ntfy.${domain}";
+              "NTFY_BEHIND_PROXY" = "true";
+              "NTFY_AUTH_DEFAULT_ACCESS" = "deny-all";
+              "NTFY_ENABLE_SIGNUP" = "false";
+            };
+            networks = [
+              "traefik"
+              backendNetwork
+            ];
+            cmd = [ "serve" ];
+            labels = mkTraefikLabels {
+              name = "ntfy";
+              port = "80";
+            };
           };
 
           # Element Call JWT Auth Service for MatrixRTC
