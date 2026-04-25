@@ -15,12 +15,18 @@ This repository holds the configuration of my homelab powered by NixOS
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
-│   └── mahler
+│   ├── mahler
+│   │   ├── configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── secrets
+│   │       ├── WEBHOOK_SECRET.env.age
+│   │       └── WEBHOOK_SECRET.env.age.nix
+│   └── vogel
 │       ├── configuration.nix
 │       ├── hardware-configuration.nix
 │       └── secrets
-│           ├── WEBHOOK_SECRET.env.age
-│           └── WEBHOOK_SECRET.env.age.nix
+│           ├── smb-credentials.env.age
+│           └── smb-credentials.env.age.nix
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
@@ -101,6 +107,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── secrets
 │   │       ├── DB_PASSWORD.env.age
 │   │       ├── DB_PASSWORD.env.age.nix
+│   │       ├── kiosk-credentials.env.age
+│   │       ├── kiosk-credentials.env.age.nix
 │   │       ├── POSTGRES_PASSWORD.env.age
 │   │       └── POSTGRES_PASSWORD.env.age.nix
 │   ├── kopia
@@ -119,7 +127,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── nginx.conf
 │   │   │   └── php-fpm.conf
 │   │   ├── flake.nix
-│   │   ├── secrets
 │   │   └── server
 │   │       ├── createBitmap.php
 │   │       ├── cropImage.php
@@ -268,7 +275,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── .woodpecker
     └── deploy.yaml
 
-71 directories, 193 files
+72 directories, 199 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
