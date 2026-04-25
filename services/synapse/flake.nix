@@ -338,7 +338,7 @@
           # ntfy push notification server (UnifiedPush gateway for Matrix clients)
           synapse-ntfy = {
             rawImageReference = "binwiederhier/ntfy:v2.22@sha256:d8b3408c75d5ae78e03339af6103e7e6195e56573eea6f1ad34bb4dc4f44f340";
-            nixSha256 = "sha256-FGRdyO6vDrptEVJSNswTp2Bpm+fVg0Zs+no9m3x1Tx8=";
+            nixSha256 = "sha256-1vDC0ndMeeHSrCbVRNsavzXDgnBBOHewEH4k4YnmlVQ=";
             environment = {
               "NTFY_BASE_URL" = "https://ntfy.${domain}";
               "NTFY_BEHIND_PROXY" = "true";
