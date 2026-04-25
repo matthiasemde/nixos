@@ -4,11 +4,12 @@ This directory contains the NixOS configuration for the Matrix Synapse homeserve
 
 ## Architecture
 
-The service consists of six containers:
+The service consists of seven containers:
 - **synapse-app**: The main Matrix Synapse server
 - **synapse-database**: PostgreSQL database for persistent storage
 - **synapse-redis**: Redis for caching and replication
 - **synapse-admin**: Web-based admin interface for managing the homeserver
+- **synapse-ntfy**: ntfy push notification server (UnifiedPush gateway)
 - **matrix-auth-app**: Matrix Authentication Service (next-gen auth per MSC3861)
 - **matrix-auth-database**: PostgreSQL database for MAS authentication data
 
@@ -114,7 +115,7 @@ The admin interface is pre-configured to:
 - [x] **Generate and encrypt all required secrets** (see Secrets section above)
 - [x] **Create data directories**:
   ```bash
-  sudo mkdir -p /data/services/synapse/{db,redis,data/media_store,data/keys}
+  sudo mkdir -p /data/services/synapse/{db,redis,data/media_store,data/keys,ntfy/cache,ntfy/data}
   sudo chown -R 991:991 /data/services/synapse/data  # Synapse runs as UID 991
   ```
 
