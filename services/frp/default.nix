@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   getEnvFiles,
   ...
@@ -8,7 +9,7 @@ let
   frpPkg = pkgs.frp;
   configDerivation = pkgs.runCommand "frp-config" { } ''
     mkdir -p $out/etc/frp
-    cp ${./config/frpc.toml} $out/etc/frp/frpc.toml
+    cp ${config.frp.configPath} $out/etc/frp/frpc.toml
   '';
   frpcImage = pkgs.dockerTools.buildImage {
     name = "frpc";
@@ -32,18 +33,25 @@ let
   };
 in
 {
-  myVirtualization.networks."frp-ingress" = "--ipv6";
+  options.frp.configPath = lib.mkOption {
+    type = lib.types.path;
+    description = "Path to the FRP configuration file.";
+  };
 
-  myVirtualization.containers.frp = {
-    image = "frpc:${frpPkg.version}";
-    imageFile = frpcImage;
-    networks = [
-      "frp-ingress"
-      "pterodactyl_nw"
-    ];
-    environmentFiles = getEnvFiles "frp" "server";
-    labels = {
-      "traefik.enable" = "false";
+  config = {
+    myVirtualization.networks."frp-ingress" = "--ipv6";
+
+    myVirtualization.containers.frp = {
+      image = "frpc:${frpPkg.version}";
+      imageFile = frpcImage;
+      networks = [
+        "frp-ingress"
+        "pterodactyl_nw"
+      ];
+      environmentFiles = getEnvFiles "frp" "server";
+      labels = {
+        "traefik.enable" = "false";
+      };
     };
   };
 }

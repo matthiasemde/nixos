@@ -1,0 +1,12 @@
+serverAddr = "vps.emdecloud.de"
+serverPort = 7000
+
+auth.method = "token"
+auth.token = "{{ .Envs.FRP_TOKEN }}"
+
+[[proxies]]
+name = "bartok-traefik-https"
+type = "tcp"
+localIP = "traefik"
+localPort = 443
+remotePort = 9443
