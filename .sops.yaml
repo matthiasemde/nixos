@@ -9,7 +9,7 @@ keys:
   # Extract with: grep "^# public key:" secrets/host-key.nix.<host>
   - &mahler_host "age1hwxs9ywdr7s8kpx9lvjn77fv8ylcchrjpzsq2txaqlnu5zrtj4xq7wjhtu"
   - &vogel_host "age1f32efgu06a3vaqlkvtt9zecydc486md0ft9jrxqmrd2mrscme5hqqcy8c6"
-  - &bartok_host "age19d7k2v2s59n24tuhkyanhnd0cpzlyns96n7nhu2ars3qurjyaakq6cn8pd"
+  - &bartok_host "age1e6vq70mlyx86jsq0g82x6gzkz3gkjhd7w65espw2jvrx9yrgg5rqj78fea"
 
 creation_rules:
   - path_regex: hosts/mahler/secrets/.*$

@@ -55,6 +55,16 @@
         ];
       };
 
+      nixosConfigurations.bartok = mkHost {
+        nixpkgs = nixpkgs-stable;
+        domain = "remote.emdecloud.de";
+        modules = [
+          ./hosts/bartok/configuration.nix
+          ./hosts/bartok/services.nix
+          ./virtualization
+        ];
+      };
+
       nixosConfigurations.vogel = mkHost {
         inherit nixpkgs;
         modules = [ ./hosts/vogel/configuration.nix ];
