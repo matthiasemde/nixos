@@ -7,30 +7,35 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       frpPkg = pkgs.frp;
-      configDerivation = pkgs.runCommand "frp-config" { } ''
-        mkdir -p $out/etc/frp
-        cp ${./config/frpc.toml} $out/etc/frp/frpc.toml
-      '';
-      frpcImage = pkgs.dockerTools.buildImage {
-        name = "frpc";
-        tag = frpPkg.version;
-        copyToRoot = [
-          pkgs.bashInteractive # bash with useful builtins
-          pkgs.coreutils # ls, cat, cp, etc.
-          pkgs.iputils # ping
-          pkgs.curl # curl
-          pkgs.bind # dig + nslookup
-          frpPkg
-          configDerivation
-        ];
-        config = {
-          Cmd = [
-            "${frpPkg}/bin/frpc"
-            "-c"
-            "/etc/frp/frpc.toml"
+
+      mkFrpcImage =
+        configPath:
+        let
+          configDerivation = pkgs.runCommand "frp-config" { } ''
+            mkdir -p $out/etc/frp
+            cp ${configPath} $out/etc/frp/frpc.toml
+          '';
+        in
+        pkgs.dockerTools.buildImage {
+          name = "frpc";
+          tag = frpPkg.version;
+          copyToRoot = [
+            pkgs.bashInteractive
+            pkgs.coreutils
+            pkgs.iputils
+            pkgs.curl
+            pkgs.bind
+            frpPkg
+            configDerivation
           ];
+          config = {
+            Cmd = [
+              "${frpPkg}/bin/frpc"
+              "-c"
+              "/etc/frp/frpc.toml"
+            ];
+          };
         };
-      };
     in
     {
       name = "frp";
@@ -40,7 +45,15 @@
         };
       };
       containers =
-        { getContainerEnvFiles, ... }:
+        {
+          getContainerEnvFiles,
+          serviceArgs ? { },
+          ...
+        }:
+        let
+          configPath = (serviceArgs.frp or { }).configPath or ./config/frpc.toml;
+          frpcImage = mkFrpcImage configPath;
+        in
         {
           frp = {
             image = "frpc:${frpPkg.version}";

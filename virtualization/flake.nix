@@ -11,7 +11,8 @@
           lib,
           hostname,
           domain,
-          services,
+          services ? [ ],
+          serviceArgs ? { },
           getContainerEnvFiles,
           getContainerFiles,
           ...
@@ -166,6 +167,7 @@
                       domain
                       mkTraefikLabels
                       parseDockerImageReference
+                      serviceArgs
                       ;
                     getContainerEnvFiles = getContainerEnvFiles service.name;
                     getContainerFiles = getContainerFiles service.name;

@@ -10,8 +10,15 @@
           hostname,
           mkTraefikLabels,
           getContainerEnvFiles,
+          serviceArgs ? { },
           ...
         }:
+        let
+          kopiaArgs = serviceArgs.kopia or { };
+          backupPaths = kopiaArgs.backupPaths or [ ];
+          repositoryPath = kopiaArgs.repositoryPath or "/backup/kopia/repositories/main";
+          backupVolumes = map (path: "${path}:${path}:ro") backupPaths;
+        in
         {
           kopia = {
             rawImageReference = "kopia/kopia:0.22.3@sha256:4dcc208c1b191770bf4d0854f8deec06b4a16b35be4b63abdcfa9755cee7960e";
@@ -36,14 +43,12 @@
               "/data/services/kopia/certs:/certs"
               # "/data/services/kopia/cache/dir:/app/cache"
 
-              # Mount local folders to snapshot
-              "/data/services:/data/services:ro"
-              "/data/nas:/data/nas:ro"
               # Mount repository location
-              "/backup/kopia/repositories/main:/repository"
+              "${repositoryPath}:/repository"
               # Mount path for browsing mounted snapshots
               "/tmp/kopia-browse:/tmp:shared"
-            ];
+            ]
+            ++ backupVolumes;
             environment = {
               "USER" = "User";
             };
@@ -55,9 +60,9 @@
               "start"
               # "--tls-generate-cert" # needed only once on first startup
               "--tls-cert-file"
-              "/certs/kopia-mahler.cert"
+              "/certs/kopia-${hostname}.cert"
               "--tls-key-file"
-              "/certs/kopia-mahler.key"
+              "/certs/kopia-${hostname}.key"
               "--address"
               "0.0.0.0:51515"
               "--metrics-listen-addr"

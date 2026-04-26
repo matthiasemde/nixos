@@ -100,6 +100,18 @@
         specialArgs = {
           hostname = "mahler";
           domain = "emdecloud.de";
+          serviceArgs = {
+            kopia = {
+              backupPaths = [
+                "/data/services"
+                "/data/nas"
+              ];
+              repositoryPath = "/backup/kopia/repositories/main";
+            };
+            frp = {
+              configPath = ./hosts/mahler/frpc.toml;
+            };
+          };
           services = [
             homepage
             traefik
@@ -151,6 +163,32 @@
         specialArgs = {
           hostname = "vogel";
           services = [ ];
+        };
+      };
+
+      nixosConfigurations.bartok = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ./hosts/bartok/configuration.nix
+
+          sops-nix.nixosModules.default
+
+          secret-mgmt.nixosModules.default
+        ];
+
+        specialArgs = {
+          hostname = "bartok";
+          serviceArgs = {
+            kopia = {
+              backupPaths = [ ];
+              repositoryPath = "/backup/kopia/repositories/main";
+            };
+            frp = {
+              configPath = ./hosts/bartok/frpc.toml;
+            };
+          };
+          services = [ kopia frp traefik] ;
         };
       };
     };
