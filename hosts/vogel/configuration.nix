@@ -13,6 +13,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../tools/auto-deploy.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -135,28 +136,46 @@
     cifs-utils
   ];
 
+  # Automatic deployment: pull origin/main every Tuesday at 01:00 and rebuild.
+  # Persistent=true ensures the deployment runs on next boot if the machine was off.
+  services.nixos-auto-deploy = {
+    enable = true;
+    repoUrl = "https://github.com/matthiasemde/nixos.git";
+    persistent = true;
+  };
+
   # SMB mounts from mahler
   # Credentials file format (encrypted via agenix at hosts/vogel/secrets/smb-credentials.age):
   #   username=fileshare
   #   password=<password>
-  fileSystems = lib.listToAttrs (map (share: {
-    name = "/mnt/mahler/${share}";
-    value = {
-      device = "//mahler/${share}";
-      fsType = "cifs";
-      options = [
-        "credentials=/run/agenix/vogel-smb-credentials.env"
-        "uid=1000"
-        "gid=1000"
-        "_netdev"
-        "noauto"
-        "x-systemd.automount"
-        "x-systemd.idle-timeout=60"
-        "x-systemd.device-timeout=5s"
-        "x-systemd.mount-timeout=30s"
-      ];
-    };
-  }) [ "home" "files" "paperless" "navidrome" "audiobookshelf" ]);
+  fileSystems = lib.listToAttrs (
+    map
+      (share: {
+        name = "/mnt/mahler/${share}";
+        value = {
+          device = "//mahler/${share}";
+          fsType = "cifs";
+          options = [
+            "credentials=/run/agenix/vogel-smb-credentials.env"
+            "uid=1000"
+            "gid=1000"
+            "_netdev"
+            "noauto"
+            "x-systemd.automount"
+            "x-systemd.idle-timeout=60"
+            "x-systemd.device-timeout=5s"
+            "x-systemd.mount-timeout=30s"
+          ];
+        };
+      })
+      [
+        "home"
+        "files"
+        "paperless"
+        "navidrome"
+        "audiobookshelf"
+      ]
+  );
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

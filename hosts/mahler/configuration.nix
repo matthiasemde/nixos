@@ -13,6 +13,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../tools/auto-deploy.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -142,37 +143,11 @@
     ];
   };
 
-  # Deployment webhook listener
-  # systemd.services.webhook-listener =
-  #   let
-  #     repoDir = ../..;
-  #     webhookScript = ../../tools/webhook-listener.py;
-  #     deployScript = ../../tools/deploy.sh;
-  #   in
-  #   {
-  #     description = "NixOS Deployment Webhook Listener";
-  #     after = [ "network.target" ];
-  #     wantedBy = [ "multi-user.target" ];
-
-  #     serviceConfig = {
-  #       Type = "simple";
-  #       User = "root";
-  #       ExecStart = "${pkgs.python3}/bin/python3 -u ${webhookScript} ${deployScript} /home/matthias/infra";
-  #       Restart = "always";
-  #       RestartSec = 10;
-
-  #       # Ensure PATH includes system binaries
-  #       Environment = "PATH=/run/current-system/sw/bin PYTHONUNBUFFERED=1";
-
-  #       # Security
-  #       NoNewPrivileges = false;
-  #       PrivateTmp = true;
-
-  #       # Logging
-  #       StandardOutput = "journal";
-  #       StandardError = "journal";
-  #     };
-  #   };
+  # Automatic deployment: pull origin/main every Tuesday at 01:00 and rebuild
+  services.nixos-auto-deploy = {
+    enable = true;
+    repoUrl = "https://github.com/matthiasemde/nixos.git";
+  };
 
   # Open ports in the firewall.
   networking = {
@@ -182,7 +157,6 @@
         53 # Allow TCP DNS
         9100 # Prometheus Node Exporter
         9323 # Prometheus Docker metrics
-        9999 # Webhook
       ];
       allowedUDPPorts = [ 53 ]; # Allow UDP DNS
     };
