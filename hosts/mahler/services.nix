@@ -74,8 +74,16 @@
 
     woodpecker.adminUser = "matthiasemde";
 
+    frp.configPath = ./frpc.toml;
     mealie.oidcClientId = "e5DDiJkn8eaMjYMNt85W3NaDshnu5s67lXy79ava";
     grafana.oidcClientId = "E0ryu0936Q62OLtR4W1DHdPjz87RtJp3Jn2pWb27";
+    kopia = {
+      repositoryPath = "/backup/kopia/repositories/main";
+      backupPaths = [
+        "/data/services"
+        "/data/nas"
+      ];
+    };
     paperless.oidcClientId = "MbfRgCUPQJ5HUybc2X8mB52cYFvyCVNt2hXgHOCV";
   };
 }
