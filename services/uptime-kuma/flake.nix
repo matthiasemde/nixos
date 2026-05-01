@@ -14,7 +14,7 @@
         }:
         {
           uptime-kuma = {
-            rawImageReference = "louislam/uptime-kuma:2.2.1@sha256:7337368a77873f159435de9ef09567f68c31285ed5f951dec36256c4b267ee44";
+            rawImageReference = "louislam/uptime-kuma:2.3.0@sha256:a8e5e69ce185d5425fcbf2ab14ddf808df5651fb2747a46a17cecf8ed5fd1af2";
             nixSha256 = "sha256-ti0WG4YlY/dY1uUfwZ8MZRMxql9ONya5+EeOwpBuMeM=";
             networks = [
               "traefik"
