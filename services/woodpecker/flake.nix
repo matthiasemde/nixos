@@ -24,7 +24,7 @@
         {
           woodpecker-server = {
             rawImageReference = "woodpeckerci/woodpecker-server:v3.14.0@sha256:b79e5f8938bf8c96c307e356506b4ec7f83dd0361f2ea0eac9b8825342b6c976";
-            nixSha256 = "sha256-bO1jqvRwn8os7MgSU8V/eKGi/6oQt1Tb8KIfn8t+NZ0=";
+            nixSha256 = "sha256-oPxDMYuvAKFHFdRaqoIWbvd4U8ltYtLtyCIaOQp4oUM=";
             environment = {
               "WOODPECKER_HOST" = "https://ci.${domain}";
               "WOODPECKER_OPEN" = "false";
