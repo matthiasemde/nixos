@@ -30,7 +30,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.16.0@sha256:969d33b20ef4449937ee7bce9e05d159c10d9d1504d9374f2b7d43087bbff924";
-          matrixAuthNixSha256 = "sha256-0XIXF14oJPW3OeEFlh7IFFasFyopONL4cNQQ/c4L2ks=";
+          matrixAuthNixSha256 = "sha256-49xzfqgeUelSriFHvrlOJLjpJyGsPXfxHW5i71yegA4=";
           matrixAuthImageReference = parseDockerImageReference matrixAuthRawImageReference;
           matrixAuthImage = pkgs.dockerTools.pullImage {
             imageName = matrixAuthImageReference.name;
