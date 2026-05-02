@@ -16,8 +16,8 @@
         }:
         {
           traefik = {
-            rawImageReference = "traefik:v3.6.14@sha256:69e53ec058da043733965df5ce17028f1a18f71b4d131ba361583945bead39eb";
-            nixSha256 = "sha256-+bwWxo5LteSGbiLXHdqyrybKnEUotf3F9TquEQh3HPI=";
+            rawImageReference = "traefik:v3.6.15@sha256:8cb20d16e01a53d8d7f7696ac2f1af7d200d5c9984d226ce2299731d9eab6d6c";
+            nixSha256 = "sha256-79n9J4vC4H8YXIXWIpf0VozSWTJTzhB7VJhRjk8XZgI=";
             ports = [
               "80:80"
               "443:443"
