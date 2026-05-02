@@ -32,7 +32,7 @@
         }:
         {
           nextcloud-app = {
-            rawImageReference = "nextcloud:33.0.2-apache@sha256:2176a451aa8fbd9f003a3d745978377e9a5213850e0181f4bcb24be63885175b";
+            rawImageReference = "nextcloud:33.0.3-apache@sha256:76f04e434a82572dbfee7ad6dca313229eade89ee538fccd2bf6396f4440d48b";
             nixSha256 = "sha256-8lmc0F7R9tByFMXz3AfmoB/RxG0gfURVvwNQnz7Vios=";
             volumes = [
               "/data/services/nextcloud/app/config:/var/www/html/config"
