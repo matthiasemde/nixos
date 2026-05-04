@@ -22,7 +22,7 @@
         }:
         {
           outline-app = {
-            rawImageReference = "outlinewiki/outline:1.7.0@sha256:b13ccd15653513a79eb66283bfa91287f5e3d0944d8cb056d5288b8565992de5";
+            rawImageReference = "outlinewiki/outline:1.7.1@sha256:361df7040e6f0d7abac768b99f40122197921626a7e69501aabb5fcb496fc1b4";
             nixSha256 = "sha256-d9O4LnDJ+l1zNJpxiQg/xEic25dt5F0hnR2wmcpXYiY=";
             networks = [
               backendNetwork
