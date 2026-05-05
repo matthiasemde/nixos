@@ -23,8 +23,8 @@
         }:
         {
           ollama = {
-            rawImageReference = "ollama/ollama:0.23.0@sha256:5600a652d1081050f398152127c584222546354491f27fe47ccbc6351bc870bd";
-            nixSha256 = "sha256-uK4h4O+/TCqzjKYLQQSTQhtTRBljMEm1dnVKE5Qa6lE=";
+            rawImageReference = "ollama/ollama:0.23.1@sha256:6077dbbd6508dce8973f8b91c30d8026b1279ab0483e15f0dfad469dba676c2f";
+            nixSha256 = "sha256-w3RvmIJICzasiYW/aoAHyvqpeBS4S0gk7TR6pbuOvGc=";
             networks = [
               "traefik"
               backendNetwork
