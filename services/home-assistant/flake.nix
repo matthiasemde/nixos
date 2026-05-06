@@ -20,7 +20,7 @@
         {
           home-assistant = {
             rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.5@sha256:8edcb16cff8158e87a3a2b48b3bcca05c30dcea0212eb6a2fe940b6d52ed216a";
-            nixSha256 = "sha256-pNzwU+pZb6nrw60vM9OUuwtu/hGOpmdw0WxG2ThVQXE=";
+            nixSha256 = "sha256-vDeHmDqwjLyZwjGWd99iAb8UuuQs6wogt/BF91vwMh4=";
             volumes = [
               "/etc/logs/home-assistant.log:/config/home-assistant.log"
               "/etc/localtime:/etc/localtime:ro"
