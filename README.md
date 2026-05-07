@@ -277,11 +277,10 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
 │   └── pre-commit-hook.sh
-├── virtualization
-│   └── flake.nix
-└── .woodpecker
+└── virtualization
+    └── flake.nix
 
-74 directories, 203 files
+73 directories, 203 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

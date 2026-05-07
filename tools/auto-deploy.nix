@@ -26,7 +26,7 @@ in
 
     calendar = lib.mkOption {
       type = lib.types.str;
-      default = "Tue *-*-* 01:00:00 Europe/Berlin";
+      default = "*-*-* 05:00:00 Europe/Berlin";
       description = "systemd OnCalendar expression for when to trigger the deployment.";
     };
 
@@ -46,6 +46,7 @@ in
       description = "Automatic NixOS deployment from origin/main";
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
+      conflicts = [ "nixos-rebuild-switch-to-configuration.service" ];
 
       environment = {
         # nixos-rebuild lives in the current system profile; git is pulled from the store

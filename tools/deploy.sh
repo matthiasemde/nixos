@@ -52,6 +52,13 @@ log() {
 log "=== Starting deployment ==="
 log "Deploy dir   : $DEPLOY_DIR"
 
+# Bail out if a previous rebuild is still running (can happen when daemon-reload
+# kills this service mid-flight but the transient switch unit lives on).
+if systemctl is-active --quiet nixos-rebuild-switch-to-configuration.service; then
+    log "A nixos-rebuild switch is already in progress - skipping this run."
+    exit 0
+fi
+
 # Clone on first run, otherwise just update
 if [ ! -d "$DEPLOY_DIR/.git" ]; then
     log "No clone found - cloning $REPO_URL ..."

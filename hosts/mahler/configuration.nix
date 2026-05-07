@@ -62,7 +62,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 30d";
+    options = "--delete-older-than 14d";
   };
   nix.optimise.automatic = true; # Optimize the Nix store periodically
 
@@ -79,6 +79,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
+  security.sudo.wheelNeedsPassword = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.matthias = {
@@ -121,7 +122,15 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services = {
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+  };
 
   # Enable Prometheus Node Exporter for system metrics
   services.prometheus.exporters.node = {
@@ -143,7 +152,7 @@
     ];
   };
 
-  # Automatic deployment: pull origin/main every Tuesday at 01:00 and rebuild
+  # Automatic deployment: pull origin/main every day at 05:00 and rebuild
   services.nixos-auto-deploy = {
     enable = true;
     repoUrl = "https://github.com/matthiasemde/nixos.git";
@@ -151,6 +160,7 @@
 
   # Open ports in the firewall.
   networking = {
+    resolvconf.enable = false;
     firewall = {
       enable = true;
       allowedTCPPorts = [
