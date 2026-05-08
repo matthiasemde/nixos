@@ -272,15 +272,13 @@ This repository holds the configuration of my homelab powered by NixOS
 │           └── service-credentials.env.age.nix
 ├── SETUP.md
 ├── tools
-│   ├── auto-deploy.nix
-│   ├── deploy.sh
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
 │   └── pre-commit-hook.sh
 └── virtualization
     └── flake.nix
 
-73 directories, 203 files
+73 directories, 201 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

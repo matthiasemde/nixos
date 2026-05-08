@@ -13,7 +13,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../tools/auto-deploy.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -152,10 +151,11 @@
     ];
   };
 
-  # Automatic deployment: pull origin/main every day at 05:00 and rebuild
-  services.nixos-auto-deploy = {
+  # Automatic deployment: pull origin/main every day at 05:00 and rebuild.
+  system.autoUpgrade = {
     enable = true;
-    repoUrl = "https://github.com/matthiasemde/nixos.git";
+    flake = "github:matthiasemde/nixos";
+    dates = "*-*-* 05:00:00 Europe/Berlin";
   };
 
   # Open ports in the firewall.
