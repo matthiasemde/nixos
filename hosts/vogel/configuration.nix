@@ -13,7 +13,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../tools/auto-deploy.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -136,12 +135,12 @@
     cifs-utils
   ];
 
-  # Automatic deployment: pull origin/main every Tuesday at 01:00 and rebuild.
-  # Persistent=true ensures the deployment runs on next boot if the machine was off.
-  services.nixos-auto-deploy = {
+  # Automatic deployment: pull origin/main every day at 05:00 and rebuild.
+  system.autoUpgrade = {
     enable = true;
-    repoUrl = "https://github.com/matthiasemde/nixos.git";
-    persistent = true;
+    flake = "github:matthiasemde/nixos";
+    dates = "*-*-* 05:00:00 Europe/Berlin";
+    persistent = true; # Run missed deployment on next boot
   };
 
   # SMB mounts from mahler
