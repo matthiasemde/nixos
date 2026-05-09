@@ -23,8 +23,8 @@
             cp -r ${./config}/* $out/app/config
           '';
 
-          homepageRawImageReference = "ghcr.io/gethomepage/homepage:v1.12.3@sha256:cc84f2f5eb3c7734353701ccbaa24ed02dacb0d119114e50e4251e2005f3990a";
-          homepageNixSha256 = "sha256-DWj37fs8qdkNRLACNs+yPlJFal84HXqNZnK94RiF8qo=";
+          homepageRawImageReference = "ghcr.io/gethomepage/homepage:v1.13.0@sha256:690ac1f79e33000c176c2a28229ed00b49b44781e8a63f280a8ece22c161f099";
+          homepageNixSha256 = "sha256-0xmZWGL7poxstnnZqYg0BTWWr2bi2C2v27VQVfaOTOA=";
           homepageImageReference = parseDockerImageReference homepageRawImageReference;
           homepageImage = pkgs.dockerTools.pullImage {
             imageName = homepageImageReference.name;
