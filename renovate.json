@@ -65,7 +65,8 @@
         "nix-flake",
         "docker-image"
       ],
-      "automerge": false
+      "automerge": false,
+      "minimumReleaseAge": "7 days"
     },
     {
       "description": "Label minor and patch Docker image updates (automerge handled by GitHub Actions)",
@@ -85,7 +86,8 @@
         "docker-image"
       ],
       "automerge": false,
-      "prPriority": 3
+      "prPriority": 3,
+      "minimumReleaseAge": "7 days"
     },
     {
       "matchDatasources": [
