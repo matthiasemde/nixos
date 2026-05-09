@@ -27,7 +27,7 @@
           hostname,
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -59,7 +59,7 @@
               OVERWRITECLIURL = "https://nextcloud.${domain}";
               FORWARDED_FOR_HEADERS = "HTTP_X_FORWARDED_FOR";
             };
-            environmentFiles = getServiceEnvFiles "nextcloud";
+            environmentFiles = getContainerEnvFiles "nextcloud";
             labels =
               (mkTraefikLabels {
                 name = "nextcloud";
@@ -91,7 +91,7 @@
               POSTGRES_USER = "nextcloud";
               # POSTGRES_PASSWORD = "secure-password" # set via secret management;
             };
-            environmentFiles = getServiceEnvFiles "nextcloud";
+            environmentFiles = getContainerEnvFiles "nextcloud";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";

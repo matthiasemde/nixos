@@ -9,7 +9,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -33,7 +33,7 @@
               "SMTP_SECURITY" = "force_tls";
               "SMTP_PORT" = "465";
             };
-            environmentFiles = getServiceEnvFiles "vaultwarden";
+            environmentFiles = getContainerEnvFiles "vaultwarden";
             volumes = [
               "/data/services/vaultwarden/app:/data"
             ];

@@ -17,7 +17,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -67,7 +67,7 @@
               "PAPERLESS_DISABLE_REGULAR_LOGIN" = "true";
               "PAPERLESS_REDIRECT_LOGIN_TO_SSO" = "true";
             };
-            environmentFiles = getServiceEnvFiles "paperless";
+            environmentFiles = getContainerEnvFiles "paperless";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/paperless/app/data:/usr/src/paperless/data"

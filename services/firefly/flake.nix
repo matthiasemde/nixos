@@ -24,7 +24,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -53,7 +53,7 @@
               APP_URL = "https://firefly.${domain}";
               TRUSTED_PROXIES = "**";
             };
-            environmentFiles = getServiceEnvFiles name;
+            environmentFiles = getContainerEnvFiles name;
             labels =
               (mkTraefikLabels {
                 name = "firefly";
@@ -74,8 +74,8 @@
             nixSha256 = "sha256-sttTBaP4t8ug2ewdt0bb2hqlgNQEkwHTkVHRoir6RyQ=";
             # ports = [ "8123:8080" ]; # you only need to enable this during configuration
             volumes = [
-              "/run/agenix/firefly-gls.json:/data/configurations/gls.json"
-              "/run/agenix/firefly-gls-tagesgeldkonto.json:/data/configurations/gls-tagesgeldkonto.json"
+              "/run/secrets/firefly-gls.json:/data/configurations/gls.json"
+              "/run/secrets/firefly-gls-tagesgeldkonto.json:/data/configurations/gls-tagesgeldkonto.json"
             ];
             networks = [
               "${backendNetwork}"

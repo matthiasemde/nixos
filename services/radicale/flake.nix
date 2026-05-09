@@ -37,7 +37,7 @@
     {
       name = "radicale";
       containers =
-        { mkTraefikLabels, getServiceEnvFiles, ... }:
+        { mkTraefikLabels, ... }:
         {
           radicale = {
             image = "radicale:v1.0.0";
@@ -48,7 +48,6 @@
             networks = [
               "traefik"
             ];
-            # environmentFiles = getServiceEnvFiles "radicale";
             labels = mkTraefikLabels {
               name = "radicale";
               port = "5232";

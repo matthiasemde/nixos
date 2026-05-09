@@ -1,0 +1,34 @@
+keys:
+  # - Admin keys (used to encrypt secrets from your workstation) -----
+  # Your YubiKey age identity (generate with: age-plugin-yubikey --generate)
+  - &admin_yubikey "age1yubikey1qfxert3c6e83vk20ggq70r22pkvu3636cslf4kxa5gdrj900hqf2qaxhcfa"
+  # New post-quantum age key (generate with: rage-keygen --pq, see migrate.sh)
+  - &admin_pq "age1zllz3l3z9vqvvdwdch3yutfz8t3lxqg4gxnsg9urjdj0ejlax32qcaatky"
+
+  # - Host decryption keys (stored at /etc/sops/age/keys.txt on each host) -
+  # Extract with: grep "^# public key:" secrets/host-key.nix.<host>
+  - &mahler_host "age1hwxs9ywdr7s8kpx9lvjn77fv8ylcchrjpzsq2txaqlnu5zrtj4xq7wjhtu"
+  - &vogel_host "age1f32efgu06a3vaqlkvtt9zecydc486md0ft9jrxqmrd2mrscme5hqqcy8c6"
+  - &bartok_host "age19d7k2v2s59n24tuhkyanhnd0cpzlyns96n7nhu2ars3qurjyaakq6cn8pd"
+
+creation_rules:
+  - path_regex: hosts/mahler/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin_yubikey
+          - *admin_pq
+          - *mahler_host
+
+  - path_regex: hosts/vogel/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin_yubikey
+          - *admin_pq
+          - *vogel_host
+
+  - path_regex: hosts/bartok/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin_yubikey
+          - *admin_pq
+          - *bartok_host

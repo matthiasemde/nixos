@@ -22,7 +22,7 @@
           hostname,
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           parseDockerImageReference,
           ...
         }:
@@ -106,7 +106,7 @@
               # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
               "POSTGRES_DB" = "mas";
             };
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             volumes = [
               "/data/services/synapse/matrix-auth-database:/var/lib/postgresql/18/docker"
             ];
@@ -120,12 +120,12 @@
           matrix-auth-app = {
             image = "matix-auth-derived" + ":" + matrixAuthImageReference.tag;
             imageFile = matrixAuthImageDerived;
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             volumes = [
               "${./config/matrix-auth-config.yaml.j2}:/data/config.yaml.j2:ro"
               "${./render-config.py}:/render-config.py:ro"
               "${./matrix-auth-entrypoint.sh}:/entrypoint.sh:ro"
-              "/run/agenix/synapse-matrix-auth-secrets.yaml:/data/secrets.yaml:ro"
+              "/run/secrets/synapse-matrix-auth-secrets.yaml:/data/secrets.yaml:ro"
             ];
             entrypoint = "/entrypoint.sh";
             networks = [
@@ -172,7 +172,7 @@
               "POSTGRES_DB" = "synapse";
               "POSTGRES_INITDB_ARGS" = "--encoding=UTF8 --locale=C";
             };
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             volumes = [
               "/data/services/synapse/database:/var/lib/postgresql/18/docker"
             ];
@@ -207,7 +207,7 @@
             environment = {
               "SYNAPSE_CONFIG_PATH" = "/data/homeserver.yaml";
             };
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             volumes = [
               "/data/services/synapse/app:/data"
               "${./config/homeserver.yaml.j2}:/data/homeserver.yaml.j2:ro"
@@ -316,7 +316,7 @@
           livekit-sfu = {
             image = "livekit-derived:" + livekitImageReference.tag;
             imageFile = livekitImageDerived;
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             volumes = [
               "${./config/livekit-config.yaml}:/etc/livekit-pre.yaml:ro"
               "${./livekit-entrypoint.sh}:/entrypoint.sh:ro"
@@ -367,7 +367,7 @@
               # "LIVEKIT_SECRET" = ""; # Set via secret-mgmt
               "LIVEKIT_FULL_ACCESS_HOMESERVERS" = domain;
             };
-            environmentFiles = getServiceEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "synapse";
             networks = [
               "traefik"
               matrixRtcNetwork

@@ -9,7 +9,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -27,7 +27,7 @@
               ND_ENABLEUSEREDITING = "false";
               ND_ENABLEINSIGHTSCOLLECTOR = "false";
             };
-            environmentFiles = getServiceEnvFiles "navidrome";
+            environmentFiles = getContainerEnvFiles "navidrome";
             volumes = [
               "/data/services/navidrome/data:/data"
               "/data/nas/navidrome/shared-library:/music/shared:ro"

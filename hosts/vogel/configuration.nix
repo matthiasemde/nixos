@@ -19,6 +19,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  # KVM/QEMU acceleration
+  boot.kernelModules = [ "kvm-amd" ];
+
+  # If you want nicer networking defaults for VMs (NAT via libvirt)
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
+
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -103,13 +112,42 @@
     #jack.enable = true;
   };
 
+  # Configure Yubikey support
+  # following https://joinemm.dev/blog/yubikey-nixos-guide and https://github.com/drduh/YubiKey-Guide
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.pcscd.enable = true;
+  security.polkit.enable = true;
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      var actions = ["access_pcsc", "org.debian.pcsc-lite.access_card"];
+      if (actions.indexOf(action.id) !== -1 && subject.active && subject.isInGroup("ykusers")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+  security.pam = {
+    u2f = {
+      enable = true;
+      settings = {
+        cue = true;
+      };
+    };
+  };
+
+  security.sudo.wheelNeedsPassword = false;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.matthias = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+      "kvm"
+      "ykusers"
+    ]; # Enable ‘sudo’ and virtualization groups for the user.
     shell = pkgs.zsh;
   };
 
@@ -130,7 +168,6 @@
     wget
     git
     vscode
-    teamviewer
     wireguard-tools
     cifs-utils
   ];
@@ -144,7 +181,8 @@
   };
 
   # SMB mounts from mahler
-  # Credentials file format (encrypted via agenix at hosts/vogel/secrets/smb-credentials.age):
+  # Credentials file format (encrypted via sops-nix at hosts/vogel/secrets.yaml,
+  # key: vogel-smb-credentials_env):
   #   username=fileshare
   #   password=<password>
   fileSystems = lib.listToAttrs (
@@ -155,7 +193,7 @@
           device = "//mahler/${share}";
           fsType = "cifs";
           options = [
-            "credentials=/run/agenix/vogel-smb-credentials.env"
+            "credentials=/run/secrets/vogel-smb-credentials.env"
             "uid=1000"
             "gid=1000"
             "_netdev"

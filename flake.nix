@@ -7,7 +7,7 @@
     # Local flakes
     ## Utilities
     vscode-server.url = "path:./services/vscode-server";
-    agenix.url = "github:ryantm/agenix";
+    sops-nix.url = "github:Mic92/sops-nix";
     secret-mgmt.url = "path:./secret-mgmt";
 
     ## Virtualization / Services
@@ -53,7 +53,7 @@
       traefik,
       frp,
       adguard,
-      agenix,
+      sops-nix,
       secret-mgmt,
       firefly,
       home-assistant,
@@ -90,11 +90,7 @@
           ./hosts/mahler/configuration.nix
 
           vscode-server.nixosModules.default
-          agenix.nixosModules.default
-          {
-            environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
-            age.identityPaths = [ "/home/matthias/infra/secrets/host-key.nix.mahler" ];
-          }
+          sops-nix.nixosModules.default
 
           secret-mgmt.nixosModules.default
           virtualization.nixosModules.default
@@ -135,8 +131,9 @@
             silverbullet
             ollama
           ];
-          getServiceEnvFiles = secret-mgmt.lib.getServiceEnvFiles;
-          getServiceSecrets = secret-mgmt.lib.getServiceSecrets;
+          getContainerEnvFiles = secret-mgmt.lib.getContainerEnvFiles;
+          getContainerFiles = secret-mgmt.lib.getContainerFiles;
+          getContainerSecrets = secret-mgmt.lib.getContainerSecrets;
         };
       };
 
@@ -146,11 +143,7 @@
         modules = [
           ./hosts/vogel/configuration.nix
 
-          agenix.nixosModules.default
-          {
-            environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
-            age.identityPaths = [ "/home/matthias/nixos/secrets/host-key.nix.vogel" ];
-          }
+          sops-nix.nixosModules.default
 
           secret-mgmt.nixosModules.default
         ];

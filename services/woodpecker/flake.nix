@@ -18,7 +18,7 @@
           domain,
           hostname,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -34,7 +34,7 @@
               "WOODPECKER_DATABASE_DRIVER" = "sqlite3";
               "WOODPECKER_DATABASE_DATASOURCE" = "/var/lib/woodpecker/woodpecker.sqlite";
             };
-            environmentFiles = getServiceEnvFiles "woodpecker";
+            environmentFiles = getContainerEnvFiles "woodpecker";
             volumes = [
               "/data/services/woodpecker/server:/var/lib/woodpecker"
             ];
@@ -66,7 +66,7 @@
               "WOODPECKER_MAX_WORKFLOWS" = "2";
               "WOODPECKER_LOG_LEVEL" = "info";
             };
-            environmentFiles = getServiceEnvFiles "woodpecker";
+            environmentFiles = getContainerEnvFiles "woodpecker";
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"
             ];

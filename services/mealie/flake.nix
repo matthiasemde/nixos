@@ -17,7 +17,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -74,7 +74,7 @@
               "OIDC_AUTO_REDIRECT" = "true";
               "OIDC_REMEMBER_ME" = "true";
             };
-            environmentFiles = getServiceEnvFiles "mealie";
+            environmentFiles = getContainerEnvFiles "mealie";
             volumes = [
               "/data/services/mealie/app:/app/data"
             ];
@@ -107,7 +107,7 @@
               "POSTGRES_USER" = "mealie";
               # "POSTGRES_PASSWORD" = "secure-password"; # set via secret management;
             };
-            environmentFiles = getServiceEnvFiles "mealie";
+            environmentFiles = getContainerEnvFiles "mealie";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";

@@ -17,7 +17,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -39,7 +39,7 @@
               DB_HOSTNAME = "immich-database";
               REDIS_HOSTNAME = "immich-redis";
             };
-            environmentFiles = getServiceEnvFiles "immich";
+            environmentFiles = getContainerEnvFiles "immich";
             labels =
               (mkTraefikLabels {
                 name = "immich";
@@ -87,7 +87,7 @@
               POSTGRES_INITDB_ARGS = "--data-checksums";
             };
             volumes = [ "/data/services/immich/database:/var/lib/postgresql/data" ];
-            environmentFiles = getServiceEnvFiles "immich";
+            environmentFiles = getContainerEnvFiles "immich";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";
@@ -106,7 +106,7 @@
               KIOSK_BACKGROUND_BLUR_AMOUNT = "200";
               KIOSK_BEHIND_PROXY = "true";
             };
-            environmentFiles = getServiceEnvFiles "immich";
+            environmentFiles = getContainerEnvFiles "immich";
             networks = [
               backendNetwork
               "traefik"

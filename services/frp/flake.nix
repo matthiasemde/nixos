@@ -40,7 +40,7 @@
         };
       };
       containers =
-        { getServiceEnvFiles, ... }:
+        { getContainerEnvFiles, ... }:
         {
           frp = {
             image = "frpc:${frpPkg.version}";
@@ -49,7 +49,7 @@
               "frp-ingress"
               "pterodactyl_nw"
             ];
-            environmentFiles = getServiceEnvFiles "frp";
+            environmentFiles = getContainerEnvFiles "frp";
             labels = {
               # Traefik (disabled)
               "traefik.enable" = "false";

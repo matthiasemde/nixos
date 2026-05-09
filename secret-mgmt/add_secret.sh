@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
+# add_secret.sh – add or edit a secret in the appropriate per-host SOPS YAML.
+#
+# Usage:
+#   ./secret-mgmt/add_secret.sh -n <secret-name> (-s <service> | -h <hostname>)
+#
+# The script opens the target host's secrets.yaml with 'sops edit'.
+# The YAML key for the new secret follows the naming convention:
+#   <service|host>-<secret-name>  (with dots replaced by underscores)
 set -euo pipefail
 
 usage() {
   echo "Usage: $0 -n <secret-name> (-s <service> | -h <hostname>)"
   echo
-  echo "  -n <secret-name>   Name of the secret (e.g. DB_PASSWORD)"
-  echo "  -s <service>       Target service name (stores in ./services/<service>/secrets/)"
-  echo "  -h <hostname>      Target hostname (stores in ./hosts/<hostname>/secrets/)"
+  echo "  -n <secret-name>   Name of the secret (e.g. DB_PASSWORD.env)"
+  echo "  -s <service>       Target service name (secret belongs to this service)"
+  echo "  -h <hostname>      Target hostname    (host-level secret)"
   exit 1
 }
 
@@ -23,7 +31,6 @@ while getopts "s:h:n:" opt; do
   esac
 done
 
-# Validation
 if [[ "$(git rev-parse --show-toplevel)" != "$(pwd)" ]]; then
   echo "❌ Please run this script from the root of the Git repository."
   exit 1
@@ -34,48 +41,34 @@ if [[ -z "$SECRET_NAME" || (-z "$SERVICE" && -z "$HOST") || (-n "$SERVICE" && -n
   usage
 fi
 
-# Determine secret paths
+# Determine which host owns this secret.
+# Service secrets live in the mahler secrets set by default; override with HOST_OVERRIDE.
 if [[ -n "$SERVICE" ]]; then
-  SECRET_DIR="./services/${SERVICE}/secrets"
-elif [[ -n "$HOST" ]]; then
-  SECRET_DIR="./hosts/${HOST}/secrets"
+  OWNER_PREFIX="$SERVICE"
+  TARGET_HOST="${HOST_OVERRIDE:-mahler}"
+else
+  OWNER_PREFIX="$HOST"
+  TARGET_HOST="$HOST"
 fi
 
-SECRET_PATH="${SECRET_DIR}/${SECRET_NAME}.age"
-SECRET_META="${SECRET_PATH}.nix"
+SOPS_FILE="./hosts/${TARGET_HOST}/secrets.yaml"
 
-mkdir -p "$SECRET_DIR"
-
-# Discover recipients
-RECIPIENT_FILES=(./secrets/*)
-
-RECIPIENT_KEYS=()
-for file in "${RECIPIENT_FILES[@]}"; do
-if [[ -f "$file" ]]; then
-    key_line=$(sed -n 's/^# *Recipient: //p' "$file")
-    if [[ -z "$key_line" ]]; then
-      key_line=$(sed -n 's/^# public key: //p' "$file")
-    fi
-    if [[ -n "$key_line" ]]; then
-      RECIPIENT_KEYS+=("\"$key_line\"")
-    else
-      echo "⚠️ Error: no recipient key found in $file"
-      exit 0
-    fi
-  fi
-done
-
-if [[ ${#RECIPIENT_KEYS[@]} -eq 0 ]]; then
-  echo "❌ No valid recipient keys found in ./secrets/"
+if [[ ! -f "$SOPS_FILE" ]]; then
+  echo "❌ SOPS file not found: $SOPS_FILE"
+  echo "   Run secret-mgmt/migrate.sh first to create it."
   exit 1
 fi
 
-# Write .nix metadata
-echo "{ \"${SECRET_PATH}\".publicKeys = [ ${RECIPIENT_KEYS[*]} ]; }" >"$SECRET_META"
-echo "✅ Created: $SECRET_META"
+# Derive the YAML key (dots → underscores, prefix with owner)
+raw_key="${OWNER_PREFIX}-${SECRET_NAME}"
+yaml_key="${raw_key//./_}"
 
-export RULES=$SECRET_META
+echo "🔑 Secret key in SOPS YAML : $yaml_key"
+echo "📁 Runtime path            : /run/secrets/${raw_key}"
+echo "📄 SOPS file               : $SOPS_FILE"
+echo ""
+echo "Opening $SOPS_FILE for editing. Add or update the key: $yaml_key"
+echo ""
 
-# Edit secret
-echo "🔐 Opening secret: $SECRET_PATH"
-EDITOR=vim agenix -e "$SECRET_PATH"
+sops edit "$SOPS_FILE"
+

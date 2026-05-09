@@ -1,68 +1,131 @@
-# Secret Management Flake
+# Secret Management
 
-This flake provides a generic, declarative secret-management module for NixOS systems running OCI containers. It automatically discovers encrypted `*.age` secret files in arbitrary directories, registers them with `agenix`, and exposes helper functions to inject per-service secrets into container environment variables.
-
----
-
-## 📦 Inputs
-
-* **`nixpkgs`**: NixOS 24.11 channel
-* **`agenix`**: Secret-management library for NixOS
+This flake provides declarative secret management for NixOS hosts using
+[sops-nix](https://github.com/Mic92/sops-nix) with per-host SOPS-encrypted
+YAML files.  Secrets are automatically decrypted at boot and made available
+under `/run/secrets/`.
 
 ---
 
-## 🚀 How it Works
+## 📦 Structure
 
-1. **Directory/Key scanning**: You configure one or more paths under `secretMgmt.secretDirs` and `secretMgmt.publicKeys` respectively (e.g. `./services/firefly/secrets` / `./secrets/host-keys.nix.mahler`).
-2. **Secret discovery**: The module uses `builtins.readDir` + `scanDir` to find all `*.age` files.
-3. **Secret entries**: Each file is mapped to an `agenix.secrets` entry named `<basedir>-<basename>`, where:
-   * `basedir` is the parent directory name (e.g. `myservice`, `myhost`)
-   * `basename` is the filename without `.age`
-4. **Automatic injection**: Use the helper `lib.getServiceEnvFiles` to generate a list of runtime paths (e.g. `/run/agenix/myservice-db-password`) for a given service name.
-5. **OCI integration**: Drop that list into `virtualisation.oci-containers.containers.<name>.environmentFiles` (or `.environment`) to mount or inject your secrets seamlessly.
+```
+.sops.yaml                   # Key routing: which age keys encrypt which files
+hosts/
+  mahler/secrets.yaml        # All mahler + service secrets (SOPS-encrypted)
+  vogel/secrets.yaml         # vogel host secrets (SOPS-encrypted)
+  bartok/secrets.yaml        # bartok service secrets (SOPS-encrypted)
+services/<svc>/secrets/      # .age marker files (determine YAML key names)
+hosts/<host>/secrets/        # .age marker files (determine YAML key names)
+secret-mgmt/
+  flake.nix                  # NixOS module + lib helpers
+  add_secret.sh              # Add/edit secrets interactively
+  migrate.sh                 # One-time migration from agenix → sops-nix
+```
 
 ---
 
-## 🔑 Key & Rekey with YubiKey + `agenix-rekey`
+## 🔑 Key Naming Convention
 
-This section shows how to maintain both an unattended host-file key and an offline YubiKey master key.
+| Component        | Example                          |
+|------------------|----------------------------------|
+| `.age` marker    | `services/firefly/secrets/app_key.env.age` |
+| SOPS YAML key    | `firefly-app_key_env`  (dots → underscores) |
+| Runtime path     | `/run/secrets/firefly-app_key.env` (dots preserved) |
 
-1. **Generate a host-file identity** (on your server):
+---
+
+## 🚀 Initial Setup
+
+### 1 — Generate keys
+
+**Post-quantum admin key** (run once on your workstation):
+```bash
+# rage supports ML-KEM-768 + X25519 hybrid (post-quantum)
+rage-keygen -o secrets/admin-pq-key.txt
+# Keep the private key offline; note the public key printed to stdout
+```
+
+**YubiKey identity** (if not already configured):
+```bash
+age-plugin-yubikey --generate
+age-plugin-yubikey --list   # shows age1yubikey1... public key
+```
+
+### 2 — Configure `.sops.yaml`
+
+Replace the `TODO` placeholders with the actual public keys:
+```yaml
+keys:
+  - &admin_yubikey "age1yubikey1..."
+  - &admin_pq      "age1pq..."
+  - &mahler_host   "age1..."    # from /etc/sops/age/keys.txt on mahler
+  - &vogel_host    "age1..."
+  - &bartok_host   "age1..."
+```
+
+### 3 — Place host private keys on each server
 
 ```bash
-age-keygen -o secrets/host-file-key.txt
+sudo install -Dm600 /path/to/host-private.key /etc/sops/age/keys.txt
 ```
 
-   * Public key: `age1...filepub`
-
-2. **Generate a YubiKey identity** (offline):
+### 4 — Run the migration (first time only)
 
 ```bash
-age-plugin-yubikey -generate
+./secret-mgmt/migrate.sh
 ```
 
-   * Public key: `age1...yubikeypub`
+---
 
-3. **Encrypt or rekey a secret**:
+## ➕ Adding a New Secret
 
 ```bash
-# initial encryption
-echo -n "$DB_PASSWORD" \
-  | age -o services/myservice/secrets/db-password.age \
-      -r age1yld4l2thdgantrknmpe6wdcm9vszjqju98qgjw8cf64frk8lssrskhcxeq \
-      -r age1yubikey1qfxert3c6e83vk20ggq70r22pkvu3636cslf4kxa5gdrj900hqf2qaxhcfa
+# Interactive – opens the host's secrets.yaml in $EDITOR via sops
+./secret-mgmt/add_secret.sh -n my-secret.env -s <service>
+./secret-mgmt/add_secret.sh -n my-secret.env -h <hostname>
 
-# rekey later (rotations, add/remove recipients)
-agenix-rekey -i age-plugin-yubikey \
-  services/myservice/secrets/db-password.age
+# Non-interactive – set a key directly
+sops set hosts/mahler/secrets.yaml '["service-my-secret_env"]' '"VALUE"'
 ```
 
-   * This ensures every `.age` blob is encrypted to both identities.
+By convention, service secrets default to `hosts/mahler/secrets.yaml`.
+Override with `HOST_OVERRIDE=bartok ./secret-mgmt/add_secret.sh …` for
+services running on bartok.
 
-4. **Store public keys** in `./host-keys.nix`:
+---
 
-```nix
-{
-  myserver = ["age1...filepub" "age1...yubikeypub"];
-}
+## 🔧 How the NixOS Module Works
+
+1. Scans `*.age` marker files in each service/host secrets dir to discover key names.
+2. Sets `sops.defaultSopsFile = hosts/<hostname>/secrets.yaml`.
+3. Registers `sops.secrets."<yaml-key>" = { path = "/run/secrets/<original-name>"; }` for each key.
+4. `getServiceEnvFiles "svc"` → list of `/run/secrets/svc-*.env` paths (for `environmentFiles`).
+5. `getServiceSecrets  "svc"` → list of all `/run/secrets/svc-*` paths.
+
+---
+
+## 🔄 Re-keying / Key Rotation
+
+```bash
+# Rotate all secrets in a file to new recipient keys (after updating .sops.yaml)
+sops updatekeys hosts/mahler/secrets.yaml
+
+# Edit a single file in-place
+sops edit hosts/mahler/secrets.yaml
 ```
+
+---
+
+## 🔐 YubiKey + Post-Quantum Age: How They Fit Together
+
+| Key                | Purpose                                      | Stored                        |
+|--------------------|----------------------------------------------|-------------------------------|
+| YubiKey age key    | Admin encryption + offline backup decryption | Hardware token                |
+| PQ admin key       | Admin encryption from workstation            | `secrets/admin-pq-key.txt` (gitignored) |
+| Host age key       | Server-side decryption at boot               | `/etc/sops/age/keys.txt` on host |
+
+All three are listed as recipients for each host's `secrets.yaml`, so any
+one of them is sufficient to decrypt (useful for key rotation or emergency
+access).
+

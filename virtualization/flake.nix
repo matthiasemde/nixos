@@ -12,7 +12,8 @@
           hostname,
           domain,
           services,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
+          getContainerFiles,
           ...
         }:
         let
@@ -164,9 +165,10 @@
                       hostname
                       domain
                       mkTraefikLabels
-                      getServiceEnvFiles
                       parseDockerImageReference
                       ;
+                    getContainerEnvFiles = getContainerEnvFiles service.name;
+                    getContainerFiles = getContainerFiles service.name;
                   }
                 else
                   { };

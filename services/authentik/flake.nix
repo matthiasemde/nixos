@@ -31,7 +31,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -43,7 +43,7 @@
               # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
               "POSTGRES_DB" = "authentik";
             };
-            environmentFiles = getServiceEnvFiles "authentik";
+            environmentFiles = getContainerEnvFiles "authentik";
             volumes = [
               "/data/services/authentik/database:/var/lib/postgresql/18/docker"
             ];
@@ -84,7 +84,7 @@
               "AUTHENTIK_REDIS__HOST" = "authentik-redis";
               # "AUTHENTIK_SECRET_KEY" = "secret-key"; # set via secret-mgmt
             };
-            environmentFiles = getServiceEnvFiles "authentik";
+            environmentFiles = getContainerEnvFiles "authentik";
             volumes = [
               "/data/services/authentik/media:/media"
               "/data/services/authentik/custom-templates:/templates"
@@ -118,7 +118,7 @@
               "AUTHENTIK_POSTGRESQL__USER" = "authentik";
               "AUTHENTIK_REDIS__HOST" = "authentik-redis";
             };
-            environmentFiles = getServiceEnvFiles "authentik";
+            environmentFiles = getContainerEnvFiles "authentik";
             user = "root";
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"

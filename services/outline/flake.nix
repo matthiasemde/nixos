@@ -17,7 +17,7 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -70,7 +70,7 @@
               ENABLE_UPDATES = "false";
               LOG_LEVEL = "warn";
             };
-            environmentFiles = getServiceEnvFiles "outline";
+            environmentFiles = getContainerEnvFiles "outline";
             labels =
               mkTraefikLabels {
                 name = "outline";
@@ -95,7 +95,7 @@
               POSTGRES_USER = "outline";
               # POSTGRES_PASSWORD = "secure-password" # set via secret management;
             };
-            environmentFiles = getServiceEnvFiles "outline";
+            environmentFiles = getContainerEnvFiles "outline";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";

@@ -19,7 +19,7 @@
           hostname,
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getContainerEnvFiles,
           ...
         }:
         {
@@ -30,7 +30,7 @@
               backendNetwork
               "traefik"
             ];
-            environmentFiles = getServiceEnvFiles "grafana";
+            environmentFiles = getContainerEnvFiles "grafana";
             volumes = [
               "/data/services/grafana/grafana:/var/lib/grafana"
               "${./config/datasources.yml}:/etc/grafana/provisioning/datasources/datasources.yml:ro"

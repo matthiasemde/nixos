@@ -10,12 +10,12 @@
           config,
           lib,
           pkgs,
-          getServiceSecrets,
+          getContainerSecrets,
           ...
         }:
         let
           shareUser = "fileshare";
-          shareUserPasswordFile = builtins.head (getServiceSecrets "nas");
+          shareUserPasswordFile = builtins.head (getContainerSecrets "nas" "nas");
           shares = [
             {
               name = "home";
