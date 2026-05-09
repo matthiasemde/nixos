@@ -76,7 +76,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       └── FRP_TOKEN.env.age.nix
 │   ├── grafana
 │   │   ├── config
+│   │   │   ├── config.alloy
 │   │   │   ├── datasources.yml
+│   │   │   ├── loki.yml
 │   │   │   └── prometheus.yml
 │   │   ├── flake.nix
 │   │   └── secrets
@@ -278,7 +280,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-73 directories, 201 files
+73 directories, 203 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

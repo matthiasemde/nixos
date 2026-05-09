@@ -54,7 +54,6 @@
             image = "homepage-derived:v1.0.0";
             imageFile = homepageDerived;
             volumes = [
-              "/etc/logs/homepage:/app/config/logs"
               "/var/run/docker.sock:/var/run/docker.sock"
               "/data:/data"
             ];
