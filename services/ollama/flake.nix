@@ -49,7 +49,7 @@
 
           open-webui = {
             rawImageReference = "openwebui/open-webui:0.9.4@sha256:172e1fe0e89af2a07f42f2b1d943f30c8ddd7b9c2e182f3678b4790cdb83abea";
-            nixSha256 = "sha256-r7i5l5XEm5Y2FdpkHmDXgoxkk4FFVVZZ2X+Me7n0pX4=";
+            nixSha256 = "sha256-fRVV89D+3A65JgtAn59//CDRgcGToLXqlQerEB/fhj4=";
             networks = [
               "traefik"
               backendNetwork
