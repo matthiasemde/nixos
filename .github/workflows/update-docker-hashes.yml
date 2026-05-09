@@ -8,6 +8,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: update-docker-hashes-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   update-hashes:
     name: Update Docker SHA256 Hashes
@@ -96,7 +100,21 @@ jobs:
       - name: Merge PR if minor/patch
         if: steps.update.outputs.changes == 'true' && steps.check-label.outputs.has_minor_patch_label == 'true'
         run: |
-          echo "Merging PR with minor/patch label..."
-          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
+          echo "Waiting for PR to become mergeable after push..."
+          for i in $(seq 1 12); do
+            mergeable=$(gh pr view ${{ github.event.pull_request.number }} --json mergeable --jq '.mergeable')
+            echo "Attempt $i/12: mergeable=$mergeable"
+            if [ "$mergeable" = "MERGEABLE" ]; then
+              echo "Merging PR with minor/patch label..."
+              gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
+              exit 0
+            elif [ "$mergeable" = "CONFLICTING" ]; then
+              echo "PR has conflicts, cannot merge"
+              exit 1
+            fi
+            sleep 10
+          done
+          echo "PR did not become mergeable within 2 minutes"
+          exit 1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_PUSH }}
