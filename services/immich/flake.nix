@@ -96,7 +96,7 @@
 
           immich-kiosk = {
             rawImageReference = "ghcr.io/damongolding/immich-kiosk:0.38.1@sha256:28cf751b556e5c9fefc18f0c2b0ed2d6fe672df734ca3c860d6adc9b2b7fdffb";
-            nixSha256 = "sha256-YYIX5rTmw5VOUnwI+u1hyQcSWJlhR8jslfHWdIdiC50=";
+            nixSha256 = "sha256-X0BPuNpWR6p0q7mIn+JTFJVN/UseRqikYsmFURpgEMM=";
             environment = {
               LANG = "de_DE";
               TZ = "Europe/Berlin";
