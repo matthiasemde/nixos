@@ -18,6 +18,7 @@
             nixSha256 = "sha256-3n872YeNFZWoFZ2Pw8jDnHQawTju2NtlBMmlcvF6eJM=";
             networks = [
               "traefik"
+              "monitoring"
             ];
             ports = [ "51515:51515" ];
             ##########################
@@ -35,7 +36,6 @@
               "/data/services/kopia/certs:/certs"
               # "/data/services/kopia/cache/dir:/app/cache"
 
-              # "/data/services/kopia/logs/dir:/app/logs"
               # Mount local folders to snapshot
               "/data/services:/data/services:ro"
               "/data/nas:/data/nas:ro"
@@ -60,6 +60,8 @@
               "/certs/kopia-mahler.key"
               "--address"
               "0.0.0.0:51515"
+              "--metrics-listen-addr"
+              "0.0.0.0:9091"
             ];
 
             labels =
@@ -74,6 +76,8 @@
                 "homepage.icon" = "kopia";
                 "homepage.href" = "https://kopia.${hostname}.local";
                 "homepage.description" = "Deduplicating backup service";
+                "alloy.metrics.enabled" = "true";
+                "alloy.metrics.port" = "9091";
               };
           };
         };

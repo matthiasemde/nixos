@@ -46,7 +46,7 @@
               DEFAULT_LANGUAGE = "en_US";
               DEFAULT_LOCALE = "de_DE";
               TZ = "Europe/Berlin";
-              LOG_CHANNEL = "stack";
+              LOG_CHANNEL = "stderr";
               APP_LOG_LEVEL = "notice";
               AUDIT_LOG_LEVEL = "emergency";
               DB_CONNECTION = "sqlite";

@@ -8,7 +8,6 @@
       dependencies = {
         files = {
           "/data/services/home-assistant/home-assistant.db" = "644";
-          "/etc/logs/home-assistant.log" = "644";
         };
       };
       containers =
@@ -22,7 +21,6 @@
             rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.5@sha256:8edcb16cff8158e87a3a2b48b3bcca05c30dcea0212eb6a2fe940b6d52ed216a";
             nixSha256 = "sha256-vDeHmDqwjLyZwjGWd99iAb8UuuQs6wogt/BF91vwMh4=";
             volumes = [
-              "/etc/logs/home-assistant.log:/config/home-assistant.log"
               "/etc/localtime:/etc/localtime:ro"
               "/data/services/home-assistant/home-assistant.db:/config/home-assistant.db"
               "/data/services/home-assistant/.storage:/config/.storage"

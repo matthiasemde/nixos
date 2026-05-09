@@ -53,6 +53,8 @@
               REDIS_HOST = "pterodactyl-redis";
               REDIS_PORT = "6379";
 
+              LOG_CHANNEL = "stderr";
+
               # Enable Proxy
               TRUSTED_PROXIES = "0.0.0.0/0";
 
@@ -170,7 +172,6 @@
           # ---------------------------
           pterodactyl-cron = panelBaseConfig // {
             cmd = [ "p:cron" ];
-            volumes = [ "/etc/logs/pterodactyl:/var/www/html/storage/logs" ];
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";

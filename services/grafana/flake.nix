@@ -94,9 +94,10 @@
               "--storage.tsdb.path=/prometheus"
               "--web.console.libraries=/etc/prometheus/console_libraries"
               "--web.console.templates=/etc/prometheus/consoles"
-              "--storage.tsdb.retention.time=30d"
+              "--storage.tsdb.retention.time=14d"
               "--web.enable-lifecycle"
               "--web.enable-admin-api"
+              "--web.enable-remote-write-receiver"
               "--web.listen-address=0.0.0.0:9090"
             ];
             labels =
@@ -111,6 +112,8 @@
                 "homepage.icon" = "prometheus";
                 "homepage.href" = "http://prometheus.${hostname}.local";
                 "homepage.description" = "Metrics collection and storage";
+                "alloy.metrics.enabled" = "true";
+                "alloy.metrics.port" = "9090";
               };
           };
 
@@ -126,11 +129,79 @@
             ];
             networks = [
               backendNetwork
+              "monitoring"
             ];
             cmd = [
               "-enable_metrics=cpu,memory,oom_event,disk,diskIO,network"
               "-store_container_labels=false"
             ];
+            labels = {
+              # 🛡️ Traefik (disabled)
+              "traefik.enable" = "false";
+              "alloy.metrics.enabled" = "true";
+              "alloy.metrics.port" = "8080";
+            };
+          };
+
+          loki = {
+            rawImageReference = "grafana/loki:3.7.1@sha256:1694e9237e2b3d7cd4ad959bae1f21e12b6184d886d7412bd1b939fb0dd4e75c";
+            nixSha256 = "sha256-VDNcGGyIvp/S8tq0ANI9DtWoyMq/z76CJe/aESzUK3s=";
+            networks = [
+              backendNetwork
+            ];
+            volumes = [
+              "/data/services/grafana/loki:/loki"
+              "${./config/loki.yml}:/etc/loki/config.yml:ro"
+            ];
+            cmd = [ "-config.file=/etc/loki/config.yml" ];
+            labels =
+              (mkTraefikLabels {
+                name = "loki";
+                port = "3100";
+                isPublic = false;
+              })
+              // {
+                "homepage.group" = "Monitoring";
+                "homepage.name" = "Loki";
+                "homepage.icon" = "loki";
+                "homepage.href" = "http://loki.${hostname}.local";
+                "homepage.description" = "Log aggregation and storage";
+              };
+          };
+
+          alloy = {
+            rawImageReference = "grafana/alloy:v1.16.10@sha256:41e0ad9b7c74cdc0a01ca8ce10f8d8262d49029167fd0b1d2db84a0f10468284";
+            nixSha256 = "sha256-granJTLCZ/7M39cMUxhSJcQYffK1c59KBrvVUn1wrxY=";
+            networks = [
+              backendNetwork
+              "monitoring"
+              "traefik"
+            ];
+            volumes = [
+              "/var/run/docker.sock:/var/run/docker.sock:ro"
+              "${./config/config.alloy}:/etc/alloy/config.alloy:ro"
+            ];
+            cmd = [
+              "run"
+              "--server.http.listen-addr=0.0.0.0:12345"
+              "--storage.path=/var/lib/alloy"
+              "/etc/alloy/config.alloy"
+            ];
+            labels =
+              (mkTraefikLabels {
+                name = "alloy";
+                port = "12345";
+                isPublic = false;
+              })
+              // {
+                "homepage.group" = "Monitoring";
+                "homepage.name" = "Alloy";
+                "homepage.icon" = "alloy";
+                "homepage.href" = "http://alloy.${hostname}.local";
+                "homepage.description" = "Metrics and logs forwarding and processing";
+                "alloy.metrics.enabled" = "true";
+                "alloy.metrics.port" = "12345";
+              };
           };
         };
     };

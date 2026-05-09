@@ -1,0 +1,82 @@
+// Discovery
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// Relabel discovered containers into Prometheus targets.
+discovery.relabel "metrics_targets" {
+  targets = discovery.docker.containers.targets
+
+  // Only keep containers with metrics enabled.
+  rule {
+    source_labels = ["__meta_docker_container_label_alloy_metrics_enabled"]
+    regex         = "true"
+    action        = "keep"
+  }
+
+  // Build scrape address from container IP + label-defined port.
+  rule {
+    source_labels = [
+      "__meta_docker_network_ip",
+      "__meta_docker_container_label_alloy_metrics_port",
+    ]
+    separator    = ":"
+    target_label = "__address__"
+  }
+
+  // Use container name as instance label (strips leading /).
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "instance"
+  }
+}
+
+// Prometheus
+prometheus.scrape "docker" {
+  targets    = discovery.relabel.metrics_targets.output
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "node_exporter" {
+  targets = [
+    {
+      __address__ = "mahler:9100",
+      instance    = "node-exporter",
+    },
+  ]
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "http://prometheus:9090/api/v1/write"
+  }
+}
+
+// Loki
+loki.source.docker "default" {
+  host          = "unix:///var/run/docker.sock"
+  targets       = discovery.docker.containers.targets
+  forward_to    = [loki.write.default.receiver]
+  relabel_rules = discovery.relabel.docker_logs.rules
+}
+
+discovery.relabel "docker_logs" {
+  targets = []
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+
+
