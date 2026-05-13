@@ -27,7 +27,7 @@
               "traefik"
               "frp-ingress"
             ];
-            environmentFiles = getContainerEnvFiles "traefik";
+            environmentFiles = getContainerEnvFiles "server";
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"
               "${./config/traefik.toml}:/traefik.toml:ro"

@@ -15,7 +15,7 @@
         }:
         let
           shareUser = "fileshare";
-          shareUserPasswordFile = builtins.head (getContainerSecrets "nas" "nas");
+          shareUserPasswordFile = builtins.head (getContainerSecrets "nas" "fileshare");
           shares = [
             {
               name = "home";

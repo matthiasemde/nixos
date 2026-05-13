@@ -67,7 +67,7 @@
               "OAUTH_ALLOWED_ROLES" = "open-webui-users";
               "OAUTH_ADMIN_ROLES" = "admins";
             };
-            environmentFiles = getContainerEnvFiles "ollama";
+            environmentFiles = getContainerEnvFiles "open-webui";
             volumes = [
               "/data/services/open-webui/data:/app/backend/data"
             ];

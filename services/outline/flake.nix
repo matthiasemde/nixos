@@ -70,7 +70,7 @@
               ENABLE_UPDATES = "false";
               LOG_LEVEL = "warn";
             };
-            environmentFiles = getContainerEnvFiles "outline";
+            environmentFiles = getContainerEnvFiles "app";
             labels =
               mkTraefikLabels {
                 name = "outline";
@@ -95,7 +95,7 @@
               POSTGRES_USER = "outline";
               # POSTGRES_PASSWORD = "secure-password" # set via secret management;
             };
-            environmentFiles = getContainerEnvFiles "outline";
+            environmentFiles = getContainerEnvFiles "database";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";

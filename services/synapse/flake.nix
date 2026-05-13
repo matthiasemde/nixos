@@ -106,7 +106,7 @@
               # "POSTGRES_PASSWORD" = "password"; # set via secret-mgmt
               "POSTGRES_DB" = "mas";
             };
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "matrix-auth-database";
             volumes = [
               "/data/services/synapse/matrix-auth-database:/var/lib/postgresql/18/docker"
             ];
@@ -120,7 +120,7 @@
           matrix-auth-app = {
             image = "matix-auth-derived" + ":" + matrixAuthImageReference.tag;
             imageFile = matrixAuthImageDerived;
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "matrix-auth-app";
             volumes = [
               "${./config/matrix-auth-config.yaml.j2}:/data/config.yaml.j2:ro"
               "${./render-config.py}:/render-config.py:ro"
@@ -172,7 +172,7 @@
               "POSTGRES_DB" = "synapse";
               "POSTGRES_INITDB_ARGS" = "--encoding=UTF8 --locale=C";
             };
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "database";
             volumes = [
               "/data/services/synapse/database:/var/lib/postgresql/18/docker"
             ];
@@ -207,7 +207,7 @@
             environment = {
               "SYNAPSE_CONFIG_PATH" = "/data/homeserver.yaml";
             };
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "app";
             volumes = [
               "/data/services/synapse/app:/data"
               "${./config/homeserver.yaml.j2}:/data/homeserver.yaml.j2:ro"
@@ -316,7 +316,7 @@
           livekit-sfu = {
             image = "livekit-derived:" + livekitImageReference.tag;
             imageFile = livekitImageDerived;
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "livekit";
             volumes = [
               "${./config/livekit-config.yaml}:/etc/livekit-pre.yaml:ro"
               "${./livekit-entrypoint.sh}:/entrypoint.sh:ro"
@@ -367,7 +367,7 @@
               # "LIVEKIT_SECRET" = ""; # Set via secret-mgmt
               "LIVEKIT_FULL_ACCESS_HOMESERVERS" = domain;
             };
-            environmentFiles = getContainerEnvFiles "synapse";
+            environmentFiles = getContainerEnvFiles "jwt";
             networks = [
               "traefik"
               matrixRtcNetwork

@@ -47,7 +47,7 @@
             environment = {
               "USER" = "User";
             };
-            environmentFiles = getContainerEnvFiles "kopia";
+            environmentFiles = getContainerEnvFiles "server";
 
             # startup: run the server, binding to all interfaces
             cmd = [

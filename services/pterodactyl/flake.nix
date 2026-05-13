@@ -74,7 +74,7 @@
           # Panel
           # ---------------------------
           pterodactyl-panel = panelBaseConfig // {
-            environmentFiles = getContainerEnvFiles "pterodactyl";
+            environmentFiles = getContainerEnvFiles "panel";
             labels =
               (mkTraefikLabels {
                 name = "pterodactyl";
@@ -110,7 +110,7 @@
               MARIADB_RANDOM_ROOT_PASSWORD = "yes";
               MARIADB_ROOT_HOST = "localhost";
             };
-            environmentFiles = getContainerEnvFiles "pterodactyl";
+            environmentFiles = getContainerEnvFiles "database";
             labels = {
               # 🛡️ Traefik (disabled)
               "traefik.enable" = "false";
@@ -149,7 +149,7 @@
               "/data/services/pterodactyl/daemon/data:/data/services/pterodactyl/daemon/data:z"
               "/data/services/pterodactyl/daemon/config.yml:/etc/pterodactyl/config.yml"
             ];
-            environmentFiles = getContainerEnvFiles "pterodactyl";
+            # environmentFiles = getContainerEnvFiles "pterodactyl";
             labels = mkTraefikLabels {
               name = "wings-pterodactyl";
               port = "443";

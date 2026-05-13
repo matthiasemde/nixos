@@ -33,7 +33,7 @@
               "SMTP_SECURITY" = "force_tls";
               "SMTP_PORT" = "465";
             };
-            environmentFiles = getContainerEnvFiles "vaultwarden";
+            environmentFiles = getContainerEnvFiles "app";
             volumes = [
               "/data/services/vaultwarden/app:/data"
             ];

@@ -49,7 +49,7 @@
               "frp-ingress"
               "pterodactyl_nw"
             ];
-            environmentFiles = getContainerEnvFiles "frp";
+            environmentFiles = getContainerEnvFiles "server";
             labels = {
               # Traefik (disabled)
               "traefik.enable" = "false";

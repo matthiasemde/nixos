@@ -74,7 +74,7 @@
               "OIDC_AUTO_REDIRECT" = "true";
               "OIDC_REMEMBER_ME" = "true";
             };
-            environmentFiles = getContainerEnvFiles "mealie";
+            environmentFiles = getContainerEnvFiles "app";
             volumes = [
               "/data/services/mealie/app:/app/data"
             ];
