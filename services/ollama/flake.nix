@@ -48,8 +48,8 @@
           };
 
           open-webui = {
-            rawImageReference = "openwebui/open-webui:0.9.4@sha256:172e1fe0e89af2a07f42f2b1d943f30c8ddd7b9c2e182f3678b4790cdb83abea";
-            nixSha256 = "sha256-fRVV89D+3A65JgtAn59//CDRgcGToLXqlQerEB/fhj4=";
+            rawImageReference = "openwebui/open-webui:0.9.5@sha256:e045bde3b004cc7f8c319412345eb56c87ea6ac57031534a31ca37ad5424beb3";
+            nixSha256 = "sha256-DUwBhf6GCINUmgpt1LolYVsdSad5zbafYHXuYYDOIqw=";
             networks = [
               "traefik"
               backendNetwork
