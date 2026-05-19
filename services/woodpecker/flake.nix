@@ -59,7 +59,7 @@
 
           woodpecker-agent = {
             rawImageReference = "woodpeckerci/woodpecker-agent:v3.14.1@sha256:bfd70b063dff208c29eb1169756f7847087a2e7a522d74bab2dd8ae26147736c";
-            nixSha256 = "sha256-IY789dcMFKL3M+fmpmpwTQjLqmAsWogZOotdvtRz6vQ=";
+            nixSha256 = "sha256-EGouRHruzBZD95uCJRiGTQoR8Jowq/y1KkM56GVjUwg=";
             environment = {
               "WOODPECKER_SERVER" = "woodpecker-server:9000";
               "WOODPECKER_BACKEND" = "docker";
