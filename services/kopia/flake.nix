@@ -14,8 +14,8 @@
         }:
         {
           kopia = {
-            rawImageReference = "kopia/kopia:0.22.3@sha256:4dcc208c1b191770bf4d0854f8deec06b4a16b35be4b63abdcfa9755cee7960e";
-            nixSha256 = "sha256-3n872YeNFZWoFZ2Pw8jDnHQawTju2NtlBMmlcvF6eJM=";
+            rawImageReference = "kopia/kopia:0.23.0@sha256:bd6a449c263465c388339c0637dcd25562e99dcdde286c9d51ade81e138bbf2c";
+            nixSha256 = "sha256-JLg3efs2CwM7yU3N2g+4uPJfk16JRCYsXu5VQ+xBOY0=";
             networks = [
               "traefik"
               "monitoring"
