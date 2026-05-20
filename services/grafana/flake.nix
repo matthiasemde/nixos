@@ -144,7 +144,7 @@
           };
 
           loki = {
-            rawImageReference = "grafana/loki:3.7.1@sha256:1694e9237e2b3d7cd4ad959bae1f21e12b6184d886d7412bd1b939fb0dd4e75c";
+            rawImageReference = "grafana/loki:3.7.2@sha256:800ec439ed2692b79c5a1fe17a6d2955f8999ad5d05f0276c6e4a10ac11cc491";
             nixSha256 = "sha256-VDNcGGyIvp/S8tq0ANI9DtWoyMq/z76CJe/aESzUK3s=";
             networks = [
               backendNetwork
