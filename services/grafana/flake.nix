@@ -145,7 +145,7 @@
 
           loki = {
             rawImageReference = "grafana/loki:3.7.2@sha256:800ec439ed2692b79c5a1fe17a6d2955f8999ad5d05f0276c6e4a10ac11cc491";
-            nixSha256 = "sha256-VDNcGGyIvp/S8tq0ANI9DtWoyMq/z76CJe/aESzUK3s=";
+            nixSha256 = "sha256-Vp6LlgV8NjQh9EwL4EXC/bAv6mrdjD2AbEXvv+X+Xrc=";
             networks = [
               backendNetwork
             ];
