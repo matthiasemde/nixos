@@ -24,7 +24,7 @@
         {
           ollama = {
             rawImageReference = "ollama/ollama:0.23.4@sha256:7ffd891da3e9e278d042c856c0fbe1b10fa03ed1791471377dde331eae4ea834";
-            nixSha256 = "sha256-QInWGXeY05pg+idf32tVo+GYbXPwEijGnaRkDPmeAqE=";
+            nixSha256 = "sha256-oEfI7vTpU+hZfJBG4DRNn3VKugwiSia2P/UaSI7QqR0=";
             networks = [
               "traefik"
               backendNetwork
