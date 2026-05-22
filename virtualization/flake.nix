@@ -12,7 +12,8 @@
           hostname,
           domain,
           services,
-          getServiceEnvFiles,
+          getEnvFiles,
+          getSecretFile,
           ...
         }:
         let
@@ -157,6 +158,7 @@
           mergedContainers = lib.foldl' (
             acc: service:
             let
+              secrets = config.sops.secrets;
               maybeContainers =
                 if lib.hasAttr "containers" service && builtins.isFunction service.containers then
                   service.containers {
@@ -164,9 +166,10 @@
                       hostname
                       domain
                       mkTraefikLabels
-                      getServiceEnvFiles
                       parseDockerImageReference
                       ;
+                    getEnvFiles = getEnvFiles secrets service.name;
+                    getSecretFile = getSecretFile secrets service.name;
                   }
                 else
                   { };
