@@ -18,7 +18,7 @@
           domain,
           hostname,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getEnvFiles,
           ...
         }:
         {
@@ -67,7 +67,7 @@
               "OAUTH_ALLOWED_ROLES" = "open-webui-users";
               "OAUTH_ADMIN_ROLES" = "admins";
             };
-            environmentFiles = getServiceEnvFiles "ollama";
+            environmentFiles = getEnvFiles "open-webui";
             volumes = [
               "/data/services/open-webui/data:/app/backend/data"
             ];

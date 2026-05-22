@@ -10,12 +10,12 @@
           config,
           lib,
           pkgs,
-          getServiceSecrets,
+          getSecretFile,
           ...
         }:
         let
           shareUser = "fileshare";
-          shareUserPasswordFile = builtins.head (getServiceSecrets "nas");
+          shareUserPasswordFile = getSecretFile config.sops.secrets "nas" "fileshare" "password";
           shares = [
             {
               name = "home";
@@ -73,11 +73,21 @@
             );
           };
 
-          system.activationScripts.nas-set-samba-password.text = ''
-            echo "Setting Samba password for ${shareUser} from ${shareUserPasswordFile}"
-            ${pkgs.coreutils}/bin/cat ${shareUserPasswordFile} ${shareUserPasswordFile} | \
-            ${pkgs.samba}/bin/smbpasswd -s -a ${shareUser}
-          '';
+          systemd.services.nas-set-samba-password = {
+            description = "Set Samba password for ${shareUser}";
+            wantedBy = [ "multi-user.target" ];
+            after = [
+              "sops-nix.service"
+              "userborn.service"
+            ];
+            wants = [ "sops-nix.service" ];
+            serviceConfig = {
+              Type = "oneshot";
+            };
+            script = ''
+              cat ${shareUserPasswordFile} ${shareUserPasswordFile} | ${pkgs.samba}/bin/smbpasswd -s -a ${shareUser}
+            '';
+          };
         };
     };
 }
