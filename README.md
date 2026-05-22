@@ -19,14 +19,20 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── configuration.nix
 │   │   ├── hardware-configuration.nix
 │   │   └── secrets
-│   │       ├── WEBHOOK_SECRET.env.age
-│   │       └── WEBHOOK_SECRET.env.age.nix
+│   │       ├── env.yaml
+│   │       ├── firefly
+│   │       │   └── fints
+│   │       │       ├── gls.json
+│   │       │       └── gls-tagesgeldkonto.json
+│   │       ├── nas
+│   │       │   └── fileshare
+│   │       │       └── password
+│   │       └── synapse
+│   │           └── matrix-auth-app
+│   │               └── secrets.yaml
 │   └── vogel
 │       ├── configuration.nix
-│       ├── hardware-configuration.nix
-│       └── secrets
-│           ├── smb-credentials.env.age
-│           └── smb-credentials.env.age.nix
+│       └── hardware-configuration.nix
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
@@ -41,23 +47,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── audiobookshelf
 │   │   └── flake.nix
 │   ├── authentik
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── AUTHENTIK_SECRET_KEY.env.age
-│   │       ├── AUTHENTIK_SECRET_KEY.env.age.nix
-│   │       ├── db-credentials.env.age
-│   │       ├── db-credentials.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── firefly
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── app_key.env.age
-│   │       ├── app_key.env.age.nix
-│   │       ├── gls.json.age
-│   │       ├── gls.json.age.nix
-│   │       ├── gls-tagesgeldkonto.json.age
-│   │       └── gls-tagesgeldkonto.json.age.nix
+│   │   └── flake.nix
 │   ├── fl-hofmusic
 │   │   ├── config
 │   │   │   └── nginx.conf
@@ -66,22 +58,14 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── config
 │   │   │   └── frpc.toml
 │   │   ├── .env
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── FRP_TOKEN.env.age
-│   │       └── FRP_TOKEN.env.age.nix
+│   │   └── flake.nix
 │   ├── grafana
 │   │   ├── config
 │   │   │   ├── config.alloy
 │   │   │   ├── datasources.yml
 │   │   │   ├── loki.yml
 │   │   │   └── prometheus.yml
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── authentik-credentials.env.age
-│   │       ├── authentik-credentials.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── home-assistant
 │   │   ├── config
 │   │   │   ├── automations.yaml
@@ -101,25 +85,11 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── flake.nix
 │   │   └── README.md
 │   ├── immich
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── DB_PASSWORD.env.age
-│   │       ├── DB_PASSWORD.env.age.nix
-│   │       ├── kiosk-credentials.env.age
-│   │       ├── kiosk-credentials.env.age.nix
-│   │       ├── POSTGRES_PASSWORD.env.age
-│   │       └── POSTGRES_PASSWORD.env.age.nix
+│   │   └── flake.nix
 │   ├── kopia
 │   │   ├── create_repository.sh
 │   │   ├── flake.nix
-│   │   ├── README.md
-│   │   └── secrets
-│   │       ├── KOPIA_PASSWORD.env.age
-│   │       ├── KOPIA_PASSWORD.env.age.nix
-│   │       ├── KOPIA_SERVER_CONTROL_CREDENTIALS.env.age
-│   │       ├── KOPIA_SERVER_CONTROL_CREDENTIALS.env.age.nix
-│   │       ├── KOPIA_SERVER_CREDENTIALS.env.age
-│   │       └── KOPIA_SERVER_CREDENTIALS.env.age.nix
+│   │   └── README.md
 │   ├── lovebox
 │   │   ├── config
 │   │   │   ├── nginx.conf
@@ -137,64 +107,27 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── styles.css
 │   │       └── upload.php
 │   ├── mealie
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── authentik-credentials.env.age
-│   │       ├── authentik-credentials.env.age.nix
-│   │       ├── db-credentials.env.age
-│   │       ├── db-credentials.env.age.nix
-│   │       ├── openai-credentials.env.age
-│   │       ├── openai-credentials.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── microbin
 │   │   ├── .env
 │   │   └── flake.nix
 │   ├── nas
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── fileshare-pw.age
-│   │       └── fileshare-pw.age.nix
+│   │   └── flake.nix
 │   ├── navidrome
 │   │   ├── flake.nix
 │   │   ├── music-sync.sh
 │   │   └── README.md
 │   ├── nextcloud
 │   │   ├── flake.nix
-│   │   ├── README.md
-│   │   └── secrets
-│   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age
-│   │       ├── NEXTCLOUD_ADMIN_PASSWORD.env.age.nix
-│   │       ├── POSTGRES_PASSWORD.env.age
-│   │       └── POSTGRES_PASSWORD.env.age.nix
+│   │   └── README.md
 │   ├── ollama
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── open-webui-oidc-credentials.env.age
-│   │       ├── open-webui-oidc-credentials.env.age.nix
-│   │       ├── open-webui-secrets.env.age
-│   │       └── open-webui-secrets.env.age.nix
+│   │   └── flake.nix
 │   ├── outline
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── POSTGRES_PASSWORD.env.age
-│   │       ├── POSTGRES_PASSWORD.env.age.nix
-│   │       ├── secrets.env.age
-│   │       └── secrets.env.age.nix
+│   │   └── flake.nix
 │   ├── paperless
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── PAPERLESS_SECRET_KEY.env.age
-│   │       ├── PAPERLESS_SECRET_KEY.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── pterodactyl
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── db_credentials.env.age
-│   │       ├── db_credentials.env.age.nix
-│   │       ├── smtp_credentials.env.age
-│   │       └── smtp_credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── radicale
 │   │   ├── config
 │   │   │   └── config
@@ -217,42 +150,18 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── livekit-entrypoint.sh
 │   │   ├── matrix-auth-entrypoint.sh
 │   │   ├── README.md
-│   │   ├── render-config.py
-│   │   └── secrets
-│   │       ├── app-credentials.env.age
-│   │       ├── app-credentials.env.age.nix
-│   │       ├── authentik-credentials.env.age
-│   │       ├── authentik-credentials.env.age.nix
-│   │       ├── database-credentials.env.age
-│   │       ├── database-credentials.env.age.nix
-│   │       ├── homeserver.yaml.age.nix
-│   │       ├── livekit-credentials.env.age
-│   │       ├── livekit-credentials.env.age.nix
-│   │       ├── matrix-auth-secrets.yaml.age
-│   │       ├── matrix-auth-secrets.yaml.age.nix
-│   │       ├── matrix-secret.env.age
-│   │       ├── matrix-secret.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── render-config.py
 │   ├── traefik
 │   │   ├── config
 │   │   │   ├── error.html
 │   │   │   ├── middlewares.toml
 │   │   │   ├── nginx.conf
 │   │   │   └── traefik.toml
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── cf-token.env.age
-│   │       └── cf-token.env.age.nix
+│   │   └── flake.nix
 │   ├── uptime-kuma
 │   │   └── flake.nix
 │   ├── vaultwarden
-│   │   ├── flake.nix
-│   │   └── secrets
-│   │       ├── ADMIN_TOKEN.env.age
-│   │       ├── ADMIN_TOKEN.env.age.nix
-│   │       ├── smtp-credentials.env.age
-│   │       └── smtp-credentials.env.age.nix
+│   │   └── flake.nix
 │   ├── vscode-server
 │   │   └── flake.nix
 │   ├── web-projects
@@ -262,12 +171,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── flake.nix
 │   └── woodpecker
 │       ├── flake.nix
-│       ├── README.md
-│       └── secrets
-│           ├── github-credentials.env.age
-│           ├── github-credentials.env.age.nix
-│           ├── service-credentials.env.age
-│           └── service-credentials.env.age.nix
+│       └── README.md
 ├── SETUP.md
 ├── .sops.yaml
 ├── tools
@@ -278,7 +182,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── flake.nix
 
-72 directories, 202 files
+60 directories, 118 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
