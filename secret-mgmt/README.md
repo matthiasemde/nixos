@@ -1,68 +1,101 @@
-# Secret Management Flake
+# Secret Management
 
-This flake provides a generic, declarative secret-management module for NixOS systems running OCI containers. It automatically discovers encrypted `*.age` secret files in arbitrary directories, registers them with `agenix`, and exposes helper functions to inject per-service secrets into container environment variables.
-
----
-
-## 📦 Inputs
-
-* **`nixpkgs`**: NixOS 24.11 channel
-* **`agenix`**: Secret-management library for NixOS
+Declarative secret management for NixOS hosts using
+[sops-nix](https://github.com/Mic92/sops-nix). Secrets are decrypted at boot
+and made available under `/run/mysecrets/`.
 
 ---
 
-## 🚀 How it Works
+## 📦 Structure
 
-1. **Directory/Key scanning**: You configure one or more paths under `secretMgmt.secretDirs` and `secretMgmt.publicKeys` respectively (e.g. `./services/firefly/secrets` / `./secrets/host-keys.nix.mahler`).
-2. **Secret discovery**: The module uses `builtins.readDir` + `scanDir` to find all `*.age` files.
-3. **Secret entries**: Each file is mapped to an `agenix.secrets` entry named `<basedir>-<basename>`, where:
-   * `basedir` is the parent directory name (e.g. `myservice`, `myhost`)
-   * `basename` is the filename without `.age`
-4. **Automatic injection**: Use the helper `lib.getServiceEnvFiles` to generate a list of runtime paths (e.g. `/run/agenix/myservice-db-password`) for a given service name.
-5. **OCI integration**: Drop that list into `virtualisation.oci-containers.containers.<name>.environmentFiles` (or `.environment`) to mount or inject your secrets seamlessly.
+```
+../.sops.yaml                                             # Key routing: age keys per host/file
+../hosts/<hostname>/secrets/env.yaml                      # SOPS-encrypted YAML: nested env vars per service/container
+../hosts/<hostname>/secrets/<service>/<container>/<file>  # Individual SOPS-encrypted secret files
+flake.nix                                                 # NixOS module + lib helpers
+```
 
 ---
 
-## 🔑 Key & Rekey with YubiKey + `agenix-rekey`
+## 🔑 Keys
 
-This section shows how to maintain both an unattended host-file key and an offline YubiKey master key.
+- **Host age key**: `/nix/persist/var/lib/sops-nix/key.txt` - used by sops-nix to decrypt secrets at boot.
+- **Admin keys**: configured in `.sops.yaml` (YubiKey and/or age keypair) - used to encrypt/edit secrets from a workstation.
 
-1. **Generate a host-file identity** (on your server):
+---
 
-```bash
-age-keygen -o secrets/host-file-key.txt
+## 🔧 How the Module Works
+
+The `nixosModules.default` module wires up all secrets from `hosts/<hostname>/secrets/` automatically.
+
+### 1 - env.yaml (environment secrets)
+
+`env.yaml` is a SOPS-encrypted YAML file with a nested structure:
+```yaml
+<service>:
+  common: "KEY=VALUE\n..."       # shared env for all containers of <service>
+  <container>: "KEY=VALUE\n..."  # container-specific env
 ```
 
-   * Public key: `age1...filepub`
-
-2. **Generate a YubiKey identity** (offline):
-
-```bash
-age-plugin-yubikey -generate
+The module reads `env.yaml` at build time, flattens the nested keys into individual
+`sops.secrets` entries, and places the decrypted values at:
+```
+/run/mysecrets/<service>/common/.env
+/run/mysecrets/<service>/<container>/.env
 ```
 
-   * Public key: `age1...yubikeypub`
+### 2 - Individual secret files
 
-3. **Encrypt or rekey a secret**:
-
-```bash
-# initial encryption
-echo -n "$DB_PASSWORD" \
-  | age -o services/myservice/secrets/db-password.age \
-      -r age1yld4l2thdgantrknmpe6wdcm9vszjqju98qgjw8cf64frk8lssrskhcxeq \
-      -r age1yubikey1qfxert3c6e83vk20ggq70r22pkvu3636cslf4kxa5gdrj900hqf2qaxhcfa
-
-# rekey later (rotations, add/remove recipients)
-agenix-rekey -i age-plugin-yubikey \
-  services/myservice/secrets/db-password.age
+All other files under `hosts/<hostname>/secrets/` are discovered recursively.
+Each file is registered as a `sops.secrets` entry - format auto-detected from
+extension (`yaml`, `json`, or binary). Decrypted files appear at the same
+relative path:
+```
+hosts/<hostname>/secrets/<service>/<container>/<file>
+-> /run/mysecrets/<service>/<container>/<file>
 ```
 
-   * This ensures every `.age` blob is encrypted to both identities.
+---
 
-4. **Store public keys** in `./host-keys.nix`:
+## 📚 Lib Helpers
+
+Exported via `secret-mgmt.lib` for use in service flakes:
+
+### `getEnvFiles secrets serviceName containerName`
+
+Returns a list of `/run/mysecrets/.../.env` paths for the given service,
+covering both `common` and `<containerName>` entries. Use with
+`environmentFiles` in OCI container definitions.
 
 ```nix
-{
-  myserver = ["age1...filepub" "age1...yubikeypub"];
-}
+environmentFiles = secret-mgmt.lib.getEnvFiles config.sops.secrets "firefly" "app";
+# ->[ "/run/mysecrets/firefly/common/.env" "/run/mysecrets/firefly/app/.env" ]
 ```
+
+### `getSecretFile secrets serviceName containerName secretName`
+
+Returns the `/run/secrets/...` path for a single named secret file.
+
+```nix
+volumes = [ "${secret-mgmt.lib.getSecretFile config.sops.secrets "firefly" "app" "cert.pem"}:/cert.pem:ro" ];
+```
+
+---
+
+## ➕ Adding / Editing Secrets
+
+```bash
+# Edit env.yaml interactively (sops opens $EDITOR)
+sops edit hosts/<hostname>/secrets/env.yaml
+
+# Edit an individual secret file
+sops edit hosts/<hostname>/secrets/<service>/<container>/<file>
+```
+
+## 🔄 Re-keying
+
+```bash
+# After updating .sops.yaml (new host key, key rotation, etc.)
+sops updatekeys hosts/<hostname>/secrets/env.yaml
+```
+

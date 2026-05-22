@@ -9,6 +9,8 @@
         {
           domain,
           mkTraefikLabels,
+          getEnvFiles,
+          getSecretFile,
           ...
         }:
         {
@@ -16,10 +18,13 @@
             rawImageReference = "<serviceImageName>:<serviceImageVersion>@<serviceImageDigest>";
             nixSha256 = "";
             networks = [ "traefik" ];
-            volumes = [
-              "/data/services/<service-name>:/etc/service/data"
-              "${./config/service.conf}:/etc/service/service.conf:ro"
-            ];
+            environmentFiles = getEnvFiles "<container-name>";
+            volumes =
+              [
+                "/data/services/<service-name>:/etc/service/data"
+                "${./config/service.conf}:/etc/service/service.conf:ro"
+                "${getSecretFile "<container-name>" "<file-name>":/secret/file/location}
+              ]
             labels =
               mkTraefikLabels {
                 name = "<service-name>";
