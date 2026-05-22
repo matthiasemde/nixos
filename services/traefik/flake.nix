@@ -11,7 +11,7 @@
       containers =
         {
           hostname,
-          getServiceEnvFiles,
+          getEnvFiles,
           ...
         }:
         {
@@ -27,7 +27,7 @@
               "traefik"
               "frp-ingress"
             ];
-            environmentFiles = getServiceEnvFiles "traefik";
+            environmentFiles = getEnvFiles "server";
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock"
               "${./config/traefik.toml}:/traefik.toml:ro"

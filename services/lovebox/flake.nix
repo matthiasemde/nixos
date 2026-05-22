@@ -10,7 +10,7 @@
           domain,
           mkTraefikLabels,
           parseDockerImageReference,
-          getServiceEnvFiles,
+          getEnvFiles,
           ...
         }:
         let

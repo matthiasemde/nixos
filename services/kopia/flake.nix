@@ -9,7 +9,7 @@
         {
           hostname,
           mkTraefikLabels,
-          getServiceEnvFiles,
+          getEnvFiles,
           ...
         }:
         {
@@ -47,7 +47,7 @@
             environment = {
               "USER" = "User";
             };
-            environmentFiles = getServiceEnvFiles "kopia";
+            environmentFiles = getEnvFiles "server";
 
             # startup: run the server, binding to all interfaces
             cmd = [

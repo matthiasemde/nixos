@@ -9,7 +9,6 @@
         {
           domain,
           mkTraefikLabels,
-          getServiceEnvFiles,
           ...
         }:
         {
@@ -19,7 +18,6 @@
             environment = {
               TZ = "Europe/Berlin";
             };
-            # environmentFiles = getServiceEnvFiles "audiobookshelf";
             volumes = [
               "/data/services/audiobookshelf/config:/config"
               "/data/services/audiobookshelf/metadata:/metadata"
