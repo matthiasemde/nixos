@@ -30,12 +30,8 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
-│   ├── add_secret.sh
 │   ├── flake.nix
 │   └── README.md
-├── secrets
-│   ├── host-key.nix.mahler
-│   └── yubi-key.nix.mahler
 ├── service-flake.nix.template
 ├── services
 │   ├── adguard
@@ -273,14 +269,16 @@ This repository holds the configuration of my homelab powered by NixOS
 │           ├── service-credentials.env.age
 │           └── service-credentials.env.age.nix
 ├── SETUP.md
+├── .sops.yaml
 ├── tools
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
+│   ├── migrate.sh
 │   └── pre-commit-hook.sh
 └── virtualization
     └── flake.nix
 
-73 directories, 203 files
+72 directories, 202 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

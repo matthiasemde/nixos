@@ -1,105 +1,183 @@
 {
   description = "Generic secret-management flake for NixOS + OCI containers";
 
-  inputs.agenix.url = "github:ryantm/agenix";
-
   outputs =
-    {
-      self,
-      nixpkgs,
-      agenix,
-    }:
+    { self, nixpkgs, ... }:
     let
       lib = nixpkgs.lib;
 
-      # -------- Secret Storage ---------
+      # -------- Secret Discovery ---------
 
-      # scanDir: list .age files in a directory
-      scanDir =
-        dir:
-        if builtins.pathExists dir then
-          lib.filter (fname: lib.hasSuffix ".age" fname) (builtins.attrNames (builtins.readDir dir))
-        else
-          [ ];
+      # scanDir: list all files in a directory (naming markers for SOPS secrets)
+      scanDir = dir: if builtins.pathExists dir then builtins.attrNames (builtins.readDir dir) else [ ];
 
-      # makeSecretEntry: build an agenix secret entry for a given file
-      makeSecretEntry =
-        dir: fname:
-        let
-          baseName = lib.removeSuffix ".age" fname;
-          baseDir = baseNameOf (dirOf (toString dir));
-        in
-        {
-          name = "${baseDir}-${baseName}";
-          value = {
-            file = "${dir}/${fname}";
-          };
+      # makeSecretEntry: build a sops-nix entry from a secret marker filename.
+      # The SOPS YAML key (and Nix attr name) uses the filename as-is (underscores).
+      # The runtime path restores underscores to dots so the decrypted file gets
+      # a proper extension (e.g. marker "authentik-database.env" ->/run/mysecrets/authentik-database.env).
+      makeSecretEntry = fname: {
+        name = lib.replaceStrings [ "." ] [ "_" ] fname;
+        value = {
+          path = "/run/mysecrets/${fname}";
         };
+      };
 
-      # collectDirSecrets: collect entries for one directory
-      collectDirSecrets =
-        dir:
+      collectHostSecrets = dir: lib.map makeSecretEntry (scanDir dir);
+
+      collectServiceSecrets = dir: lib.map makeSecretEntry (scanDir dir);
+
+      # -------- Secret Retrieval Helpers ---------
+
+      # getEnvFiles: return resolved /run/secrets paths for env secrets belonging
+      # to a specific container or the service-wide "common" env.
+      # Naming convention in sops config: <serviceName>/<containerName>/.env
+      #                                   <serviceName>/common/.env
+      getEnvFiles =
+        secrets: serviceName: containerName:
         let
-          files = scanDir dir;
-          entries = lib.map (fname: makeSecretEntry dir fname) files;
+          matching = lib.filterAttrs (
+            name: _: builtins.match "^${serviceName}/(common|${containerName})$" name != null
+          ) secrets;
         in
-        entries;
+        map (name: secrets.${name}.path) (lib.attrNames matching);
 
-      # collectSecrets: scan multiple dirs and merge into attrset
-      collectSecrets =
-        dirs:
-        let
-          allEntries = lib.concatMap (dir: collectDirSecrets dir) dirs;
-        in
-        lib.listToAttrs allEntries;
+      # getSecretFile: return the resolved /run/secrets path for a single named secret
+      # belonging to a specific service and container.
+      # Naming convention in sops config: <serviceName>/<containerName>/<secretName>
+      getSecretFile =
+        secrets: serviceName: containerName: secretName:
+        secrets."${serviceName}/${containerName}/${secretName}".path;
 
-      # -------- Secret Retrieval ---------
-
-      #getServiceSecrets: return all files under /run/agenix for a service
-      getServiceSecrets =
-        serviceName:
-        let
-          ageFiles = scanDir ../services/${serviceName}/secrets;
-          secretNames = lib.map (fname: lib.removeSuffix ".age" fname) ageFiles;
-        in
-        lib.map (fname: "/run/agenix/${serviceName}-${fname}") secretNames;
-
-      getServiceEnvFiles =
-        serviceName:
-        let
-          ageFiles = scanDir ../services/${serviceName}/secrets;
-          secretNames = lib.map (fname: lib.removeSuffix ".age" fname) ageFiles;
-          environmentSecrets = lib.filter (fname: lib.hasSuffix ".env" fname) secretNames;
-        in
-        lib.map (fname: "/run/agenix/${serviceName}-${fname}") environmentSecrets;
     in
     {
-      # NixOS module wiring up collectSecrets
+      # NixOS module: wires up sops.secrets from all discovered secret markers.
+      # Host secrets (hosts/<hostname>/secrets/*) and service secrets
+      # (services/<svc>/secrets/*) are registered using the filename as the SOPS key
+      # (with dots replaced by underscores).
       nixosModules.default =
         {
-          config,
           pkgs,
+          config,
           lib,
           hostname,
           services ? [ ],
           ...
         }:
         let
-          dirs = lib.foldl' (acc: service: acc ++ [ ../services/${service.name}/secrets ]) [
-            ../hosts/${hostname}/secrets
-          ] services;
-          secrets = collectSecrets dirs;
+          hostEntries = collectHostSecrets ../hosts/${hostname}/secrets;
+          serviceEntries = lib.concatMap (
+            service: collectServiceSecrets ../services/${service.name}/secrets
+          ) services;
+          secrets = lib.listToAttrs (hostEntries ++ serviceEntries);
+
+          envFile = ../hosts/${hostname}/secrets/env.yaml;
+          secretsData = builtins.fromJSON (
+            builtins.readFile (
+              pkgs.runCommand "yaml-to-json" { } ''
+                ${pkgs.yq-go}/bin/yq -o=json ${envFile} > $out
+              ''
+            )
+          );
+          flattenSecrets =
+            prefix: attrs:
+            builtins.foldl' (
+              acc: key:
+              if key == "sops" then
+                acc
+              else
+                let
+                  value = attrs.${key};
+
+                  path = if prefix == "" then key else "${prefix}/${key}";
+                in
+                acc
+                // (
+                  if builtins.isAttrs value then
+                    flattenSecrets path value
+                  else
+                    {
+                      "${path}" = {
+                        key = "${path}";
+                        path = "/run/mysecrets/${path}/.env";
+                      };
+                    }
+                )
+            ) { } (builtins.attrNames attrs);
+
+          secretsDir = ../hosts/${hostname}/secrets;
+
+          # recursively walk a directory and collect all files
+          collectSecretFiles =
+            dir:
+            let
+              entries = builtins.readDir dir;
+
+              names = builtins.attrNames entries;
+            in
+            builtins.concatLists (
+              builtins.map (
+                name:
+                let
+                  path = dir + "/${name}";
+                  type = entries.${name};
+                in
+                if type == "directory" then
+                  collectSecretFiles path
+                else if type == "regular" then
+                  [ path ]
+                else
+                  [ ]
+              ) names
+            );
+
+          # determine sops format from extension
+          detectFormat =
+            path:
+            let
+              p = toString path;
+            in
+            if builtins.match ".*\\.ya?ml$" p != null then
+              "yaml"
+            else if builtins.match ".*\\.json$" p != null then
+              "json"
+            else
+              "binary";
+
+          # convert:
+          #   /abs/path/secrets/foo/bar/file.yaml
+          # into:
+          #   foo/bar/file.yaml
+          #
+          secretNameFromPath =
+            path: builtins.replaceStrings [ "${toString secretsDir}/" ] [ "" ] (toString path);
+
+          secretFiles = collectSecretFiles secretsDir;
         in
         {
           config = {
-            age.secrets = secrets;
+            sops.defaultSopsFile = envFile;
+            sops.age.keyFile = "/nix/persist/var/lib/sops-nix/key.txt";
+            sops.secrets =
+              flattenSecrets "" secretsData
+              // builtins.listToAttrs (
+                builtins.map (path: {
+                  name = secretNameFromPath path;
+
+                  value = {
+                    sopsFile = path;
+                    format = detectFormat path;
+                    key = "";
+                  };
+                }) secretFiles
+              );
           };
         };
 
-      # Export helper function
       lib = {
-        getServiceEnvFiles = getServiceEnvFiles;
-        getServiceSecrets = getServiceSecrets;
+        inherit
+          getEnvFiles
+          getSecretFile
+          ;
       };
     };
 }
