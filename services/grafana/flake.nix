@@ -117,32 +117,6 @@
               };
           };
 
-          cadvisor = {
-            rawImageReference = "gcr.io/cadvisor/cadvisor:v0.52.1@sha256:f40e65878e25c2e78ea037f73a449527a0fb994e303dc3e34cb6b187b4b91435";
-            nixSha256 = "sha256-LrD875RTiMyqAvaeDg+czmCQMcdlMuQEnfdCVnnDypU=";
-            volumes = [
-              "/:/rootfs:ro"
-              "/var/run:/var/run:ro"
-              "/sys:/sys:ro"
-              "/var/lib/docker/:/var/lib/docker:ro"
-              "/dev/disk/:/dev/disk:ro"
-            ];
-            networks = [
-              backendNetwork
-              "monitoring"
-            ];
-            cmd = [
-              "-enable_metrics=cpu,memory,oom_event,disk,diskIO,network"
-              "-store_container_labels=false"
-            ];
-            labels = {
-              # 🛡️ Traefik (disabled)
-              "traefik.enable" = "false";
-              "alloy.metrics.enabled" = "true";
-              "alloy.metrics.port" = "8080";
-            };
-          };
-
           loki = {
             rawImageReference = "grafana/loki:3.7.2@sha256:800ec439ed2692b79c5a1fe17a6d2955f8999ad5d05f0276c6e4a10ac11cc491";
             nixSha256 = "sha256-Vp6LlgV8NjQh9EwL4EXC/bAv6mrdjD2AbEXvv+X+Xrc=";
@@ -180,6 +154,12 @@
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock:ro"
               "/var/log/journal:/var/log/journal:ro"
+              "/:/rootsfs:ro"
+              "/var/run:/var/run:rw"
+              "/sys:/sys:ro"
+              "/var/lib/docker/:/var/lib/docker:ro"
+              "/dev/disk/:/dev/disk:ro"
+              "/etc/machine-id:/etc/machine-id:ro"
               "${./config/config.alloy}:/etc/alloy/config.alloy:ro"
             ];
             cmd = [
