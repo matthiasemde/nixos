@@ -28,7 +28,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
           adguardRawImageReference = "adguard/adguardhome:v0.107.75@sha256:50ac5916778faa06ad4adcff606c7aaf806cb55dc1995160dbf50633c9bda94d";
-          adguardNixSha256 = "sha256-BIYOoUecXABGiduKRf5RGhN1Nr51Hq2Y87YCAtpu6mo=";
+          adguardNixSha256 = "sha256-s2wb8PqSqEmco81hQ0HhnYosqkw1ph9uxIZV1He/FSY=";
           adguardImageReference = parseDockerImageReference adguardRawImageReference;
           adguardImage = pkgs.dockerTools.pullImage {
             imageName = adguardImageReference.name;
