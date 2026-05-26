@@ -203,7 +203,7 @@
           };
 
           synapse-app = {
-            rawImageReference = "matrixdotorg/synapse:v1.152.1@sha256:ea13612748d2c3cd7d37314e4d2bb3833831e7fe9c1cc2ba2a05a0e51ab78297";
+            rawImageReference = "matrixdotorg/synapse:v1.153.0@sha256:8ba9310909c4f255f942e504d9e5e5d9a7f20e3fa1cdf5aea8acb704b6a15098";
             nixSha256 = "sha256-c7rpl1/VZO3QCfaWSV9BcA05N78YvRAzbdpk7nxwU18=";
             environment = {
               "SYNAPSE_CONFIG_PATH" = "/data/homeserver.yaml";
