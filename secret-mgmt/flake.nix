@@ -151,14 +151,14 @@
           secretNameFromPath =
             path: builtins.replaceStrings [ "${toString secretsDir}/" ] [ "" ] (toString path);
 
-          secretFiles = collectSecretFiles secretsDir;
+          secretFiles = if builtins.pathExists secretsDir then collectSecretFiles secretsDir else [ ];
         in
         {
           config = {
-            sops.defaultSopsFile = envFile;
+            sops.defaultSopsFile = if builtins.pathExists envFile then envFile else "";
             sops.age.keyFile = "/nix/persist/var/lib/sops-nix/key.txt";
             sops.secrets =
-              flattenSecrets "" secretsData
+              (if builtins.pathExists envFile then flattenSecrets "" secretsData else { })
               // builtins.listToAttrs (
                 builtins.map (path: {
                   name = secretNameFromPath path;
