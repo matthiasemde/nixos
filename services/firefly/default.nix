@@ -30,7 +30,7 @@ in
     environment = {
       APP_ENV = "local";
       APP_DEBUG = "false";
-      SITE_OWNER = "matthias@emdemail.de";
+      SITE_OWNER = config.myInfrastructure.adminEmail;
       DEFAULT_LANGUAGE = "en_US";
       DEFAULT_LOCALE = "de_DE";
       TZ = "Europe/Berlin";

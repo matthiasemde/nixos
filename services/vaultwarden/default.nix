@@ -14,13 +14,13 @@ in
     environment = {
       "DOMAIN" = "https://vaultwarden.${domain}";
       "SIGNUPS_ALLOWED" = "false";
-      "ORG_CREATION_USERS" = "matthias@emdemail.de";
-      "SMTP_HOST" = "mail.privateemail.com";
-      "SMTP_FROM" = "no-reply@emdecloud.de";
+      "ORG_CREATION_USERS" = config.myInfrastructure.adminEmail;
+      "SMTP_HOST" = config.myInfrastructure.smtp.host;
+      "SMTP_FROM" = config.myInfrastructure.smtp.fromAddress;
       "SMTP_FROM_NAME" = "Vaultwarden";
       "SMTP_TIMEOUT" = "15";
       "SMTP_SECURITY" = "force_tls";
-      "SMTP_PORT" = "465";
+      "SMTP_PORT" = toString config.myInfrastructure.smtp.port;
     };
     environmentFiles = getEnvFiles "vaultwarden" "app";
     volumes = [

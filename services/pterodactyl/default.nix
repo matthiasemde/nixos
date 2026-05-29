@@ -20,7 +20,7 @@ let
     ];
     environment = {
       APP_ENV = "production";
-      APP_URL = "https://pterodactyl.emdecloud.de";
+      APP_URL = "https://pterodactyl.${domain}";
       DB_HOST = "pterodactyl-database";
       DB_PORT = "3306";
       DB_DATABASE = "pterodactyl";
@@ -33,10 +33,10 @@ let
       LOG_CHANNEL = "stderr";
       TRUSTED_PROXIES = "0.0.0.0/0";
       MAIL_DRIVER = "smtp";
-      MAIL_HOST = "mail.privateemail.com";
-      MAIL_PORT = "465";
-      MAIL_USERNAME = "no-reply@emdecloud.de";
-      MAIL_FROM = "no-reply@emdecloud.de";
+      MAIL_HOST = config.myInfrastructure.smtp.host;
+      MAIL_PORT = toString config.myInfrastructure.smtp.port;
+      MAIL_USERNAME = config.myInfrastructure.smtp.fromAddress;
+      MAIL_FROM = config.myInfrastructure.smtp.fromAddress;
       MAIL_FROM_NAME = "Pterodactyl Panel";
     };
   };
