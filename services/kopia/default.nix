@@ -34,9 +34,9 @@ in
       "start"
       # "--tls-generate-cert" # needed only once on first startup
       "--tls-cert-file"
-      "/certs/kopia-mahler.cert"
+      "/certs/kopia-${hostname}.cert"
       "--tls-key-file"
-      "/certs/kopia-mahler.key"
+      "/certs/kopia-${hostname}.key"
       "--address"
       "0.0.0.0:51515"
       "--metrics-listen-addr"

@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   parseDockerImageReference,
   ...
@@ -7,6 +8,7 @@
 let
   hostname = config.networking.hostName;
   networkName = "adguard-macvlan";
+  cfg = config.adguard.macvlan;
 
   adguardRawImageReference = "adguard/adguardhome:v0.107.75@sha256:50ac5916778faa06ad4adcff606c7aaf806cb55dc1995160dbf50633c9bda94d";
   adguardNixSha256 = "sha256-s2wb8PqSqEmco81hQ0HhnYosqkw1ph9uxIZV1He/FSY=";
@@ -39,29 +41,62 @@ let
   };
 in
 {
-  myVirtualization.networks.${networkName} = ''
-    -d macvlan \
-    --subnet=192.168.178.0/24 \
-    --gateway=192.168.178.1 \
-    --ip-range=192.168.178.240/28 \
-    --ipv6 \
-    --subnet=fdfb:7759:b7ce::/64 \
-    --gateway=fdfb:7759:b7ce::2e91:abff:fea2:270e \
-    -o parent=enp6s0 \
-  '';
+  options.adguard.macvlan = {
+    parentInterface = lib.mkOption {
+      type = lib.types.str;
+      description = "Host network interface to attach the macvlan to.";
+    };
+    subnet = lib.mkOption {
+      type = lib.types.str;
+      description = "IPv4 subnet CIDR for the macvlan network.";
+    };
+    gateway = lib.mkOption {
+      type = lib.types.str;
+      description = "IPv4 gateway for the macvlan network.";
+    };
+    ipRange = lib.mkOption {
+      type = lib.types.str;
+      description = "IPv4 range CIDR allocated to containers on this network.";
+    };
+    ipv6Subnet = lib.mkOption {
+      type = lib.types.str;
+      description = "IPv6 subnet CIDR for the macvlan network.";
+    };
+    ipv6Gateway = lib.mkOption {
+      type = lib.types.str;
+      description = "IPv6 gateway for the macvlan network.";
+    };
+    staticIp = lib.mkOption {
+      type = lib.types.str;
+      description = "Static IPv4 address assigned to the AdGuard container.";
+    };
+  };
 
-  myVirtualization.containers.adguard = {
-    image = "adguard-derived:v1.0.0";
-    imageFile = adguardDerivedImage;
-    networks = [ networkName ];
-    extraOptions = [ "--ip=192.168.178.240" ];
-    labels = {
-      "traefik.enable" = "false";
-      "homepage.group" = "Utilities";
-      "homepage.name" = "AdGuard";
-      "homepage.icon" = "adguard-home";
-      "homepage.href" = "http://adguard.${hostname}.local";
-      "homepage.description" = "DNS-level ad blocking";
+  config = {
+    myVirtualization.networks.${networkName} = ''
+      -d macvlan \
+      --subnet=${cfg.subnet} \
+      --gateway=${cfg.gateway} \
+      --ip-range=${cfg.ipRange} \
+      --ipv6 \
+      --subnet=${cfg.ipv6Subnet} \
+      --gateway=${cfg.ipv6Gateway} \
+      -o parent=${cfg.parentInterface} \
+    '';
+
+    myVirtualization.containers.adguard = {
+      image = "adguard-derived:v1.0.0";
+      imageFile = adguardDerivedImage;
+      networks = [ networkName ];
+      extraOptions = [ "--ip=${cfg.staticIp}" ];
+      labels = {
+        "traefik.enable" = "false";
+        "homepage.group" = "Utilities";
+        "homepage.name" = "AdGuard";
+        "homepage.icon" = "adguard-home";
+        "homepage.href" = "http://adguard.${hostname}.local";
+        "homepage.description" = "DNS-level ad blocking";
+      };
     };
   };
 }
