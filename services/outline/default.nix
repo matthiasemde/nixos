@@ -35,9 +35,9 @@ in
       OIDC_USERNAME_CLAIM = "preferred_username";
       OIDC_DISPLAY_NAME = "authentik";
       OIDC_SCOPES = "openid profile email";
-      SMTP_HOST = "mail.privateemail.com";
-      SMTP_PORT = "465";
-      SMTP_FROM_EMAIL = "no-reply@emdecloud.de";
+      SMTP_HOST = config.myInfrastructure.smtp.host;
+      SMTP_PORT = toString config.myInfrastructure.smtp.port;
+      SMTP_FROM_EMAIL = config.myInfrastructure.smtp.fromAddress;
       SMTP_NAME = "Outline";
       ENABLE_UPDATES = "false";
       LOG_LEVEL = "warn";

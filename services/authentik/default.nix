@@ -9,12 +9,12 @@ let
   backendNetwork = "authentik-backend";
 
   env = {
-    "AUTHENTIK_EMAIL__HOST" = "mail.privateemail.com";
-    "AUTHENTIK_EMAIL__PORT" = "465";
+    "AUTHENTIK_EMAIL__HOST" = config.myInfrastructure.smtp.host;
+    "AUTHENTIK_EMAIL__PORT" = toString config.myInfrastructure.smtp.port;
     "AUTHENTIK_EMAIL__USE_TLS" = "false";
     "AUTHENTIK_EMAIL__USE_SSL" = "true";
     "AUTHENTIK_EMAIL__TIMEOUT" = "30";
-    "AUTHENTIK_EMAIL__FROM" = "no-reply@emdecloud.de";
+    "AUTHENTIK_EMAIL__FROM" = config.myInfrastructure.smtp.fromAddress;
   };
 in
 {
