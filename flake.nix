@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,6 +18,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-stable,
       sops-nix,
       vscode-server,
     }:
@@ -25,6 +27,7 @@
 
       mkHost =
         {
+          nixpkgs,
           domain ? null,
           modules,
         }:
@@ -41,6 +44,7 @@
     in
     {
       nixosConfigurations.mahler = mkHost {
+        nixpkgs = nixpkgs-stable;
         domain = "emdecloud.de";
         modules = [
           ./hosts/mahler/configuration.nix
@@ -52,10 +56,12 @@
       };
 
       nixosConfigurations.vogel = mkHost {
+        inherit nixpkgs;
         modules = [ ./hosts/vogel/configuration.nix ];
       };
 
       nixosConfigurations.hindemith = mkHost {
+        inherit nixpkgs;
         modules = [ ./hosts/hindemith/configuration.nix ];
       };
 
