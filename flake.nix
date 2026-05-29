@@ -152,5 +152,22 @@
           services = [ ];
         };
       };
+
+      nixosConfigurations.hindemith = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ./hosts/hindemith/configuration.nix
+
+          sops-nix.nixosModules.default
+
+          secret-mgmt.nixosModules.default
+        ];
+
+        specialArgs = {
+          hostname = "hindemith";
+          services = [ ];
+        };
+      };
     };
 }
