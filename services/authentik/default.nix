@@ -1,0 +1,115 @@
+{
+  config,
+  domain,
+  mkTraefikLabels,
+  getEnvFiles,
+  ...
+}:
+let
+  backendNetwork = "authentik-backend";
+
+  env = {
+    "AUTHENTIK_EMAIL__HOST" = "mail.privateemail.com";
+    "AUTHENTIK_EMAIL__PORT" = "465";
+    "AUTHENTIK_EMAIL__USE_TLS" = "false";
+    "AUTHENTIK_EMAIL__USE_SSL" = "true";
+    "AUTHENTIK_EMAIL__TIMEOUT" = "30";
+    "AUTHENTIK_EMAIL__FROM" = "no-reply@emdecloud.de";
+  };
+in
+{
+  myVirtualization.networks.${backendNetwork} = "";
+
+  myVirtualization.containers.authentik-database = {
+    rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
+    nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
+    environment = env // {
+      "POSTGRES_USER" = "authentik";
+      "POSTGRES_DB" = "authentik";
+    };
+    environmentFiles = getEnvFiles "authentik" "database";
+    volumes = [
+      "/data/services/authentik/database:/var/lib/postgresql/18/docker"
+    ];
+    networks = [ backendNetwork ];
+    labels = {
+      "traefik.enable" = "false";
+    };
+  };
+
+  myVirtualization.containers.authentik-redis = {
+    rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
+    nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
+    cmd = [
+      "--save"
+      "60"
+      "1"
+      "--loglevel"
+      "warning"
+    ];
+    volumes = [
+      "/data/services/authentik/redis:/data"
+    ];
+    networks = [ backendNetwork ];
+    labels = {
+      "traefik.enable" = "false";
+    };
+  };
+
+  myVirtualization.containers.authentik-server = {
+    rawImageReference = "ghcr.io/goauthentik/server:2026.2.2@sha256:40f0df709957c11324420fa387f1135c427f16086f12ca266b2d883d39c71fe3";
+    nixSha256 = "sha256-Nl/enFKO8UlfZ291nARqz7Q23midKy1U7oEczEJF1gY=";
+    cmd = [ "server" ];
+    environment = env // {
+      "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
+      "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
+      "AUTHENTIK_POSTGRESQL__USER" = "authentik";
+      "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+    };
+    environmentFiles = getEnvFiles "authentik" "server";
+    volumes = [
+      "/data/services/authentik/media:/media"
+      "/data/services/authentik/custom-templates:/templates"
+    ];
+    networks = [
+      "traefik"
+      backendNetwork
+    ];
+    labels =
+      (mkTraefikLabels {
+        name = "auth";
+        port = "9000";
+      })
+      // {
+        "homepage.group" = "Utilities";
+        "homepage.name" = "Authentik";
+        "homepage.icon" = "authentik";
+        "homepage.href" = "https://auth.${domain}";
+        "homepage.description" = "SSO Provider";
+      };
+  };
+
+  myVirtualization.containers.authentik-worker = {
+    rawImageReference = "ghcr.io/goauthentik/server:2026.2.2@sha256:40f0df709957c11324420fa387f1135c427f16086f12ca266b2d883d39c71fe3";
+    nixSha256 = "sha256-Nl/enFKO8UlfZ291nARqz7Q23midKy1U7oEczEJF1gY=";
+    cmd = [ "worker" ];
+    environment = env // {
+      "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
+      "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
+      "AUTHENTIK_POSTGRESQL__USER" = "authentik";
+      "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+    };
+    environmentFiles = getEnvFiles "authentik" "worker";
+    user = "root";
+    volumes = [
+      "/var/run/docker.sock:/var/run/docker.sock"
+      "/data/services/authentik/media:/media"
+      "/data/services/authentik/certs:/certs"
+      "/data/services/authentik/custom-templates:/templates"
+    ];
+    networks = [ backendNetwork ];
+    labels = {
+      "traefik.enable" = "false";
+    };
+  };
+}

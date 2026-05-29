@@ -1,0 +1,34 @@
+{ ... }:
+{
+  imports = [
+    ../../services/adguard
+    ../../services/audiobookshelf
+    ../../services/authentik
+    ../../services/firefly
+    ../../services/fl-hofmusic
+    ../../services/frp
+    ../../services/grafana
+    ../../services/home-assistant
+    ../../services/homepage
+    ../../services/immich
+    ../../services/kopia
+    ../../services/lovebox
+    ../../services/mealie
+    ../../services/microbin
+    ../../services/navidrome
+    ../../services/nas
+    ../../services/nextcloud
+    ../../services/ollama
+    ../../services/outline
+    ../../services/paperless
+    ../../services/pterodactyl
+    ../../services/radicale
+    ../../services/silverbullet
+    ../../services/synapse
+    ../../services/traefik
+    ../../services/uptime-kuma
+    ../../services/vaultwarden
+    ../../services/web-projects
+    ../../services/woodpecker
+  ];
+}
