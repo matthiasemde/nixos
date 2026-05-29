@@ -31,6 +31,7 @@
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            ./hosts/common.nix
             ./secret-mgmt
             sops-nix.nixosModules.default
           ]

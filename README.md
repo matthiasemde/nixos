@@ -15,6 +15,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
+│   ├── common.nix
 │   ├── hindemith
 │   │   ├── configuration.nix
 │   │   └── hardware-configuration.nix
@@ -184,7 +185,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-60 directories, 120 files
+60 directories, 121 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
