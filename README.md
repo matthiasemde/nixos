@@ -15,64 +15,68 @@ This repository holds the configuration of my homelab powered by NixOS
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
+│   ├── hindemith
+│   │   ├── configuration.nix
+│   │   └── hardware-configuration.nix
 │   ├── mahler
 │   │   ├── configuration.nix
 │   │   ├── hardware-configuration.nix
-│   │   └── secrets
-│   │       ├── env.yaml
-│   │       ├── firefly
-│   │       │   └── fints
-│   │       │       ├── gls.json
-│   │       │       └── gls-tagesgeldkonto.json
-│   │       ├── nas
-│   │       │   └── fileshare
-│   │       │       └── password
-│   │       └── synapse
-│   │           └── matrix-auth-app
-│   │               └── secrets.yaml
+│   │   ├── secrets
+│   │   │   ├── env.yaml
+│   │   │   ├── firefly
+│   │   │   │   └── fints
+│   │   │   │       ├── gls.json
+│   │   │   │       └── gls-tagesgeldkonto.json
+│   │   │   ├── nas
+│   │   │   │   └── fileshare
+│   │   │   │       └── password
+│   │   │   └── synapse
+│   │   │       └── matrix-auth-app
+│   │   │           └── secrets.yaml
+│   │   └── services.nix
 │   └── vogel
 │       ├── configuration.nix
 │       └── hardware-configuration.nix
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
-│   ├── flake.nix
+│   ├── default.nix
 │   └── README.md
-├── service-flake.nix.template
+├── service-module.nix.template
 ├── services
 │   ├── adguard
 │   │   ├── config
 │   │   │   └── AdGuardHome.yaml
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── audiobookshelf
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── authentik
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── firefly
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── fl-hofmusic
 │   │   ├── config
 │   │   │   └── nginx.conf
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── frp
 │   │   ├── config
 │   │   │   └── frpc.toml
-│   │   ├── .env
-│   │   └── flake.nix
+│   │   ├── default.nix
+│   │   └── .env
 │   ├── grafana
 │   │   ├── config
 │   │   │   ├── config.alloy
 │   │   │   ├── datasources.yml
 │   │   │   ├── loki.yml
 │   │   │   └── prometheus.yml
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── home-assistant
 │   │   ├── config
 │   │   │   ├── automations.yaml
 │   │   │   ├── configuration.yaml
 │   │   │   ├── scenes.yaml
 │   │   │   └── scripts.yaml
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── homepage
 │   │   ├── config
 │   │   │   ├── bookmarks.yaml
@@ -82,19 +86,19 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── services.yaml
 │   │   │   ├── settings.yaml
 │   │   │   └── widgets.yaml
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   └── README.md
 │   ├── immich
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── kopia
 │   │   ├── create_repository.sh
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   └── README.md
 │   ├── lovebox
 │   │   ├── config
 │   │   │   ├── nginx.conf
 │   │   │   └── php-fpm.conf
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   └── server
 │   │       ├── createBitmap.php
 │   │       ├── cropImage.php
@@ -107,35 +111,35 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │       ├── styles.css
 │   │       └── upload.php
 │   ├── mealie
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── microbin
-│   │   ├── .env
-│   │   └── flake.nix
+│   │   ├── default.nix
+│   │   └── .env
 │   ├── nas
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── navidrome
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   ├── music-sync.sh
 │   │   └── README.md
 │   ├── nextcloud
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   └── README.md
 │   ├── ollama
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── outline
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── paperless
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── pterodactyl
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── radicale
 │   │   ├── config
 │   │   │   └── config
-│   │   ├── flake.nix
+│   │   ├── default.nix
 │   │   ├── README.md
 │   │   └── users
 │   ├── silverbullet
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── synapse
 │   │   ├── config
 │   │   │   ├── homeserver.yaml.j2
@@ -144,9 +148,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── matrix-auth-config.yaml.j2
 │   │   │   ├── synapse-admin-config.json
 │   │   │   └── wellknown-nginx.conf
+│   │   ├── default.nix
 │   │   ├── ELEMENT_CALL_README.md
 │   │   ├── entrypoint.sh
-│   │   ├── flake.nix
 │   │   ├── livekit-entrypoint.sh
 │   │   ├── matrix-auth-entrypoint.sh
 │   │   ├── README.md
@@ -157,20 +161,18 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── middlewares.toml
 │   │   │   ├── nginx.conf
 │   │   │   └── traefik.toml
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── uptime-kuma
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── vaultwarden
-│   │   └── flake.nix
-│   ├── vscode-server
-│   │   └── flake.nix
+│   │   └── default.nix
 │   ├── web-projects
 │   │   ├── config
 │   │   │   ├── index.html
 │   │   │   └── nginx.conf
-│   │   └── flake.nix
+│   │   └── default.nix
 │   └── woodpecker
-│       ├── flake.nix
+│       ├── default.nix
 │       └── README.md
 ├── SETUP.md
 ├── .sops.yaml
@@ -180,9 +182,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── migrate.sh
 │   └── pre-commit-hook.sh
 └── virtualization
-    └── flake.nix
+    └── default.nix
 
-60 directories, 118 files
+60 directories, 120 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

@@ -4,7 +4,7 @@ This document catalogs the AI agents, automation systems, and intelligent servic
 
 ## 🤖 Overview
 
-Project Pandora leverages a distributed architecture of containerized services, many of which include AI-driven automation, intelligent monitoring, and adaptive behaviors. The infrastructure is built on NixOS with declarative container orchestration using Flakes.
+Project Pandora leverages a distributed architecture of containerized services, many of which include AI-driven automation, intelligent monitoring, and adaptive behaviors. The infrastructure is built on NixOS with declarative container orchestration using NixOS modules.
 
 ## 🏠 Home Automation Agents
 
@@ -177,43 +177,48 @@ Project Pandora leverages a distributed architecture of containerized services, 
 
 ## 🔧 Infrastructure Automation
 
-### NixOS Flake Architecture
-- **Declarative Configuration**: All services defined as Nix flakes
-- **Automatic Dependency Resolution**: Service interdependencies managed declaratively
-- **Immutable Deployments**: Reproducible infrastructure deployments
-- **Secret Management**: Automated secret injection via `agenix`
+### NixOS Module Architecture
+- **Declarative Configuration**: Each service is a plain NixOS module under `services/<name>/default.nix`
+- **Automatic Dependency Resolution**: Service interdependencies managed declaratively via `myVirtualization.dependencies`
+- **Immutable Deployments**: Reproducible infrastructure deployments via Nix flake locking
+- **Secret Management**: Automated secret injection via `sops-nix`
 
 ### Container Orchestration
-- **Virtualization Module**: `/virtualization/flake.nix`
+- **Virtualization Module**: `/virtualization/default.nix`
+- **Options namespace**: `myVirtualization.{containers, networks, dependencies}`
 - **Capabilities**:
   - Automatic Docker network creation
   - Service dependency file provisioning
-  - Image reference parsing and validation
+  - Image reference parsing and validation (`parseDockerImageReference`)
+  - Traefik label generation (`mkTraefikLabels`)
   - Container lifecycle management
+- **Helper injection**: `mkTraefikLabels` and `parseDockerImageReference` injected into all modules via `_module.args`
 
-### Secret Management Agent
-- **Module**: `/secret-mgmt/`
+### Secret Management Module
+- **Module**: `/secret-mgmt/default.nix`
 - **Capabilities**:
-  - Automated secret discovery in service directories
-  - YubiKey-based encryption/decryption
-  - Environment variable injection
-  - Key rotation automation
+  - Auto-scans `services/*/secrets/` and `hosts/<hostname>/secrets/` for sops secret files
+  - age/YubiKey-based encryption/decryption
+  - Environment file and secret file injection at runtime
+- **Helper injection**: `getEnvFiles` and `getSecretFile` injected into all modules via `_module.args`
 
 ## 🔄 Automation Patterns
 
-### Service Discovery
-Each service flake exports:
-- Container configurations
-- Network requirements  
-- Volume mappings
-- Environment variables
-- Traefik routing rules
-- Homepage integration metadata
+### Service Module Shape
+Each service module (`services/<name>/default.nix`) receives helpers as function arguments and sets NixOS options:
+```nix
+{ domain, mkTraefikLabels, getEnvFiles, getSecretFile, ... }:
+{
+  myVirtualization.containers.<name> = { ... };
+  myVirtualization.networks.<name>   = "";
+  myVirtualization.dependencies.*   = { ... };
+}
+```
 
 ### Dependency Management
-- **Files**: Automatic creation of required data files
-- **Networks**: Dynamic Docker network provisioning
-- **Secrets**: Encrypted secret management with automatic injection
+- **Files**: Automatic creation of required data files at activation time
+- **Networks**: Dynamic Docker network provisioning via activation scripts
+- **Secrets**: Encrypted secrets auto-discovered and mounted at `/run/mysecrets/`
 
 ### Update Automation
 - **Renovate Integration**: Automated dependency updates via `renovate.json`
@@ -222,8 +227,8 @@ Each service flake exports:
 
 ## 🚀 Agent Interaction Flows
 
-1. **Service Deployment**: Flake system automatically provisions containers, networks, and dependencies
-2. **Secret Injection**: Encrypted secrets automatically decrypted and mounted
+1. **Service Deployment**: NixOS module system aggregates all service modules, provisions containers, networks, and dependency files
+2. **Secret Injection**: sops-nix decrypts secrets at activation time and mounts them for containers
 3. **Service Discovery**: Traefik automatically discovers and routes services
 4. **Health Monitoring**: Glances and Homepage aggregate service health
 5. **Authentication**: Authentik provides unified identity management
