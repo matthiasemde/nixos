@@ -62,7 +62,7 @@
       ],
       "labels": [
         "major",
-        "nix-flake",
+        "nix",
         "docker-image"
       ],
       "automerge": false,
@@ -82,7 +82,7 @@
       ],
       "labels": [
         "minor/patch",
-        "nix-flake",
+        "nix",
         "docker-image"
       ],
       "automerge": false,
