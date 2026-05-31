@@ -3,6 +3,7 @@
   imports = [
     ../../services/frp
     ../../services/kopia
+    ../../services/minio
     ../../services/traefik
     ../../services/uptime-kuma
   ];
