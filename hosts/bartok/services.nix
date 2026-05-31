@@ -4,6 +4,7 @@
     ../../services/frp
     ../../services/kopia
     ../../services/traefik
+    ../../services/uptime-kuma
   ];
 
   config = {
