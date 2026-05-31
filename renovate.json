@@ -114,7 +114,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/(^|/)flake\\.nix$/"
+        "/(^|/)default\\.nix$/"
       ],
       "matchStrings": [
         "awImageReference\\s*=\\s*\"(?<depName>[a-zA-Z0-9._\\-/]+):(?<currentValue>[a-zA-Z0-9._-]+)@(?<currentDigest>sha256:[a-zA-Z0-9]+)\""
