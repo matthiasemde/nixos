@@ -5,18 +5,11 @@ auth.method = "token"
 auth.token = "{{ .Envs.FRP_TOKEN }}"
 
 [[proxies]]
-name = "traefik-http"
-type = "tcp"
-localIP = "traefik"
-localPort = 80
-remotePort = 80
-
-[[proxies]]
-name = "traefik-https"
+name = "traefik-tcp"
 type = "tcp"
 localIP = "traefik"
 localPort = 443
-remotePort = 443
+remotePort = 8443
 
 [[proxies]]
 name = "minecraft-tcp"
