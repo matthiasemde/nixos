@@ -5,7 +5,7 @@ auth.method = "token"
 auth.token = "{{ .Envs.FRP_TOKEN }}"
 
 [[proxies]]
-name = "bartok-traefik-https"
+name = "bartok-traefik-tcp"
 type = "tcp"
 localIP = "traefik"
 localPort = 443
