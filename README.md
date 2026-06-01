@@ -71,8 +71,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   └── nginx.conf
 │   │   └── default.nix
 │   ├── frp
-│   │   ├── config
-│   │   │   └── frpc.toml
 │   │   ├── default.nix
 │   │   └── .env
 │   ├── grafana
@@ -198,7 +196,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-65 directories, 129 files
+64 directories, 128 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
