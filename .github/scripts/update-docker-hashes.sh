@@ -10,6 +10,8 @@ NC='\033[0m' # No Color
 
 # Track if any changes were made
 CHANGES_MADE=false
+# Track if any errors occurred
+ERRORS_OCCURRED=false
 
 echo "Starting Docker image hash update process..."
 
@@ -104,6 +106,7 @@ for default in $modified_defaults; do
         --final-image-tag "$image_tag" 2>&1); then
         echo -e "${RED}Error: Failed to fetch hash for $image_name:$image_tag@$image_digest${NC}"
         echo "$nix_output"
+        ERRORS_OCCURRED=true
         continue
       fi
 
@@ -113,6 +116,7 @@ for default in $modified_defaults; do
       if [ -z "$nix_hash" ]; then
         echo -e "${RED}Warning: Could not extract hash from nix-prefetch-docker output${NC}"
         echo "$nix_output"
+        ERRORS_OCCURRED=true
         continue
       fi
 
@@ -127,6 +131,7 @@ for default in $modified_defaults; do
 
     if [ -z "$current_hash" ]; then
       echo -e "${RED}Warning: Could not find nixSha256 line after image reference at line $line_num${NC}"
+      ERRORS_OCCURRED=true
       continue
     fi
 
@@ -164,7 +169,10 @@ done
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-if [ "$CHANGES_MADE" = true ]; then
+if [ "$ERRORS_OCCURRED" = true ]; then
+  echo -e "${RED}✗ Hash update process encountered errors${NC}"
+  exit 2
+elif [ "$CHANGES_MADE" = true ]; then
   echo -e "${GREEN}✓ Hash updates complete - changes were made${NC}"
   echo "CHANGES_MADE=true"
   exit 0

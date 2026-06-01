@@ -59,16 +59,16 @@ jobs:
             exit $exit_code
           fi
 
-      - name: Validate flake syntax
+      - name: Validate Nix syntax
         if: steps.update.outputs.changes == 'true'
         run: |
-          echo "Validating modified flake files..."
-          for flake in services/*/flake.nix; do
-            if git diff --name-only HEAD | grep -q "$flake"; then
-              echo "Checking $flake..."
+          echo "Validating modified default.nix files..."
+          for default in services/*/default.nix; do
+            if git diff --name-only HEAD | grep -q "$default"; then
+              echo "Checking $default..."
               # Basic syntax check using nix-instantiate
-              nix-instantiate --parse "$flake" > /dev/null || {
-                echo "Error: Invalid Nix syntax in $flake"
+              nix-instantiate --parse "$default" > /dev/null || {
+                echo "Error: Invalid Nix syntax in $default"
                 exit 1
               }
             fi
@@ -79,7 +79,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add services/*/flake.nix
+          git add services/*/default.nix
           git commit -m "chore: update Docker image SHA256 hashes"
           git push
 
