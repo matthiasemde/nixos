@@ -31,7 +31,7 @@
     ];
     gc = {
       automatic = true;
-      dates = "weekly";
+      dates = "daily";
       options = "--delete-older-than 14d";
     };
     optimise.automatic = true;
@@ -49,8 +49,6 @@
     linger = true;
     shell = pkgs.zsh;
   };
-  
-  programs.zsh.enable = true;
 
   programs.zsh.enable = true;
 

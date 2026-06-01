@@ -15,12 +15,23 @@ This repository holds the configuration of my homelab powered by NixOS
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
+│   ├── bartok
+│   │   ├── configuration.nix
+│   │   ├── frpc.toml
+│   │   ├── hardware-configuration.nix
+│   │   ├── secrets
+│   │   │   ├── env.yaml
+│   │   │   └── minio
+│   │   │       └── server
+│   │   │           └── license
+│   │   └── services.nix
 │   ├── common.nix
 │   ├── hindemith
 │   │   ├── configuration.nix
 │   │   └── hardware-configuration.nix
 │   ├── mahler
 │   │   ├── configuration.nix
+│   │   ├── frpc.toml
 │   │   ├── hardware-configuration.nix
 │   │   ├── secrets
 │   │   │   ├── env.yaml
@@ -116,6 +127,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── microbin
 │   │   ├── default.nix
 │   │   └── .env
+│   ├── minio
+│   │   └── default.nix
 │   ├── nas
 │   │   └── default.nix
 │   ├── navidrome
@@ -185,7 +198,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-60 directories, 121 files
+65 directories, 129 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
