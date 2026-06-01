@@ -9,7 +9,7 @@ in
 {
   myVirtualization.containers.web-projects = {
     rawImageReference = "nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a";
-    nixSha256 = "sha256-DpQKJKWP2RNkSQdoSRR9qJnMwOaKcCf9gr13tEFkh6g=";
+    nixSha256 = "sha256-1smG0epcEvN6OA/gQF3mxDMmKh8W33LQITKa37WjAP4=";
     networks = [ "traefik" ];
     volumes = [
       "/data/nas/home/Matthias/Documents/code/web-projects:/usr/share/nginx/html/projects:ro"
