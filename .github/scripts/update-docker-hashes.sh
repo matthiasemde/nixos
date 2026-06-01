@@ -13,6 +13,15 @@ CHANGES_MADE=false
 # Track if any errors occurred
 ERRORS_OCCURRED=false
 
+registries_conf=$(mktemp)
+cat > "$registries_conf" <<'EOF'
+unqualified-search-registries = []
+short-name-mode = "disabled"
+EOF
+export CONTAINERS_REGISTRIES_CONF="$registries_conf"
+export REGISTRIES_CONFIG_PATH="$registries_conf"
+trap 'rm -f "$registries_conf"' EXIT
+
 echo "Starting Docker image hash update process..."
 
 # Get the base branch (usually main or master)
