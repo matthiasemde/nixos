@@ -48,7 +48,7 @@ prometheus.scrape "node_exporter" {
   targets = [
     {
       __address__ = "mahler:9100",
-      instance    = "node-exporter",
+      instance    = "mahler",
     },
   ]
   forward_to = [prometheus.remote_write.default.receiver]
@@ -95,7 +95,8 @@ prometheus.remote_write "default" {
   }
 }
 
-// Loki
+// -- Logs ---------------------------------------------------------------------
+
 loki.source.journal "default" {
   forward_to    = [loki.process.debug.receiver]
   relabel_rules = loki.relabel.journal_labels.rules
@@ -139,6 +140,35 @@ loki.write "default" {
   endpoint {
     url = "http://loki:3100/loki/api/v1/push"
   }
+}
+
+// Gateway ingest - receives metrics and logs from remote Alloy instances over mTLS.
+prometheus.receive_http "gateway" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 12346
+  }
+  tls {
+    cert_file        = "/run/secrets/alloy/server.crt"
+    key_file         = "/run/secrets/alloy/server.key"
+    client_ca_file   = "/run/secrets/alloy/ca.crt"
+    client_auth_type = "RequireAndVerifyClientCert"
+  }
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+loki.source.api "gateway" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 12347
+  }
+  tls {
+    cert_file        = "/run/secrets/alloy/server.crt"
+    key_file         = "/run/secrets/alloy/server.key"
+    client_ca_file   = "/run/secrets/alloy/ca.crt"
+    client_auth_type = "RequireAndVerifyClientCert"
+  }
+  forward_to = [loki.process.debug.receiver]
 }
 
 
