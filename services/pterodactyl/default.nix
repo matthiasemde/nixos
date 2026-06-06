@@ -90,8 +90,8 @@ in
   };
 
   myVirtualization.containers.pterodactyl-daemon = {
-    rawImageReference = "ccarney16/pterodactyl-daemon:v1.12.2@sha256:b52bd0c985e86940317ccdb0d7702aadb2c0583413e0134ec5f10ae5d37804ac";
-    nixSha256 = "sha256-GNhgUcMfBZYud484HHEVsGNSfsZJsJ05osj0eaqvhoo=";
+    rawImageReference = "ccarney16/pterodactyl-daemon:v1.12.3@sha256:abdbb1827f4d40ce44b51522de99235db08b11e08ccd8fc2e74d5acbe137fd21";
+    nixSha256 = "sha256-p24hFIXIDJKZevMPUJrFKaW+R5tIVI/my7C+AvubIGY=";
     networks = [
       backendNetwork
       "frp-ingress"
