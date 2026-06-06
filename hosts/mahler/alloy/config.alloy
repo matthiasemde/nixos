@@ -98,7 +98,7 @@ prometheus.remote_write "default" {
 // -- Logs ---------------------------------------------------------------------
 
 loki.source.journal "default" {
-  forward_to    = [loki.process.debug.receiver]
+  forward_to    = [loki.process.fix_docker_log_level.receiver]
   relabel_rules = loki.relabel.journal_labels.rules
   labels = { job="loki-journal" }
 }
@@ -130,10 +130,60 @@ loki.relabel "journal_labels" {
     source_labels = ["__journal_priority_keyword"]
     target_label  = "level"
   }
+
+  rule {
+    source_labels = ["__journal_priority"]
+    target_label  = "level_int"
+  }
 }
 
-loki.process "debug" {
+loki.process "fix_docker_log_level" {
   forward_to = [loki.write.default.receiver]
+
+  stage.match {
+    selector = `{container!=""}`
+
+    // Default to error so unmatched lines stay high-severity.
+    stage.static_labels {
+      values = { level = "info" }
+    }
+
+    // DEBUG / TRACE
+    stage.match {
+      selector = `{job=~".+"} |~ "(?i)(^|[[:space:][:punct:]])(trace|debug|dbg|verbose)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "debug" }
+      }
+    }
+
+    // INFO / NOTICE
+    stage.match {
+      selector = `{job=~".+"} |~ "(?i)(^|[[:space:][:punct:]])(info|information|notice)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "info" }
+      }
+    }
+
+    // WARN / WARNING
+    stage.match {
+      selector = `{job=~".+"} |~ "(?i)(^|[[:space:][:punct:]])(warn|warning)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "warn" }
+      }
+    }
+
+    // ERROR / ERR / FATAL / PANIC
+    stage.match {
+      selector = `{job=~".+"} |~ "(?i)(^|[[:space:][:punct:]])(err|error|fatal|panic|critical)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "error" }
+      }
+    }
+  }
 }
 
 loki.write "default" {
@@ -147,12 +197,13 @@ prometheus.receive_http "gateway" {
   http {
     listen_address = "0.0.0.0"
     listen_port    = 12346
-  }
-  tls {
-    cert_file        = "/run/secrets/alloy/server.crt"
-    key_file         = "/run/secrets/alloy/server.key"
-    client_ca_file   = "/run/secrets/alloy/ca.crt"
-    client_auth_type = "RequireAndVerifyClientCert"
+    
+    tls {
+      cert_file        = "/run/secrets/alloy/server.crt"
+      key_file         = "/run/secrets/alloy/server.key"
+      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      client_auth_type = "RequireAndVerifyClientCert"
+    }
   }
   forward_to = [prometheus.remote_write.default.receiver]
 }
@@ -161,14 +212,15 @@ loki.source.api "gateway" {
   http {
     listen_address = "0.0.0.0"
     listen_port    = 12347
+
+    tls {
+      cert_file        = "/run/secrets/alloy/server.crt"
+      key_file         = "/run/secrets/alloy/server.key"
+      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      client_auth_type = "RequireAndVerifyClientCert"
+    }
   }
-  tls {
-    cert_file        = "/run/secrets/alloy/server.crt"
-    key_file         = "/run/secrets/alloy/server.key"
-    client_ca_file   = "/run/secrets/alloy/ca.crt"
-    client_auth_type = "RequireAndVerifyClientCert"
-  }
-  forward_to = [loki.process.debug.receiver]
+  forward_to = [loki.process.fix_docker_log_level.receiver]
 }
 
 

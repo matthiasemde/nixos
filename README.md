@@ -16,11 +16,18 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── .gitignore
 ├── hosts
 │   ├── bartok
+│   │   ├── alloy
+│   │   │   └── config.alloy
 │   │   ├── configuration.nix
 │   │   ├── frpc.toml
 │   │   ├── hardware-configuration.nix
 │   │   ├── secrets
 │   │   │   ├── env.yaml
+│   │   │   ├── grafana
+│   │   │   │   └── alloy
+│   │   │   │       ├── ca.crt
+│   │   │   │       ├── client.crt
+│   │   │   │       └── client.key
 │   │   │   └── minio
 │   │   │       └── server
 │   │   │           └── license
@@ -30,6 +37,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── configuration.nix
 │   │   └── hardware-configuration.nix
 │   ├── mahler
+│   │   ├── alloy
+│   │   │   └── config.alloy
 │   │   ├── configuration.nix
 │   │   ├── frpc.toml
 │   │   ├── hardware-configuration.nix
@@ -39,6 +48,11 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   │   └── fints
 │   │   │   │       ├── gls.json
 │   │   │   │       └── gls-tagesgeldkonto.json
+│   │   │   ├── grafana
+│   │   │   │   └── alloy
+│   │   │   │       ├── ca.crt
+│   │   │   │       ├── server.crt
+│   │   │   │       └── server.key
 │   │   │   ├── nas
 │   │   │   │   └── fileshare
 │   │   │   │       └── password
@@ -75,11 +89,11 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── .env
 │   ├── grafana
 │   │   ├── config
-│   │   │   ├── config.alloy
 │   │   │   ├── datasources.yml
 │   │   │   ├── loki.yml
 │   │   │   └── prometheus.yml
-│   │   └── default.nix
+│   │   ├── default.nix
+│   │   └── README.md
 │   ├── home-assistant
 │   │   ├── config
 │   │   │   ├── automations.yaml
@@ -197,7 +211,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-64 directories, 129 files
+70 directories, 137 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
