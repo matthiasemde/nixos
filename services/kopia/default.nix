@@ -51,6 +51,9 @@ in
 
         # Mount path for browsing mounted snapshots
         "/tmp/kopia-browse:/tmp:shared"
+
+        # Mount script for remote backups
+        "${./do-remote-backup.sh}:/app/do-remote-backup.sh:ro"
       ]
       ++ backupVolumes;
       environment = {
@@ -69,7 +72,6 @@ in
         "0.0.0.0:51515"
         "--metrics-listen-addr"
         "0.0.0.0:9091"
-        "--kopiaui-notifications"
       ];
       labels =
         (mkTraefikLabels {
