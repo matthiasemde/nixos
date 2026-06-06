@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, getSecretFile, ... }:
 {
   imports = [
     ../../services/adguard
@@ -77,6 +77,16 @@
     frp.configPath = ./frpc.toml;
     mealie.oidcClientId = "e5DDiJkn8eaMjYMNt85W3NaDshnu5s67lXy79ava";
     grafana.oidcClientId = "E0ryu0936Q62OLtR4W1DHdPjz87RtJp3Jn2pWb27";
+    grafana = {
+      enableAlloyGateway = true;
+      alloyConfigFile = ./alloy/config.alloy;
+      alloyExtraVolumes = [
+        "${getSecretFile "grafana" "alloy" "ca.crt"}:/run/secrets/alloy/ca.crt:ro"
+        "${getSecretFile "grafana" "alloy" "server.crt"}:/run/secrets/alloy/server.crt:ro"
+        "${getSecretFile "grafana" "alloy" "server.key"}:/run/secrets/alloy/server.key:ro"
+      ];
+
+    };
     kopia = {
       repositoryPath = "/backup/kopia/repositories/main";
       backupPaths = [
