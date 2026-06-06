@@ -103,6 +103,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── kopia
 │   │   ├── create_repository.sh
 │   │   ├── default.nix
+│   │   ├── do-remote-backup.sh
 │   │   └── README.md
 │   ├── lovebox
 │   │   ├── config
@@ -196,7 +197,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-64 directories, 128 files
+64 directories, 129 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
