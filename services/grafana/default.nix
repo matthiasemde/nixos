@@ -21,7 +21,7 @@ in
     myVirtualization.networks.monitoring = "";
 
     myVirtualization.containers.grafana = {
-      rawImageReference = "grafana/grafana:13.0.1@sha256:0f86bada30d65ef9d0183b90c1e2682ac92d53d95da8bed322b984ea78a4a73a";
+      rawImageReference = "grafana/grafana:13.0.2@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2";
       nixSha256 = "sha256-N5vSEYmVvEpeBK0h6bAU+A2nf9xQO4OuiH5pGPxYt/g=";
       networks = [
         backendNetwork
