@@ -10,8 +10,8 @@ let
   networkName = "adguard-macvlan";
   cfg = config.adguard.macvlan;
 
-  adguardRawImageReference = "adguard/adguardhome:v0.107.76@sha256:7157eb1dc3b26c7af1d6898759a7b3f7d0fa09891fbd2d3caa6abc1057a9179b";
-  adguardNixSha256 = "sha256-lcZyKpTbQHY0QiNtuQu94vGPjA7yGrlSP/GhfLJGLW8=";
+  adguardRawImageReference = "adguard/adguardhome:v0.107.77@sha256:e6f2b8bcda06064ab055b44933a4f0e983c35558b9cdb8d2e7ab1efcee36d890";
+  adguardNixSha256 = "sha256-lUgqJ7ja6EuLJBWrK7XydT/CbtffAVNr1Xw2pjFFe30=";
   adguardImageReference = parseDockerImageReference adguardRawImageReference;
   adguardImage = pkgs.dockerTools.pullImage {
     imageName = adguardImageReference.name;
