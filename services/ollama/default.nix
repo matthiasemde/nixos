@@ -38,8 +38,8 @@ in
   };
 
   myVirtualization.containers.open-webui = {
-    rawImageReference = "openwebui/open-webui:0.9.5@sha256:e045bde3b004cc7f8c319412345eb56c87ea6ac57031534a31ca37ad5424beb3";
-    nixSha256 = "sha256-DUwBhf6GCINUmgpt1LolYVsdSad5zbafYHXuYYDOIqw=";
+    rawImageReference = "openwebui/open-webui:0.9.6@sha256:90eae5b419e40b4c3dd684582b2c83440b36f9ae2f6532c09639b2ba4ee65158";
+    nixSha256 = "sha256-ql40YHEtV29VqplGY5yYb0oPoeA2ZrblfQ7iXo0Q6eY=";
     networks = [
       "traefik"
       backendNetwork
