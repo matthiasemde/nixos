@@ -149,6 +149,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── music-sync.sh
 │   │   └── README.md
 │   ├── nextcloud
+│   │   ├── apache-custom.conf
 │   │   ├── default.nix
 │   │   └── README.md
 │   ├── ollama
@@ -211,7 +212,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-70 directories, 137 files
+70 directories, 138 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

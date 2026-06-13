@@ -13,7 +13,7 @@ in
     nixSha256 = "sha256-qlKfW5LuDQ1Wdmpt8P/cnN2AnPivuhFq6r4IXQfazGQ=";
     environment = {
       ND_SCANSCHEDULE = "1h";
-      ND_LOGLEVEL = "info";
+      ND_LOGLEVEL = "warn";
       ND_SESSIONTIMEOUT = "24h";
       ND_BASEURL = "";
       ND_REVERSEPROXYWHITELIST = "0.0.0.0/0, ::/0";

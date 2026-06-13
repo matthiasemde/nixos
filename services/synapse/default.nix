@@ -29,7 +29,7 @@ let
       pythonEnv = pkgs.python3.withPackages (ps: [ ps.jinja2 ]);
     in
     pkgs.dockerTools.buildImage {
-      name = "matix-auth-derived";
+      name = "matrix-auth-derived";
       tag = matrixAuthImageReference.tag;
       fromImage = matrixAuthImage;
       copyToRoot = pkgs.buildEnv {
@@ -109,14 +109,22 @@ in
       "/data/services/synapse/matrix-auth-database:/var/lib/postgresql/18/docker"
     ];
     networks = [ authBackendNetwork ];
+    cmd = [
+      "postgres"
+      "-c"
+      "log_checkpoints=off"
+    ];
     labels = {
       "traefik.enable" = "false";
     };
   };
 
   myVirtualization.containers.matrix-auth-app = {
-    image = "matix-auth-derived" + ":" + matrixAuthImageReference.tag;
+    image = "matrix-auth-derived" + ":" + matrixAuthImageReference.tag;
     imageFile = matrixAuthImageDerived;
+    environment = {
+      "RUST_LOG" = "warn";
+    };
     environmentFiles = getEnvFiles "synapse" "matrix-auth-app";
     volumes = [
       "${./config/matrix-auth-config.yaml.j2}:/data/config.yaml.j2:ro"
@@ -171,6 +179,11 @@ in
       "/data/services/synapse/database:/var/lib/postgresql/18/docker"
     ];
     networks = [ backendNetwork ];
+    cmd = [
+      "postgres"
+      "-c"
+      "log_checkpoints=off"
+    ];
     labels = {
       "traefik.enable" = "false";
     };
@@ -180,14 +193,9 @@ in
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     cmd = [
-      "--save"
-      "60"
-      "1"
+      "redis-server"
       "--loglevel"
       "warning"
-    ];
-    volumes = [
-      "/data/services/synapse/redis:/data"
     ];
     networks = [ backendNetwork ];
     labels = {
@@ -310,6 +318,7 @@ in
       "NTFY_BEHIND_PROXY" = "true";
       "NTFY_AUTH_DEFAULT_ACCESS" = "deny-all";
       "NTFY_ENABLE_SIGNUP" = "false";
+      "NTFY_LOG_LEVEL" = "warn";
     };
     networks = [
       "traefik"

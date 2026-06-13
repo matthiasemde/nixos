@@ -26,6 +26,7 @@ in
       "/data/services/nextcloud/app/config:/var/www/html/config"
       "/data/services/nextcloud/app/data:/var/www/html/data"
       "/data/services/nextcloud/app/custom_apps:/var/www/html/custom_apps"
+      "${./apache-custom.conf}:/etc/apache2/sites-enabled/000-default.conf:ro"
     ]
     ++ map (name: "${externalStorage.${name}}:/mnt/${name}") (builtins.attrNames externalStorage);
     networks = [
@@ -73,6 +74,11 @@ in
       POSTGRES_USER = "nextcloud";
     };
     environmentFiles = getEnvFiles "nextcloud" "database";
+    cmd = [
+      "postgres"
+      "-c"
+      "log_checkpoints=off"
+    ];
     labels = {
       "traefik.enable" = "false";
     };
@@ -82,6 +88,11 @@ in
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     networks = [ backendNetwork ];
+    cmd = [
+      "redis-server"
+      "--loglevel"
+      "warning"
+    ];
     labels = {
       "traefik.enable" = "false";
     };

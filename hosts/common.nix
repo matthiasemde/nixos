@@ -62,4 +62,10 @@
     flake = "github:matthiasemde/nixos";
     dates = "*-*-* 05:00:00 Europe/Berlin";
   };
+
+  services.journald = {
+    extraConfig = ''
+      MaxRetentionSec=1day
+    '';
+  };
 }
