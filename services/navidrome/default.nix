@@ -16,8 +16,8 @@ in
       ND_LOGLEVEL = "warn";
       ND_SESSIONTIMEOUT = "24h";
       ND_BASEURL = "";
-      ND_REVERSEPROXYWHITELIST = "0.0.0.0/0, ::/0";
-      ND_REVERSEPROXYUSERHEADER = "X-authentik-username";
+      ND_EXTAUTH_TRUSTEDSOURCES = "0.0.0.0/0, ::/0";
+      ND_EXTAUTH_USERHEADER = "X-authentik-username";
       ND_ENABLEEXTERNALSERVICES = "false";
       ND_ENABLEUSEREDITING = "false";
       ND_ENABLEINSIGHTSCOLLECTOR = "false";
