@@ -132,7 +132,7 @@ in
         (mkTraefikLabels {
           name = "prometheus";
           port = "9090";
-          isPublic = false;
+          useInfraForwardAuth = true;
         })
         // {
           "homepage.group" = "Monitoring";
@@ -154,19 +154,6 @@ in
         "${./config/loki.yml}:/etc/loki/config.yml:ro"
       ];
       cmd = [ "-config.file=/etc/loki/config.yml" ];
-      labels =
-        (mkTraefikLabels {
-          name = "loki";
-          port = "3100";
-          isPublic = false;
-        })
-        // {
-          "homepage.group" = "Monitoring";
-          "homepage.name" = "Loki";
-          "homepage.icon" = "loki";
-          "homepage.href" = "http://loki.${hostname}.local";
-          "homepage.description" = "Log aggregation and storage";
-        };
     };
 
     myVirtualization.containers.alloy = lib.mkIf cfg.enableAlloy {
@@ -199,7 +186,7 @@ in
         (mkTraefikLabels {
           name = "alloy";
           port = "12345";
-          useForwardAuth = true;
+          useInfraForwardAuth = true;
         })
         // (lib.optionalAttrs cfg.enableAlloyGateway (
           mkTraefikLabels {
