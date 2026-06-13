@@ -1,0 +1,261 @@
+// Alloy service config
+livedebugging {
+  enabled = true
+}
+
+logging {
+  level  = "warn"
+  format = "logfmt"
+}
+
+// Discovery
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// Relabel discovered containers into Prometheus targets.
+discovery.relabel "metrics_targets" {
+  targets = discovery.docker.containers.targets
+
+  // Only keep containers with metrics enabled.
+  rule {
+    source_labels = ["__meta_docker_container_label_alloy_metrics_enabled"]
+    regex         = "true"
+    action        = "keep"
+  }
+
+  // Build scrape address from container IP + label-defined port.
+  rule {
+    source_labels = [
+      "__meta_docker_network_ip",
+      "__meta_docker_container_label_alloy_metrics_port",
+    ]
+    separator    = ":"
+    target_label = "__address__"
+  }
+
+  // Use container name as instance label (strips leading /).
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "instance"
+  }
+}
+
+// Prometheus
+prometheus.scrape "node_exporter" {
+  job_name = "node-exporter"
+  targets = [
+    {
+      __address__ = "mahler:9100",
+      instance    = "mahler",
+    },
+  ]
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "docker" {
+  job_name = "docker-discovery"
+  targets    = discovery.relabel.metrics_targets.output
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.exporter.cadvisor "default" {
+  docker_only = true
+  store_container_labels = false
+  enabled_metrics = ["cpu","memory","oom_event","disk","diskIO","network"]
+}
+
+prometheus.scrape "cadvisor" {
+  targets    = prometheus.exporter.cadvisor.default.targets
+  forward_to = [prometheus.relabel.cadvisor.receiver]
+}
+
+prometheus.relabel "cadvisor" {
+    forward_to = [
+        prometheus.remote_write.default.receiver,
+    ]
+
+    rule {
+        action       = "replace"
+        target_label = "job"
+        replacement  = "cadvisor"
+    }
+
+    rule {
+        action       = "replace"
+        target_label = "instance"
+        replacement  = "mahler"
+    }
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "http://prometheus:9090/api/v1/write"
+  }
+}
+
+// -- Logs ---------------------------------------------------------------------
+
+loki.source.journal "default" {
+  forward_to    = [loki.process.categorize_docker_logs.receiver]
+  relabel_rules = loki.relabel.journal_labels.rules
+  labels = { job="loki-journal" }
+}
+
+loki.relabel "journal_labels" {
+  forward_to = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+
+  rule {
+    source_labels = ["__journal__hostname"]
+    target_label  = "host"
+  }
+
+  rule {
+    source_labels = ["__journal_priority_keyword"]
+    target_label  = "level"
+  }
+
+  rule {
+    source_labels = ["__journal_priority"]
+    target_label  = "level_int"
+  }
+
+  rule {
+    source_labels = ["__journal__cmdline"]
+    target_label  = "cmd"
+  }
+}
+
+loki.process "categorize_docker_logs" {
+  forward_to = [loki.process.fix_docker_log_level.receiver]
+
+  stage.match {
+    selector = `{unit="docker.service"}`
+
+    stage.static_labels {
+      values = { service = "docker" }
+    }
+  }
+
+  // Extract service name and image from docker-<service>.service journal entries.
+  stage.match {
+    selector = `{unit=~"docker-.+\\.service"}`
+
+    stage.regex {
+      source     = "unit"
+      expression = `docker-(?P<service>[^.]+)\.service`
+    }
+
+    stage.labels {
+      values = { service = "" }
+    }
+
+    stage.regex {
+      source     = "cmd"
+      expression = `--pull\s+\S+\s+(?P<image>\S+)`
+    }
+
+    stage.labels {
+      values = { image = "" }
+    }
+
+    stage.label_drop {
+      values = ["cmd"]
+    }
+  }
+}
+
+loki.process "fix_docker_log_level" {
+  forward_to = [loki.write.default.receiver]
+
+  stage.match {
+    selector = `{unit=~"docker-.+\\.service"}`
+
+    // Default to error so unmatched lines stay high-severity.
+    stage.static_labels {
+      values = { level = "info" }
+    }
+
+    // DEBUG / TRACE
+    stage.match {
+      selector = `{unit=~"docker-.+\\.service"} |~ "(?i)(^|[[:space:][:punct:]])(trace|debug|dbg|verbose)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "debug" }
+      }
+    }
+
+    // INFO / NOTICE
+    stage.match {
+      selector = `{unit=~"docker-.+\\.service"} |~ "(?i)(^|[[:space:][:punct:]])(info|information|notice)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "info" }
+      }
+    }
+
+    // WARN / WARNING
+    stage.match {
+      selector = `{unit=~"docker-.+\\.service"} |~ "(?i)(^|[[:space:][:punct:]])(warn|warning)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "warn" }
+      }
+    }
+
+    // ERROR / ERR / FATAL / PANIC
+    stage.match {
+      selector = `{unit=~"docker-.+\\.service"} |~ "(?i)(^|[[:space:][:punct:]])(err|error|fatal|panic|critical)([[:space:][:punct:]]|$)"`
+
+      stage.static_labels {
+        values = { level = "error" }
+      }
+    }
+  }
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
+
+// Gateway ingest - receives metrics and logs from remote Alloy instances over mTLS.
+prometheus.receive_http "gateway" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 12346
+
+    tls {
+      cert_file        = "/run/secrets/alloy/server.crt"
+      key_file         = "/run/secrets/alloy/server.key"
+      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      client_auth_type = "RequireAndVerifyClientCert"
+    }
+  }
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+loki.source.api "gateway" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 12347
+
+    tls {
+      cert_file        = "/run/secrets/alloy/server.crt"
+      key_file         = "/run/secrets/alloy/server.key"
+      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      client_auth_type = "RequireAndVerifyClientCert"
+    }
+  }
+  forward_to = [loki.process.fix_docker_log_level.receiver]
+}
+
+
+

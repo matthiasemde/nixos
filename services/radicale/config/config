@@ -2,6 +2,9 @@
 # Bind all addresses
 hosts = 0.0.0.0:5232, [::]:5232
 
+[logging]
+level = warning
+
 [auth]
 type = htpasswd
 htpasswd_filename = /etc/radicale/users

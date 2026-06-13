@@ -8,6 +8,10 @@
 let
   hostname = config.networking.hostName;
 
+  staticOCIContainerOptions = {
+    log-driver = lib.mkForce "none";
+  };
+
   mkTraefikLabels =
     {
       name,
@@ -18,6 +22,7 @@ let
       allowedPaths ? null,
       corsAllowPost ? false,
       useForwardAuth ? false,
+      useInfraForwardAuth ? false,
     }:
     let
       subdomain = if specialSubdomain != null then specialSubdomain else name;
@@ -36,14 +41,29 @@ let
       publicRule = "Host(`${subdomain}.${domain}`)${pathRules}";
       publicTcpRule = "HostSNI(`${subdomain}.${domain}`)";
 
-      local = {
+      default = {
         "traefik.enable" = "true";
-        "traefik.http.services.${name}.loadbalancer.server.port" = port;
+      }
+      // (
+        if passthrough then
+          {
+            "traefik.tcp.services.${name}.loadbalancer.server.port" = port;
+          }
+        else
+          {
+            "traefik.http.services.${name}.loadbalancer.server.port" = port;
+          }
+      );
 
-        "traefik.http.routers.${name}-local.entrypoints" = "web";
-        "traefik.http.routers.${name}-local.rule" = localRule;
-        "traefik.http.routers.${name}-local.service" = name;
-      };
+      local =
+        if passthrough then
+          { }
+        else
+          {
+            "traefik.http.routers.${name}-local.entrypoints" = "web";
+            "traefik.http.routers.${name}-local.rule" = localRule;
+            "traefik.http.routers.${name}-local.service" = name;
+          };
 
       public =
         if !isPublic then
@@ -64,12 +84,18 @@ let
                 { };
             forwardAuthMiddleware =
               if useForwardAuth then
-                { "traefik.http.routers.${name}-public.middlewares" = "authentik-forward-auth@file"; }
+                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth@file"; }
+              else
+                { };
+            infraForwardAuthMiddleware =
+              if useInfraForwardAuth then
+                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth-infra@file"; }
               else
                 { };
           in
           corsMiddleware
           // forwardAuthMiddleware
+          // infraForwardAuthMiddleware
           // {
             "traefik.http.routers.${name}-public.entrypoints" = "websecure";
             "traefik.http.routers.${name}-public.rule" = publicRule;
@@ -78,7 +104,7 @@ let
             "traefik.http.routers.${name}-public.service" = name;
           };
     in
-    local // public;
+    default // local // public;
 
   parseDockerImageReference =
     imageStr:
@@ -105,27 +131,30 @@ let
         hasRawImage = builtins.hasAttr "rawImageReference" containerConfig;
         hasNixSha = builtins.hasAttr "nixSha256" containerConfig;
       in
-      if hasRawImage && hasNixSha then
-        let
-          imageRef = parseDockerImageReference containerConfig.rawImageReference;
-          imageFile = pkgs.dockerTools.pullImage {
-            imageName = imageRef.name;
-            imageDigest = imageRef.digest;
-            finalImageTag = imageRef.tag;
-            sha256 = containerConfig.nixSha256;
-          };
-          processedConfig = builtins.removeAttrs containerConfig [
-            "rawImageReference"
-            "nixSha256"
-          ];
-        in
-        processedConfig
-        // {
-          image = imageRef.name + ":" + imageRef.tag;
-          imageFile = imageFile;
-        }
-      else
-        containerConfig
+      staticOCIContainerOptions
+      // (
+        if hasRawImage && hasNixSha then
+          let
+            imageRef = parseDockerImageReference containerConfig.rawImageReference;
+            imageFile = pkgs.dockerTools.pullImage {
+              imageName = imageRef.name;
+              imageDigest = imageRef.digest;
+              finalImageTag = imageRef.tag;
+              sha256 = containerConfig.nixSha256;
+            };
+            processedConfig = builtins.removeAttrs containerConfig [
+              "rawImageReference"
+              "nixSha256"
+            ];
+          in
+          processedConfig
+          // {
+            image = imageRef.name + ":" + imageRef.tag;
+            imageFile = imageFile;
+          }
+        else
+          containerConfig
+      )
     ) rawContainers;
 
   fileScripts = lib.mapAttrsToList (file: permissions: {
@@ -149,7 +178,10 @@ let
     name = serviceName;
     value = {
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+      after = [
+        "network.target"
+        "docker.service"
+      ];
       serviceConfig = {
         Type = "simple";
         Restart = "on-failure";

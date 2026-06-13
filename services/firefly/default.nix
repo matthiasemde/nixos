@@ -35,7 +35,7 @@ in
       DEFAULT_LOCALE = "de_DE";
       TZ = "Europe/Berlin";
       LOG_CHANNEL = "stderr";
-      APP_LOG_LEVEL = "notice";
+      APP_LOG_LEVEL = "warning";
       AUDIT_LOG_LEVEL = "emergency";
       DB_CONNECTION = "sqlite";
       APP_URL = "https://firefly.${domain}";

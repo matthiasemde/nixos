@@ -86,10 +86,13 @@ in
     myVirtualization.containers.paperless-redis = {
       rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
       nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
-      volumes = [
-        "/data/services/paperless/redis:/data"
-      ];
       networks = [ backendNetwork ];
+      cmd = [
+        "--save"
+        ""
+        "--loglevel"
+        "warning"
+      ];
       labels = {
         "traefik.enable" = "false";
       };

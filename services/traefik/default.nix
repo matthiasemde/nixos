@@ -1,4 +1,4 @@
-{ config, getEnvFiles, ... }:
+{ config, mkTraefikLabels, getEnvFiles, ... }:
 let
   hostname = config.networking.hostName;
 in
@@ -27,13 +27,19 @@ in
     cmd = [
       "--configFile=traefik.toml"
     ];
-    labels = {
-      "homepage.group" = "Utilities";
-      "homepage.name" = "Traefik";
-      "homepage.icon" = "traefik";
-      "homepage.href" = "http://${hostname}:8080";
-      "homepage.description" = "Reverse proxy dashboard";
-    };
+    labels =
+      mkTraefikLabels {
+        name = "traefik";
+        port = "8080";
+        useInfraForwardAuth = true;
+      }
+      // {
+        "homepage.group" = "Utilities";
+        "homepage.name" = "Traefik";
+        "homepage.icon" = "traefik";
+        "homepage.href" = "http://traefik.${hostname}.local";
+        "homepage.description" = "Reverse proxy dashboard";
+      };
   };
 
   myVirtualization.containers.error-pages = {

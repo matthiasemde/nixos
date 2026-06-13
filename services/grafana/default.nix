@@ -9,18 +9,57 @@
 let
   hostname = config.networking.hostName;
   backendNetwork = "grafana-backend";
+  cfg = config.grafana;
 in
 {
-  options.grafana.oidcClientId = lib.mkOption {
-    type = lib.types.str;
-    description = "Grafana OAuth client ID registered in Authentik.";
+  options.grafana = {
+    oidcClientId = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Grafana OAuth client ID registered in Authentik.";
+    };
+    enableGrafana = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable the Grafana container.";
+    };
+    enablePrometheus = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable the Prometheus container.";
+    };
+    enableLoki = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable the Loki container.";
+    };
+    enableAlloy = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable the Alloy container.";
+    };
+    enableAlloyGateway = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to expose Alloy as a public mTLS ingest gateway for remote metrics and logs.";
+    };
+    alloyConfigFile = lib.mkOption {
+      type = lib.types.path;
+      default = ./config/config.alloy;
+      description = "Path to the Alloy configuration file to mount into the container.";
+    };
+    alloyExtraVolumes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Additional volume mounts for the Alloy container (e.g. TLS certificate files).";
+    };
   };
 
   config = {
     myVirtualization.networks.${backendNetwork} = "";
     myVirtualization.networks.monitoring = "";
 
-    myVirtualization.containers.grafana = {
+    myVirtualization.containers.grafana = lib.mkIf cfg.enableGrafana {
       rawImageReference = "grafana/grafana:13.0.2@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2";
       nixSha256 = "sha256-ykSkjhx28wnlLiiVKp/Bc5o2NbmQ4olt+WLMiiBgSv0=";
       networks = [
@@ -40,7 +79,7 @@ in
         GF_SMTP_FROM_NAME = "Grafana";
         GF_AUTH_GENERIC_OAUTH_ENABLED = "true";
         GF_AUTH_GENERIC_OAUTH_NAME = "authentik";
-        GF_AUTH_GENERIC_OAUTH_CLIENT_ID = config.grafana.oidcClientId;
+        GF_AUTH_GENERIC_OAUTH_CLIENT_ID = cfg.oidcClientId;
         GF_AUTH_GENERIC_OAUTH_SCOPES = "openid profile email";
         GF_AUTH_GENERIC_OAUTH_AUTH_URL = "https://auth.${domain}/application/o/authorize/";
         GF_AUTH_GENERIC_OAUTH_TOKEN_URL = "https://auth.${domain}/application/o/token/";
@@ -49,6 +88,7 @@ in
         GF_AUTH_OAUTH_AUTO_LOGIN = "true";
         GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH = "contains(groups[*], 'admins') && 'Admin' || 'Viewer'";
         GF_SERVER_ROOT_URL = "https://grafana.${domain}";
+        GF_LOG_LEVEL = "warn";
       };
       labels =
         (mkTraefikLabels {
@@ -64,7 +104,7 @@ in
         };
     };
 
-    myVirtualization.containers.prometheus = {
+    myVirtualization.containers.prometheus = lib.mkIf cfg.enablePrometheus {
       rawImageReference = "prom/prometheus:v3.12.0@sha256:69f5241418838263316593f7274a304b095c40bcf22e57272865da91bd60a8ac";
       nixSha256 = "sha256-+aqrobm7XzkHmUIvC7pvJltXkNljcfPRxp1cbFL2IdQ=";
       networks = [
@@ -86,12 +126,13 @@ in
         "--web.enable-admin-api"
         "--web.enable-remote-write-receiver"
         "--web.listen-address=0.0.0.0:9090"
+        "--log.level=warn"
       ];
       labels =
         (mkTraefikLabels {
           name = "prometheus";
           port = "9090";
-          isPublic = false;
+          useInfraForwardAuth = true;
         })
         // {
           "homepage.group" = "Monitoring";
@@ -104,7 +145,7 @@ in
         };
     };
 
-    myVirtualization.containers.loki = {
+    myVirtualization.containers.loki = lib.mkIf cfg.enableLoki {
       rawImageReference = "grafana/loki:3.7.2@sha256:800ec439ed2692b79c5a1fe17a6d2955f8999ad5d05f0276c6e4a10ac11cc491";
       nixSha256 = "sha256-Vp6LlgV8NjQh9EwL4EXC/bAv6mrdjD2AbEXvv+X+Xrc=";
       networks = [ backendNetwork ];
@@ -113,22 +154,9 @@ in
         "${./config/loki.yml}:/etc/loki/config.yml:ro"
       ];
       cmd = [ "-config.file=/etc/loki/config.yml" ];
-      labels =
-        (mkTraefikLabels {
-          name = "loki";
-          port = "3100";
-          isPublic = false;
-        })
-        // {
-          "homepage.group" = "Monitoring";
-          "homepage.name" = "Loki";
-          "homepage.icon" = "loki";
-          "homepage.href" = "http://loki.${hostname}.local";
-          "homepage.description" = "Log aggregation and storage";
-        };
     };
 
-    myVirtualization.containers.alloy = {
+    myVirtualization.containers.alloy = lib.mkIf cfg.enableAlloy {
       rawImageReference = "grafana/alloy:v1.16.10@sha256:41e0ad9b7c74cdc0a01ca8ce10f8d8262d49029167fd0b1d2db84a0f10468284";
       nixSha256 = "sha256-granJTLCZ/7M39cMUxhSJcQYffK1c59KBrvVUn1wrxY=";
       networks = [
@@ -145,8 +173,9 @@ in
         "/var/lib/docker/:/var/lib/docker:ro"
         "/dev/disk/:/dev/disk:ro"
         "/etc/machine-id:/etc/machine-id:ro"
-        "${./config/config.alloy}:/etc/alloy/config.alloy:ro"
-      ];
+        "${cfg.alloyConfigFile}:/etc/alloy/config.alloy:ro"
+      ]
+      ++ cfg.alloyExtraVolumes;
       cmd = [
         "run"
         "--server.http.listen-addr=0.0.0.0:12345"
@@ -157,8 +186,20 @@ in
         (mkTraefikLabels {
           name = "alloy";
           port = "12345";
-          isPublic = false;
+          useInfraForwardAuth = true;
         })
+        // (lib.optionalAttrs cfg.enableAlloyGateway (
+          mkTraefikLabels {
+            name = "alloy-metrics";
+            port = "12346";
+            passthrough = true;
+          }
+          // mkTraefikLabels {
+            name = "alloy-logs";
+            port = "12347";
+            passthrough = true;
+          }
+        ))
         // {
           "homepage.group" = "Monitoring";
           "homepage.name" = "Alloy";

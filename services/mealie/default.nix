@@ -87,6 +87,11 @@ in
         "POSTGRES_USER" = "mealie";
       };
       environmentFiles = getEnvFiles "mealie" "mealie";
+      cmd = [
+        "postgres"
+        "-c"
+        "log_checkpoints=off"
+      ];
       labels = {
         "traefik.enable" = "false";
       };
