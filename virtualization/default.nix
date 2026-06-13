@@ -36,14 +36,29 @@ let
       publicRule = "Host(`${subdomain}.${domain}`)${pathRules}";
       publicTcpRule = "HostSNI(`${subdomain}.${domain}`)";
 
-      local = {
+      default = {
         "traefik.enable" = "true";
-        "traefik.http.services.${name}.loadbalancer.server.port" = port;
+      }
+      // (
+        if passthrough then
+          {
+            "traefik.tcp.services.${name}.loadbalancer.server.port" = port;
+          }
+        else
+          {
+            "traefik.http.services.${name}.loadbalancer.server.port" = port;
+          }
+      );
 
-        "traefik.http.routers.${name}-local.entrypoints" = "web";
-        "traefik.http.routers.${name}-local.rule" = localRule;
-        "traefik.http.routers.${name}-local.service" = name;
-      };
+      local =
+        if passthrough then
+          { }
+        else
+          {
+            "traefik.http.routers.${name}-local.entrypoints" = "web";
+            "traefik.http.routers.${name}-local.rule" = localRule;
+            "traefik.http.routers.${name}-local.service" = name;
+          };
 
       public =
         if !isPublic then
@@ -78,7 +93,7 @@ let
             "traefik.http.routers.${name}-public.service" = name;
           };
     in
-    local // public;
+    default // local // public;
 
   parseDockerImageReference =
     imageStr:
