@@ -1,6 +1,7 @@
 { lib, getSecretFile, ... }:
 {
   imports = [
+    ../../services/authentik
     ../../services/frp
     ../../services/grafana
     ../../services/minio
@@ -9,6 +10,10 @@
   ];
 
   config = {
+    authentik = {
+      enableStack = false;
+    };
+
     frp.configPath = ./frpc.toml;
 
     grafana = {
