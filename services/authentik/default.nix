@@ -32,6 +32,11 @@ in
       "/data/services/authentik/database:/var/lib/postgresql/18/docker"
     ];
     networks = [ backendNetwork ];
+    cmd = [
+      "postgres"
+      "-c"
+      "log_checkpoints=off"
+    ];
     labels = {
       "traefik.enable" = "false";
     };
@@ -41,14 +46,9 @@ in
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     cmd = [
-      "--save"
-      "60"
-      "1"
+      "redis-server"
       "--loglevel"
       "warning"
-    ];
-    volumes = [
-      "/data/services/authentik/redis:/data"
     ];
     networks = [ backendNetwork ];
     labels = {
@@ -65,6 +65,7 @@ in
       "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
       "AUTHENTIK_POSTGRESQL__USER" = "authentik";
       "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+      "AUTHENTIK_LOG_LEVEL" = "warning";
     };
     environmentFiles = getEnvFiles "authentik" "server";
     volumes = [
@@ -98,6 +99,7 @@ in
       "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
       "AUTHENTIK_POSTGRESQL__USER" = "authentik";
       "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+      "AUTHENTIK_LOG_LEVEL" = "warning";
     };
     environmentFiles = getEnvFiles "authentik" "worker";
     user = "root";

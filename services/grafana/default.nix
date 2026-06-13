@@ -88,6 +88,7 @@ in
         GF_AUTH_OAUTH_AUTO_LOGIN = "true";
         GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH = "contains(groups[*], 'admins') && 'Admin' || 'Viewer'";
         GF_SERVER_ROOT_URL = "https://grafana.${domain}";
+        GF_LOG_LEVEL = "warn";
       };
       labels =
         (mkTraefikLabels {
@@ -125,6 +126,7 @@ in
         "--web.enable-admin-api"
         "--web.enable-remote-write-receiver"
         "--web.listen-address=0.0.0.0:9090"
+        "--log.level=warn"
       ];
       labels =
         (mkTraefikLabels {

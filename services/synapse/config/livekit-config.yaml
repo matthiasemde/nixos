@@ -15,7 +15,7 @@ room:
   auto_create: false
 
 logging:
-  level: info
+  level: warn
 
 turn:
   enabled: false

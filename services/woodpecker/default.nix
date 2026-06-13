@@ -26,7 +26,7 @@ in
         "WOODPECKER_OPEN" = "false";
         "WOODPECKER_ADMIN" = config.woodpecker.adminUser;
         "WOODPECKER_GITHUB" = "true";
-        "WOODPECKER_LOG_LEVEL" = "info";
+        "WOODPECKER_LOG_LEVEL" = "warn";
         "WOODPECKER_DATABASE_DRIVER" = "sqlite3";
         "WOODPECKER_DATABASE_DATASOURCE" = "/var/lib/woodpecker/woodpecker.sqlite";
       };
@@ -60,7 +60,7 @@ in
         "WOODPECKER_SERVER" = "woodpecker-server:9000";
         "WOODPECKER_BACKEND" = "docker";
         "WOODPECKER_MAX_WORKFLOWS" = "2";
-        "WOODPECKER_LOG_LEVEL" = "info";
+        "WOODPECKER_LOG_LEVEL" = "warn";
       };
       environmentFiles = getEnvFiles "woodpecker" "agent";
       volumes = [

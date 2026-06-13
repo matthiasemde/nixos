@@ -58,6 +58,11 @@ in
     rawImageReference = "docker.io/valkey/valkey:8-bookworm@sha256:fec42f399876eb6faf9e008570597741c87ff7662a54185593e74b09ce83d177";
     nixSha256 = "sha256-pRgJXPCztxizPzsRTPvBbNAxLC4XXBtIMKtz3joyLPk=";
     networks = [ backendNetwork ];
+    cmd = [
+      "redis-server"
+      "--loglevel"
+      "warning"
+    ];
     labels = {
       "traefik.enable" = "false";
     };

@@ -8,6 +8,10 @@
 let
   hostname = config.networking.hostName;
 
+  staticOCIContainerOptions = {
+    log-driver = lib.mkForce "none";
+  };
+
   mkTraefikLabels =
     {
       name,
@@ -120,27 +124,30 @@ let
         hasRawImage = builtins.hasAttr "rawImageReference" containerConfig;
         hasNixSha = builtins.hasAttr "nixSha256" containerConfig;
       in
-      if hasRawImage && hasNixSha then
-        let
-          imageRef = parseDockerImageReference containerConfig.rawImageReference;
-          imageFile = pkgs.dockerTools.pullImage {
-            imageName = imageRef.name;
-            imageDigest = imageRef.digest;
-            finalImageTag = imageRef.tag;
-            sha256 = containerConfig.nixSha256;
-          };
-          processedConfig = builtins.removeAttrs containerConfig [
-            "rawImageReference"
-            "nixSha256"
-          ];
-        in
-        processedConfig
-        // {
-          image = imageRef.name + ":" + imageRef.tag;
-          imageFile = imageFile;
-        }
-      else
-        containerConfig
+      staticOCIContainerOptions
+      // (
+        if hasRawImage && hasNixSha then
+          let
+            imageRef = parseDockerImageReference containerConfig.rawImageReference;
+            imageFile = pkgs.dockerTools.pullImage {
+              imageName = imageRef.name;
+              imageDigest = imageRef.digest;
+              finalImageTag = imageRef.tag;
+              sha256 = containerConfig.nixSha256;
+            };
+            processedConfig = builtins.removeAttrs containerConfig [
+              "rawImageReference"
+              "nixSha256"
+            ];
+          in
+          processedConfig
+          // {
+            image = imageRef.name + ":" + imageRef.tag;
+            imageFile = imageFile;
+          }
+        else
+          containerConfig
+      )
     ) rawContainers;
 
   fileScripts = lib.mapAttrsToList (file: permissions: {
