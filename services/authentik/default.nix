@@ -114,4 +114,25 @@ in
       "traefik.enable" = "false";
     };
   };
+
+  myVirtualization.containers.authentik-outpost-infra = {
+    rawImageReference = "ghcr.io/goauthentik/proxy:2026.5.2@sha256:954fbd562282b46b6c646b0e50bf069d7e31c1139098e44f92eb7d63336c07f8";
+    nixSha256 = "sha256-wNMM29U4XcuG+NpLOf5EhNzp1pkYzZ+RrnzSnovFrvo=";
+    environment = env // {
+      "AUTHENTIK_HOST" = "https://auth.emdecloud.de";
+      "AUTHENTIK_INSECURE" = "true";
+      # "AUTHENTIK_TOKEN" = "my-token"; # set via secret-mgmt
+      "AUTHENTIK_LOG_LEVEL" = "warning";
+    };
+    environmentFiles = getEnvFiles "authentik" "outpost-infra";
+    networks = [
+      backendNetwork
+      "traefik"
+    ];
+    labels = mkTraefikLabels {
+      name = "authentik-outpost-infra";
+      port = "9000";
+      allowedPaths = [ "/outpost.goauthentik.io/" ];
+    };
+  };
 }

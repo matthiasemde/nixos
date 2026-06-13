@@ -22,6 +22,7 @@ let
       allowedPaths ? null,
       corsAllowPost ? false,
       useForwardAuth ? false,
+      useInfraForwardAuth ? false,
     }:
     let
       subdomain = if specialSubdomain != null then specialSubdomain else name;
@@ -83,12 +84,18 @@ let
                 { };
             forwardAuthMiddleware =
               if useForwardAuth then
-                { "traefik.http.routers.${name}-public.middlewares" = "authentik-forward-auth@file"; }
+                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth@file"; }
+              else
+                { };
+            infraForwardAuthMiddleware =
+              if useInfraForwardAuth then
+                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth-infra@file"; }
               else
                 { };
           in
           corsMiddleware
           // forwardAuthMiddleware
+          // infraForwardAuthMiddleware
           // {
             "traefik.http.routers.${name}-public.entrypoints" = "websecure";
             "traefik.http.routers.${name}-public.rule" = publicRule;
@@ -171,7 +178,10 @@ let
     name = serviceName;
     value = {
       wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+      after = [
+        "network.target"
+        "docker.service"
+      ];
       serviceConfig = {
         Type = "simple";
         Restart = "on-failure";
