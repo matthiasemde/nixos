@@ -18,18 +18,18 @@
     ../../services/navidrome
     ../../services/nas
     ../../services/nextcloud
-    ../../services/ollama
+    # ../../services/ollama
     ../../services/outline
     ../../services/paperless
-    ../../services/pterodactyl
+    # ../../services/pterodactyl
     ../../services/radicale
-    ../../services/silverbullet
+    # ../../services/silverbullet
     ../../services/synapse
     ../../services/traefik
     ../../services/uptime-kuma
     ../../services/vaultwarden
     ../../services/web-projects
-    ../../services/woodpecker
+    # ../../services/woodpecker
   ];
 
   options.myInfrastructure = {
@@ -72,7 +72,7 @@
       staticIp = "192.168.178.240";
     };
 
-    woodpecker.adminUser = "matthiasemde";
+    # woodpecker.adminUser = "matthiasemde";
 
     frp.configPath = ./frpc.toml;
     mealie.oidcClientId = "e5DDiJkn8eaMjYMNt85W3NaDshnu5s67lXy79ava";
