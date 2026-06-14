@@ -81,9 +81,9 @@
       enableAlloyGateway = true;
       alloyConfigFile = ./alloy/config.alloy;
       alloyExtraVolumes = [
-        "${getSecretFile "grafana" "alloy" "ca.crt"}:/run/secrets/alloy/ca.crt:ro"
-        "${getSecretFile "grafana" "alloy" "server.crt"}:/run/secrets/alloy/server.crt:ro"
-        "${getSecretFile "grafana" "alloy" "server.key"}:/run/secrets/alloy/server.key:ro"
+        "${getSecretFile "grafana" "alloy" "ca.crt"}:/etc/alloy/ca.crt:ro"
+        "${getSecretFile "grafana" "alloy" "server.crt"}:/etc/alloy/server.crt:ro"
+        "${getSecretFile "grafana" "alloy" "server.key"}:/etc/alloy/server.key:ro"
       ];
 
     };

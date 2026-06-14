@@ -233,9 +233,9 @@ prometheus.receive_http "gateway" {
     listen_port    = 12346
 
     tls {
-      cert_file        = "/run/secrets/alloy/server.crt"
-      key_file         = "/run/secrets/alloy/server.key"
-      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      cert_file        = "/etc/alloy/server.crt"
+      key_file         = "/etc/alloy/server.key"
+      client_ca_file   = "/etc/alloy/ca.crt"
       client_auth_type = "RequireAndVerifyClientCert"
     }
   }
@@ -248,9 +248,9 @@ loki.source.api "gateway" {
     listen_port    = 12347
 
     tls {
-      cert_file        = "/run/secrets/alloy/server.crt"
-      key_file         = "/run/secrets/alloy/server.key"
-      client_ca_file   = "/run/secrets/alloy/ca.crt"
+      cert_file        = "/etc/alloy/server.crt"
+      key_file         = "/etc/alloy/server.key"
+      client_ca_file   = "/etc/alloy/ca.crt"
       client_auth_type = "RequireAndVerifyClientCert"
     }
   }

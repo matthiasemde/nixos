@@ -52,9 +52,9 @@ prometheus.remote_write "gateway" {
   endpoint {
     url = "https://alloy-metrics.emdecloud.de/api/v1/metrics/write"
     tls_config {
-      ca_file   = "/run/secrets/alloy/ca.crt"
-      cert_file = "/run/secrets/alloy/client.crt"
-      key_file  = "/run/secrets/alloy/client.key"
+      ca_file   = "/etc/alloy/ca.crt"
+      cert_file = "/etc/alloy/client.crt"
+      key_file  = "/etc/alloy/client.key"
     }
   }
 }
@@ -100,9 +100,9 @@ loki.write "gateway" {
   endpoint {
     url = "https://alloy-logs.emdecloud.de/loki/api/v1/push"
     tls_config {
-      ca_file   = "/run/secrets/alloy/ca.crt"
-      cert_file = "/run/secrets/alloy/client.crt"
-      key_file  = "/run/secrets/alloy/client.key"
+      ca_file   = "/etc/alloy/ca.crt"
+      cert_file = "/etc/alloy/client.crt"
+      key_file  = "/etc/alloy/client.key"
     }
   }
 }
