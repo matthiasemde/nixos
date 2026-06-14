@@ -22,9 +22,9 @@
       enableLoki = false;
       alloyConfigFile = ./alloy/config.alloy;
       alloyExtraVolumes = [
-        "${getSecretFile "grafana" "alloy" "ca.crt"}:/run/secrets/alloy/ca.crt:ro"
-        "${getSecretFile "grafana" "alloy" "client.crt"}:/run/secrets/alloy/client.crt:ro"
-        "${getSecretFile "grafana" "alloy" "client.key"}:/run/secrets/alloy/client.key:ro"
+        "${getSecretFile "grafana" "alloy" "ca.crt"}:/etc/alloy/ca.crt:ro"
+        "${getSecretFile "grafana" "alloy" "client.crt"}:/etc/alloy/client.crt:ro"
+        "${getSecretFile "grafana" "alloy" "client.key"}:/etc/alloy/client.key:ro"
       ];
     };
   };
