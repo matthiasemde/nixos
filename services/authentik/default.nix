@@ -138,7 +138,7 @@ in
         "AUTHENTIK_HOST" = "https://auth.emdecloud.de";
         "AUTHENTIK_INSECURE" = "true";
         # "AUTHENTIK_TOKEN" = "my-token"; # set via secret-mgmt
-        "AUTHENTIK_LOG_LEVEL" = "warning";
+        # "AUTHENTIK_LOG_LEVEL" = "warning"; # does not work - log level has to be set in the authentik outpost settings (warning not warn)
       };
       environmentFiles = getEnvFiles "authentik" "outpost-infra";
       networks = [ "traefik" ];
