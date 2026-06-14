@@ -9,7 +9,7 @@ in
 {
   myVirtualization.containers.audiobookshelf = {
     rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.35.1@sha256:1eef6716183c52abafe5405e7d6be8390248ecd59c7488c44af871757ac8fc4d";
-    nixSha256 = "sha256-9LGpsN5xtFhyV6BEj8TJr5VtCsiCc51ZrBN6vwTx9Sw=";
+    nixSha256 = "sha256-nLIbMa2mZpUx7XZJvoN4tCa5v/L0vzPRYu12FFre1Kk=";
     environment = {
       TZ = "Europe/Berlin";
     };
