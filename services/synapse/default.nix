@@ -332,7 +332,7 @@ in
   };
 
   myVirtualization.containers.element-call-jwt = {
-    rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.4.4@sha256:9c715697c6f7c1f538f2ee41b7b59b04a8d06bf790a7cc8c8517ccac8d28813d";
+    rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.5.0@sha256:29918567e6b7cd920e2853b4cd6848ce01b79947c3d19a9f1ed5b74f0a2a88bf";
     nixSha256 = "sha256-ntksAOhWpkuoKrEg+NMN2x7/4+CGVvrLk6T62SfYfzI=";
     environment = {
       "LIVEKIT_JWT_PORT" = "8080";
