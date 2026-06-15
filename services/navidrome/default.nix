@@ -10,7 +10,7 @@ in
 {
   myVirtualization.containers.navidrome = {
     rawImageReference = "deluan/navidrome:0.62.0@sha256:c4b5cb36a790b3eb63ca6a68bbe2fe149c2d7fa2e586f7a480e61db630e6664b";
-    nixSha256 = "sha256-qlKfW5LuDQ1Wdmpt8P/cnN2AnPivuhFq6r4IXQfazGQ=";
+    nixSha256 = "sha256-i+R0k2+JHKjYfOd0vAEQDEZTO7JK/wdAyUEa6oZiSmA=";
     environment = {
       ND_SCANSCHEDULE = "1h";
       ND_LOGLEVEL = "warn";
