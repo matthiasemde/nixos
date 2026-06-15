@@ -11,7 +11,7 @@ in
 
   myVirtualization.containers.home-assistant = {
     rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.6@sha256:aed891b8f801072302815b4b0fab5adb714182967e9d2e2d4a2be558241c73ad";
-    nixSha256 = "sha256-vDeHmDqwjLyZwjGWd99iAb8UuuQs6wogt/BF91vwMh4=";
+    nixSha256 = "sha256-xW0G58GJUVHBOz5IulKG2lAuTFCUAfimRnZbizJw0OA=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/data/services/home-assistant/home-assistant.db:/config/home-assistant.db"
