@@ -20,8 +20,8 @@ in
   myVirtualization.networks.${backendNetwork} = "";
 
   myVirtualization.containers.nextcloud-app = {
-    rawImageReference = "nextcloud:33.0.4-apache@sha256:caa40b8beaf0057ac213d8dfc515c36ce64f7a8f0825b6a287e6f7cf2f4a095d";
-    nixSha256 = "sha256-refs0utDnFYpCbetHFxsgjJU9uBKg4iKyx8QZLfqgRU=";
+    rawImageReference = "nextcloud:34.0.0-apache@sha256:e15ff2ff02d04bf272940bb63f2157599bc9440d45b688cc60f09b72be7ae717";
+    nixSha256 = "sha256-Jo5/+grAsMmAbhlsqxmmPB8ob3XXe7nWPAmAX7+OVdI=";
     volumes = [
       "/data/services/nextcloud/app/config:/var/www/html/config"
       "/data/services/nextcloud/app/data:/var/www/html/data"
