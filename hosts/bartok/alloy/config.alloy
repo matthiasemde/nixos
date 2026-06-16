@@ -1,108 +1,91 @@
 // Bartok Alloy config - collects local metrics/logs and forwards to mahler via mTLS.
 livedebugging {
-  enabled = true
+	enabled = false
 }
 
 logging {
-  level  = "warn"
-  format = "logfmt"
+	level  = "warn"
+	format = "logfmt"
 }
 
 // -- Metrics ------------------------------------------------------------------
 
 prometheus.scrape "node_exporter" {
-  job_name = "node-exporter"
-  targets = [
-    {
-      __address__ = "bartok:9100",
-      instance    = "bartok",
-    },
-  ]
-  forward_to = [prometheus.remote_write.gateway.receiver]
+	job_name   = "node-exporter"
+	targets    = [{__address__ = "bartok:9100"}]
+	forward_to = [prometheus.relabel.node_exporter.receiver]
 }
 
-// prometheus.exporter.cadvisor "default" {
-//   docker_only            = true
-//   store_container_labels = false
-//   enabled_metrics        = ["cpu", "memory", "oom_event", "disk", "diskIO", "network"]
-// }
+prometheus.relabel "node_exporter" {
+	forward_to = [prometheus.remote_write.gateway.receiver]
 
-// prometheus.scrape "cadvisor" {
-//   targets    = prometheus.exporter.cadvisor.default.targets
-//   forward_to = [prometheus.relabel.cadvisor.receiver]
-// }
+	rule {
+		target_label = "host"
+		replacement  = "bartok"
+	}
 
-// prometheus.relabel "cadvisor" {
-//   forward_to = [prometheus.remote_write.gateway.receiver]
-
-//   rule {
-//     action       = "replace"
-//     target_label = "job"
-//     replacement  = "cadvisor"
-//   }
-
-//   rule {
-//     action       = "replace"
-//     target_label = "instance"
-//     replacement  = "bartok"
-//   }
-// }
+	rule {
+		action = "labeldrop"
+		regex  = "instance"
+	}
+}
 
 prometheus.remote_write "gateway" {
-  endpoint {
-    url = "https://alloy-metrics.emdecloud.de/api/v1/metrics/write"
-    tls_config {
-      ca_file   = "/etc/alloy/ca.crt"
-      cert_file = "/etc/alloy/client.crt"
-      key_file  = "/etc/alloy/client.key"
-    }
-  }
+	endpoint {
+		url = "https://alloy-metrics.emdecloud.de/api/v1/metrics/write"
+
+		tls_config {
+			ca_file   = "/etc/alloy/ca.crt"
+			cert_file = "/etc/alloy/client.crt"
+			key_file  = "/etc/alloy/client.key"
+		}
+	}
 }
 
 // -- Logs ---------------------------------------------------------------------
 
 loki.source.journal "default" {
-  forward_to    = [loki.write.gateway.receiver]
-  relabel_rules = loki.relabel.journal_labels.rules
-  labels        = { job = "loki-journal" }
+	forward_to    = [loki.write.gateway.receiver]
+	relabel_rules = loki.relabel.journal_labels.rules
 }
 
 loki.relabel "journal_labels" {
-  forward_to = []
+	forward_to = []
 
-  rule {
-    source_labels = ["__journal__systemd_unit"]
-    target_label  = "unit"
-  }
+	rule {
+		source_labels = ["__journal__systemd_unit"]
+		target_label  = "unit"
+	}
 
-  rule {
-    source_labels = ["__journal__hostname"]
-    target_label  = "host"
-  }
+	rule {
+		source_labels = ["__journal__hostname"]
+		target_label  = "host"
+	}
 
-  rule {
-    source_labels = ["__journal_priority_keyword"]
-    target_label  = "level"
-  }
+	rule {
+		source_labels = ["__journal_priority_keyword"]
+		target_label  = "level"
+	}
 
-  rule {
-    source_labels = ["__journal_priority"]
-    target_label  = "level_int"
-  }
+	rule {
+		source_labels = ["__journal_priority"]
+		target_label  = "level_int"
+	}
 
-  rule {
-    source_labels = ["__journal__cmdline"]
-    target_label  = "cmd"
-  }
+	rule {
+		source_labels = ["__journal__cmdline"]
+		target_label  = "cmd"
+	}
 }
 
 loki.write "gateway" {
-  endpoint {
-    url = "https://alloy-logs.emdecloud.de/loki/api/v1/push"
-    tls_config {
-      ca_file   = "/etc/alloy/ca.crt"
-      cert_file = "/etc/alloy/client.crt"
-      key_file  = "/etc/alloy/client.key"
-    }
-  }
+	endpoint {
+		url = "https://alloy-logs.emdecloud.de/loki/api/v1/push"
+
+		tls_config {
+			ca_file   = "/etc/alloy/ca.crt"
+			cert_file = "/etc/alloy/client.crt"
+			key_file  = "/etc/alloy/client.key"
+		}
+	}
 }
