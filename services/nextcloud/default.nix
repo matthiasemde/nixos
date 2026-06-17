@@ -100,7 +100,7 @@ in
 
   myVirtualization.containers.nextcloud-cron = {
     rawImageReference = "alpine:3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4";
-    nixSha256 = "sha256-svJI+DpSqhR8OnybK3+AefJnjcG0ry46R2aWII21Bdg=";
+    nixSha256 = "sha256-W4G3seFFuMUMcoPQrAcisPMIWwl4shGDb0tPJpzWd2Q=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/var/run/docker.sock:/var/run/docker.sock:ro"
