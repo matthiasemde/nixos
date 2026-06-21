@@ -17,6 +17,7 @@ addVaryHeader = true
 # purposes, e.g. routine jobs.
 address = "http://authentik-server:9000/outpost.goauthentik.io/auth/traefik"
 trustForwardHeader = true
+maxResponseBodySize = 1048576 # 1 MiB
 authResponseHeaders = [
   "X-authentik-username",
   "X-authentik-groups",
@@ -35,6 +36,7 @@ authResponseHeaders = [
 [http.middlewares.forward-auth-infra.forwardAuth]
 address = "http://authentik-outpost-infra:9000/outpost.goauthentik.io/auth/traefik"
 trustForwardHeader = true
+maxResponseBodySize = 1048576 # 1 MiB
 authResponseHeaders = [
   "X-authentik-username",
   "X-authentik-groups",
