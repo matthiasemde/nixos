@@ -30,6 +30,7 @@
     ../../services/vaultwarden
     ../../services/web-projects
     # ../../services/woodpecker
+    ../../services/crowdsec
   ];
 
   options.myInfrastructure = {
@@ -61,6 +62,8 @@
       fromAddress = "no-reply@emdecloud.de";
     };
     myInfrastructure.adminEmail = "matthias@emdemail.de";
+
+    myInfrastructure.useCrowdsec = true;
 
     adguard.macvlan = {
       parentInterface = "enp6s0";
