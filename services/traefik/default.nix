@@ -1,4 +1,4 @@
-{ config, mkTraefikLabels, getEnvFiles, ... }:
+{ config, lib, mkTraefikLabels, getEnvFiles, getSecretFile, ... }:
 let
   hostname = config.networking.hostName;
 in
@@ -18,12 +18,15 @@ in
       "frp-ingress"
     ];
     environmentFiles = getEnvFiles "traefik" "server";
-    volumes = [
-      "/var/run/docker.sock:/var/run/docker.sock"
-      "${./config/traefik.toml}:/traefik.toml:ro"
-      "${./config/middlewares.toml}:/etc/traefik/middlewares.toml:ro"
-      "/data/services/traefik/certs:/certs"
-    ];
+    volumes =
+      [
+        "/var/run/docker.sock:/var/run/docker.sock"
+        "${./config/traefik.toml}:/traefik.toml:ro"
+        "${./config/middlewares.toml}:/etc/traefik/dynamic/middlewares.toml:ro"
+        "/data/services/traefik/certs:/certs"
+      ]
+      ++ lib.optional config.myInfrastructure.useCrowdsec
+        "${getSecretFile "traefik" "server" "crowdsec.toml"}:/etc/traefik/dynamic/crowdsec.toml:ro";
     cmd = [
       "--configFile=traefik.toml"
     ];

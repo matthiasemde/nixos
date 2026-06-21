@@ -56,9 +56,12 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   ├── nas
 │   │   │   │   └── fileshare
 │   │   │   │       └── password
-│   │   │   └── synapse
-│   │   │       └── matrix-auth-app
-│   │   │           └── secrets.yaml
+│   │   │   ├── synapse
+│   │   │   │   └── matrix-auth-app
+│   │   │   │       └── secrets.yaml
+│   │   │   └── traefik
+│   │   │       └── server
+│   │   │           └── crowdsec.toml
 │   │   └── services.nix
 │   └── vogel
 │       ├── configuration.nix
@@ -77,6 +80,10 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── audiobookshelf
 │   │   └── default.nix
 │   ├── authentik
+│   │   └── default.nix
+│   ├── crowdsec
+│   │   ├── appsec.yaml
+│   │   ├── config.yaml
 │   │   └── default.nix
 │   ├── firefly
 │   │   └── default.nix
@@ -212,7 +219,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-70 directories, 138 files
+73 directories, 142 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

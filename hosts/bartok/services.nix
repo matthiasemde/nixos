@@ -10,6 +10,8 @@
   ];
 
   config = {
+    myInfrastructure.useCrowdsec = false;
+
     authentik = {
       enableStack = false;
     };
