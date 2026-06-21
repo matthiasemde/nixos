@@ -9,7 +9,7 @@
 {
   myVirtualization.containers.crowdsec-app = {
     rawImageReference = "crowdsecurity/crowdsec:v1.7.8-debian@sha256:c42776d2b36f84e558b185c3287de3246a1938a1b32f0df7b748bdc6c4443f32";
-    nixSha256 = "sha256-DzNByVqJgvWs7mz+eQpjuUmufGm/nISzsLpsiVvSO64=";
+    nixSha256 = "sha256-+t3WxunMsCgeCUlB47fjh9zkeyz9oJzz8Nw3baRHx44=";
     networks = [ "traefik" ];
     environmentFiles = getEnvFiles "crowdsec" "app";
     volumes = [
