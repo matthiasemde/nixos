@@ -92,10 +92,16 @@ let
                 { "traefik.http.routers.${name}-public.middlewares" = "forward-auth-infra@file"; }
               else
                 { };
+            crowdsecMiddleware =
+              if config.myInfrastructure.useCrowdsec then
+                { "traefik.http.routers.${name}-public.middlewares" = "crowdsec@file"; }
+              else
+                { };
           in
           corsMiddleware
           // forwardAuthMiddleware
           // infraForwardAuthMiddleware
+          // crowdsecMiddleware
           // {
             "traefik.http.routers.${name}-public.entrypoints" = "websecure";
             "traefik.http.routers.${name}-public.rule" = publicRule;
@@ -192,6 +198,14 @@ let
   }) config.myVirtualization.dependencies.systemServices;
 in
 {
+  options.myInfrastructure = {
+    useCrowdsec = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to enable CrowdSec middleware in Traefik and mount the CrowdSec config.";
+    };
+  };
+
   options.myVirtualization = {
     containers = lib.mkOption {
       type = lib.types.attrsOf lib.types.unspecified;
