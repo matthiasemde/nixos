@@ -69,7 +69,7 @@ let
   };
 in
 {
-  myVirtualization.containers.lovebox = {
+  myVirtualization.containers.lovebox.app = {
     image = "lovebox:v1.0.0";
     imageFile = loveboxImage;
     networks = [ "traefik" ];

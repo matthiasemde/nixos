@@ -12,7 +12,7 @@ in
 {
   myVirtualization.networks.${backendNetwork} = "";
 
-  myVirtualization.containers.ollama = {
+  myVirtualization.containers.ollama.server = {
     rawImageReference = "ollama/ollama:0.30.0@sha256:a5f42ba1af98f623a341f9f13140abce6b8ad2eacdc618338771aceb81b08668";
     nixSha256 = "sha256-COALBRd1m7MvVkjye/fBg06HWJGYAUoIgmClZV7mVvE=";
     networks = [
@@ -37,7 +37,7 @@ in
       };
   };
 
-  myVirtualization.containers.open-webui = {
+  myVirtualization.containers.ollama.open-webui = {
     rawImageReference = "openwebui/open-webui:0.9.6@sha256:90eae5b419e40b4c3dd684582b2c83440b36f9ae2f6532c09639b2ba4ee65158";
     nixSha256 = "sha256-ql40YHEtV29VqplGY5yYb0oPoeA2ZrblfQ7iXo0Q6eY=";
     networks = [

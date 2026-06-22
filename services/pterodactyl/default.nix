@@ -21,14 +21,14 @@ let
     environment = {
       APP_ENV = "production";
       APP_URL = "https://pterodactyl.${domain}";
-      DB_HOST = "pterodactyl-database";
+      DB_HOST = "pterodactyl--database";
       DB_PORT = "3306";
       DB_DATABASE = "pterodactyl";
       DB_USERNAME = "pterodactyl";
       CACHE_DRIVER = "redis";
       SESSION_DRIVER = "redis";
       QUEUE_CONNECTION = "redis";
-      REDIS_HOST = "pterodactyl-redis";
+      REDIS_HOST = "pterodactyl--redis";
       REDIS_PORT = "6379";
       LOG_CHANNEL = "stderr";
       TRUSTED_PROXIES = "0.0.0.0/0";
@@ -45,7 +45,7 @@ in
   myVirtualization.networks.${backendNetwork} = "";
   myVirtualization.networks.pterodactyl_nw = "";
 
-  myVirtualization.containers.pterodactyl-panel = panelBaseConfig // {
+  myVirtualization.containers.pterodactyl.panel = panelBaseConfig // {
     environmentFiles = getEnvFiles "pterodactyl" "panel";
     labels =
       (mkTraefikLabels {
@@ -61,7 +61,7 @@ in
       };
   };
 
-  myVirtualization.containers.pterodactyl-database = {
+  myVirtualization.containers.pterodactyl.database = {
     rawImageReference = "mariadb:12.3.2@sha256:b1c7bf836e64ed9406a8984af29509f40089d55cea14b32f12c4726a1f17104b";
     nixSha256 = "sha256-d8KIResDeBgNWNsTqHZkJnGGbzk+wcj6n+OOZ2woY6w=";
     volumes = [
@@ -80,7 +80,7 @@ in
     };
   };
 
-  myVirtualization.containers.pterodactyl-redis = {
+  myVirtualization.containers.pterodactyl.redis = {
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     networks = [ backendNetwork ];
@@ -94,7 +94,7 @@ in
     };
   };
 
-  myVirtualization.containers.pterodactyl-daemon = {
+  myVirtualization.containers.pterodactyl.daemon = {
     rawImageReference = "ccarney16/pterodactyl-daemon:v1.12.3@sha256:abdbb1827f4d40ce44b51522de99235db08b11e08ccd8fc2e74d5acbe137fd21";
     nixSha256 = "sha256-p24hFIXIDJKZevMPUJrFKaW+R5tIVI/my7C+AvubIGY=";
     networks = [
@@ -115,14 +115,14 @@ in
     };
   };
 
-  myVirtualization.containers.pterodactyl-worker = panelBaseConfig // {
+  myVirtualization.containers.pterodactyl.worker = panelBaseConfig // {
     cmd = [ "p:worker" ];
     labels = {
       "traefik.enable" = "false";
     };
   };
 
-  myVirtualization.containers.pterodactyl-cron = panelBaseConfig // {
+  myVirtualization.containers.pterodactyl.cron = panelBaseConfig // {
     cmd = [ "p:cron" ];
     labels = {
       "traefik.enable" = "false";

@@ -11,7 +11,7 @@ in
 {
   myVirtualization.networks.${backendNetwork} = "";
 
-  myVirtualization.containers.outline-app = {
+  myVirtualization.containers.outline.app = {
     rawImageReference = "outlinewiki/outline:1.8.0@sha256:bbaac3434e972b860aa2aeea87a465f277dfdcb23ffdcf4ee65f3fb2ca988745";
     nixSha256 = "sha256-nwWimhD5wEgYeZDhx2dWsj28iAPaFDYT/nwkeZFWgS4=";
     networks = [
@@ -27,7 +27,7 @@ in
       PORT = "3000";
       FORCE_HTTPS = "false";
       PGSSLMODE = "disable";
-      REDIS_URL = "redis://outline-redis:6379";
+      REDIS_URL = "redis://outline--redis:6379";
       OIDC_AUTH_URI = "https://auth.${domain}/application/o/authorize/";
       OIDC_TOKEN_URI = "https://auth.${domain}/application/o/token/";
       OIDC_USERINFO_URI = "https://auth.${domain}/application/o/userinfo/";
@@ -57,7 +57,7 @@ in
       };
   };
 
-  myVirtualization.containers.outline-database = {
+  myVirtualization.containers.outline.database = {
     rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
     nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
     volumes = [ "/data/services/outline/database:/var/lib/postgresql/18/docker" ];
@@ -77,7 +77,7 @@ in
     };
   };
 
-  myVirtualization.containers.outline-redis = {
+  myVirtualization.containers.outline.redis = {
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     networks = [ backendNetwork ];

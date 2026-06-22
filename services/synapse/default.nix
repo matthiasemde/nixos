@@ -97,7 +97,7 @@ in
   myVirtualization.networks.${authBackendNetwork} = "";
   myVirtualization.networks.${matrixRtcNetwork} = "";
 
-  myVirtualization.containers.matrix-auth-database = {
+  myVirtualization.containers.synapse.matrix-auth-database = {
     rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
     nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
     environment = {
@@ -119,7 +119,7 @@ in
     };
   };
 
-  myVirtualization.containers.matrix-auth-app = {
+  myVirtualization.containers.synapse.matrix-auth-app = {
     image = "matrix-auth-derived" + ":" + matrixAuthImageReference.tag;
     imageFile = matrixAuthImageDerived;
     environment = {
@@ -166,7 +166,7 @@ in
       };
   };
 
-  myVirtualization.containers.synapse-database = {
+  myVirtualization.containers.synapse.database = {
     rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
     nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
     environment = {
@@ -189,7 +189,7 @@ in
     };
   };
 
-  myVirtualization.containers.synapse-redis = {
+  myVirtualization.containers.synapse.redis = {
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     cmd = [
@@ -203,7 +203,7 @@ in
     };
   };
 
-  myVirtualization.containers.synapse-app = {
+  myVirtualization.containers.synapse.app = {
     rawImageReference = "matrixdotorg/synapse:v1.155.0@sha256:a87d002fba8efba807af19a876f488f4a9d298d6b62f5bab66d14e311a355e99";
     nixSha256 = "sha256-cBK/tBE5ngGUvHT8hrl1lx50BRjft3I/vjXDGZ7sQS4=";
     environment = {
@@ -243,7 +243,7 @@ in
       };
   };
 
-  myVirtualization.containers.synapse-wellknown = {
+  myVirtualization.containers.synapse.wellknown = {
     rawImageReference = "nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a";
     nixSha256 = "sha256-1smG0epcEvN6OA/gQF3mxDMmKh8W33LQITKa37WjAP4=";
     networks = [ "traefik" ];
@@ -263,7 +263,7 @@ in
     };
   };
 
-  myVirtualization.containers.synapse-admin = {
+  myVirtualization.containers.synapse.admin = {
     rawImageReference = "ghcr.io/etkecc/synapse-admin:v0.11.1-etke48@sha256:b0d794c33eaa862bfe968ffb02ab82747f1218e5f259568c40cbfff9dc07bf8c";
     nixSha256 = "sha256-5r22gCLJxgSNNasvXcFNc1Jc31oFzsuLcplE+4HuUaQ=";
     volumes = [
@@ -288,7 +288,7 @@ in
       };
   };
 
-  myVirtualization.containers.livekit-sfu = {
+  myVirtualization.containers.synapse.livekit-sfu = {
     image = "livekit-derived:" + livekitImageReference.tag;
     imageFile = livekitImageDerived;
     environmentFiles = getEnvFiles "synapse" "livekit";
@@ -310,7 +310,7 @@ in
     );
   };
 
-  myVirtualization.containers.synapse-ntfy = {
+  myVirtualization.containers.synapse.ntfy = {
     rawImageReference = "binwiederhier/ntfy:v2.24@sha256:f8a9b104313b87cc24ae4f775f39e6328205b57dff6ede3eaf098a91e5d79f59";
     nixSha256 = "sha256-Sq8Ut0W7zCZL8HEfdDDhZ5bqjte7f6JQfuknW+3S1NE=";
     environment = {
@@ -331,7 +331,7 @@ in
     };
   };
 
-  myVirtualization.containers.element-call-jwt = {
+  myVirtualization.containers.synapse.element-call-jwt = {
     rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.5.0@sha256:29918567e6b7cd920e2853b4cd6848ce01b79947c3d19a9f1ed5b74f0a2a88bf";
     nixSha256 = "sha256-vQgIV2PEOJnmL6HPi6tW8Q63brb5jXYcwH9qoG/eZg0=";
     environment = {

@@ -41,7 +41,7 @@ in
   config = {
     myVirtualization.networks."frp-ingress" = "--ipv6";
 
-    myVirtualization.containers.frp = {
+    myVirtualization.containers.frp.server = {
       image = "frpc:${frpPkg.version}";
       imageFile = frpcImage;
       networks = [

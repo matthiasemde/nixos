@@ -26,7 +26,7 @@ http:
   # - 192.168.0.0/16
 
 database:
-  host: matrix-auth-database
+  host: synapse--matrix-auth-database
   port: 5432
   username: mas_user
   password: "{{ env.get('POSTGRES_PASSWORD') }}"
@@ -74,7 +74,7 @@ matrix:
   kind: synapse
   homeserver: emdecloud.de
   secret: "{{ env.get('MATRIX_SECRET') }}"
-  endpoint: http://synapse-app:8008/
+  endpoint: http://synapse--app:8008/
 
 upstream_oauth2:
   providers:

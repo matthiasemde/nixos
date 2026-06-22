@@ -18,7 +18,7 @@ in
   config = {
     myVirtualization.networks.${backendNetwork} = "";
 
-    myVirtualization.containers.woodpecker-server = {
+    myVirtualization.containers.woodpecker.server = {
       rawImageReference = "woodpeckerci/woodpecker-server:v3.15.0@sha256:0f0a955e780c9b2835ac4146972a7e83c015303657a53fb7ec1b36cf4b78ece1";
       nixSha256 = "sha256-NtgOTtNi0rX1RY+BIwLkbVcgQQXVVhma2hWNXyW9Q5A=";
       environment = {
@@ -53,11 +53,11 @@ in
         };
     };
 
-    myVirtualization.containers.woodpecker-agent = {
+    myVirtualization.containers.woodpecker.agent = {
       rawImageReference = "woodpeckerci/woodpecker-agent:v3.15.0@sha256:aecf04600c2f19c7ea79202177fadda8b8331d105ed981f0a8fd4725cf1df9e7";
       nixSha256 = "sha256-iClWLAbN0tsCyQ0B67IXVKqDAUxAmZmA4W5USd9Bsu8=";
       environment = {
-        "WOODPECKER_SERVER" = "woodpecker-server:9000";
+        "WOODPECKER_SERVER" = "woodpecker--server:9000";
         "WOODPECKER_BACKEND" = "docker";
         "WOODPECKER_MAX_WORKFLOWS" = "2";
         "WOODPECKER_LOG_LEVEL" = "warn";

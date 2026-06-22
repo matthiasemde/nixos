@@ -1,15 +1,21 @@
 # services/<service-name>/default.nix
+#
+# Container naming convention: <service-name>--<component>
+#   Use "app" for user-facing web UIs, "server" for background infrastructure.
+#   Well-known roles: database, redis, worker, cron, agent, daemon.
+#   The virtualization module auto-generates Docker names by joining service and component with "--".
+#
 { domain, mkTraefikLabels, getEnvFiles, getSecretFile, ... }:
 {
-  myVirtualization.containers.<service-name> = {
+  myVirtualization.containers.<service-name>.app = {
     rawImageReference = "<serviceImageName>:<serviceImageVersion>@<serviceImageDigest>";
     nixSha256 = "";
     networks = [ "traefik" ];
-    environmentFiles = getEnvFiles "<service-name>" "<container-name>";
+    environmentFiles = getEnvFiles "<service-name>" "<component-name>";
     volumes = [
       "/data/services/<service-name>:/etc/service/data"
       "${./config/service.conf}:/etc/service/service.conf:ro"
-      "${getSecretFile "<service-name>" "<container-name>" "<file-name>"}:/secret/file/location"
+      "${getSecretFile "<service-name>" "<component-name>" "<file-name>"}:/secret/file/location"
     ];
     labels =
       mkTraefikLabels {

@@ -129,6 +129,17 @@ let
       digest = digest;
     };
 
+  flattenContainers =
+    services:
+    lib.foldlAttrs (
+      acc: service: components:
+      acc
+      // lib.mapAttrs' (component: cfg: {
+        name = "${service}--${component}";
+        value = cfg;
+      }) components
+    ) { } services;
+
   processContainers =
     rawContainers:
     lib.mapAttrs (
@@ -208,9 +219,9 @@ in
 
   options.myVirtualization = {
     containers = lib.mkOption {
-      type = lib.types.attrsOf lib.types.unspecified;
+      type = lib.types.attrsOf (lib.types.attrsOf lib.types.unspecified);
       default = { };
-      description = "OCI container configurations contributed by service modules.";
+      description = "OCI container configurations contributed by service modules. Nested as service -> component -> config; flattened to service--component Docker names.";
     };
 
     networks = lib.mkOption {
@@ -243,7 +254,7 @@ in
 
     virtualisation.oci-containers = {
       backend = "docker";
-      containers = processContainers config.myVirtualization.containers;
+      containers = processContainers (flattenContainers config.myVirtualization.containers);
     };
   };
 }

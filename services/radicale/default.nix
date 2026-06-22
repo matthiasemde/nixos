@@ -30,7 +30,7 @@ let
   };
 in
 {
-  myVirtualization.containers.radicale = {
+  myVirtualization.containers.radicale.server = {
     image = "radicale:v1.0.0";
     imageFile = radicaleImage;
     volumes = [
