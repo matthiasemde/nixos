@@ -11,6 +11,10 @@ localIP = "traefik"
 localPort = 443
 remotePort = 8443
 
+# using the proxy protocol exposes user's real IP in HTTP header `X-Real-IP`,
+# which can then be read by services like crowdsec.
+transport.proxyProtocolVersion = "v2"
+
 # [[proxies]]
 # name = "minecraft-tcp"
 # type = "tcp"
