@@ -36,7 +36,7 @@ in
   config = {
     myVirtualization.networks.${backendNetwork} = lib.mkIf cfg.enableStack "";
 
-    myVirtualization.containers.authentik-database = lib.mkIf cfg.enableStack {
+    myVirtualization.containers.authentik.database = lib.mkIf cfg.enableStack {
       rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
       nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
       environment = env // {
@@ -58,7 +58,7 @@ in
       };
     };
 
-    myVirtualization.containers.authentik-redis = lib.mkIf cfg.enableStack {
+    myVirtualization.containers.authentik.redis = lib.mkIf cfg.enableStack {
       rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
       nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
       cmd = [
@@ -72,15 +72,15 @@ in
       };
     };
 
-    myVirtualization.containers.authentik-server = lib.mkIf cfg.enableStack {
+    myVirtualization.containers.authentik.server = lib.mkIf cfg.enableStack {
       rawImageReference = "ghcr.io/goauthentik/server:2026.5.3@sha256:377ee38726785f98aafc3665202ad198a366fa979b0f61c0660a9c05e3a9b1b3";
       nixSha256 = "sha256-7zcG90YmqHYWvWdmbhq6NFLHeVICXbOUwtwGrhTrPj4=";
       cmd = [ "server" ];
       environment = env // {
-        "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
+        "AUTHENTIK_POSTGRESQL__HOST" = "authentik--database";
         "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
         "AUTHENTIK_POSTGRESQL__USER" = "authentik";
-        "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+        "AUTHENTIK_REDIS__HOST" = "authentik--redis";
         "AUTHENTIK_LOG_LEVEL" = "warning";
       };
       environmentFiles = getEnvFiles "authentik" "server";
@@ -106,15 +106,15 @@ in
         };
     };
 
-    myVirtualization.containers.authentik-worker = lib.mkIf cfg.enableStack {
+    myVirtualization.containers.authentik.worker = lib.mkIf cfg.enableStack {
       rawImageReference = "ghcr.io/goauthentik/server:2026.5.3@sha256:377ee38726785f98aafc3665202ad198a366fa979b0f61c0660a9c05e3a9b1b3";
       nixSha256 = "sha256-7zcG90YmqHYWvWdmbhq6NFLHeVICXbOUwtwGrhTrPj4=";
       cmd = [ "worker" ];
       environment = env // {
-        "AUTHENTIK_POSTGRESQL__HOST" = "authentik-database";
+        "AUTHENTIK_POSTGRESQL__HOST" = "authentik--database";
         "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
         "AUTHENTIK_POSTGRESQL__USER" = "authentik";
-        "AUTHENTIK_REDIS__HOST" = "authentik-redis";
+        "AUTHENTIK_REDIS__HOST" = "authentik--redis";
         "AUTHENTIK_LOG_LEVEL" = "warning";
       };
       environmentFiles = getEnvFiles "authentik" "worker";
@@ -131,7 +131,7 @@ in
       };
     };
 
-    myVirtualization.containers.authentik-outpost-infra = lib.mkIf cfg.enableOutpost {
+    myVirtualization.containers.authentik.outpost-infra = lib.mkIf cfg.enableOutpost {
       rawImageReference = "ghcr.io/goauthentik/proxy:2026.5.3@sha256:7b6b69cd3d266809890498bd2b74576d2303b6235c4a1e63a0c60d7078aa8302";
       nixSha256 = "sha256-n7BfQ0fImC+v5PuRRCZUyxD31Bn8sk69ZpjiWqgVI4w=";
       environment = {

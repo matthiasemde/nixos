@@ -23,7 +23,7 @@ in
   };
 
   config = {
-    myVirtualization.containers.kopia = {
+    myVirtualization.containers.kopia.server = {
       rawImageReference = "kopia/kopia:0.23.1@sha256:89fd95ee2942880ca00eae964266958a394421ddbdf69bca62e38afc55f5900e";
       nixSha256 = "sha256-QNp3FVxElewSLUJGszYHAWwWLoZM/L/u2MvvUR0Y+lg=";
       networks = [

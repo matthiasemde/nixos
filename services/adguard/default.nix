@@ -84,7 +84,7 @@ in
       -o parent=${cfg.parentInterface} \
     '';
 
-    myVirtualization.containers.adguard = {
+    myVirtualization.containers.adguard.server = {
       image = "adguard-derived:v1.0.0";
       imageFile = adguardDerivedImage;
       networks = [ networkName ];

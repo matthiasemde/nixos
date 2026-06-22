@@ -18,13 +18,13 @@ in
   config = {
     myVirtualization.networks.${backendNetwork} = "";
 
-    myVirtualization.containers.paperless-app = {
+    myVirtualization.containers.paperless.app = {
       rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f";
       nixSha256 = "sha256-tpQPDJSuipl5or/GgyommFvUoUmy9gcPs5C/TlfP8sY=";
       environment = {
         "PAPERLESS_URL" = "https://paperless.${domain}";
         "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";
-        "PAPERLESS_REDIS" = "redis://paperless-redis:6379";
+        "PAPERLESS_REDIS" = "redis://paperless--redis:6379";
         "PAPERLESS_EMAIL_HOST" = config.myInfrastructure.smtp.host;
         "PAPERLESS_EMAIL_PORT" = toString config.myInfrastructure.smtp.port;
         "PAPERLESS_EMAIL_HOST_USER" = config.myInfrastructure.smtp.fromAddress;
@@ -83,7 +83,7 @@ in
         };
     };
 
-    myVirtualization.containers.paperless-redis = {
+    myVirtualization.containers.paperless.redis = {
       rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
       nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
       networks = [ backendNetwork ];
