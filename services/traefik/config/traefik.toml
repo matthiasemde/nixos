@@ -17,6 +17,9 @@ address = ":80"
 [entryPoints.websecure]
 address = ":443"
 
+[entryPoints.websecure.proxyProtocol]
+trustedIPs = ["172.21.0.0/16"]
+
 [entryPoints.websecure.transport.respondingTimeouts]
 readTimeout = "600s"
 idleTimeout = "600s"
