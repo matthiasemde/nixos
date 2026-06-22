@@ -1,0 +1,8 @@
+common:
+  log_level: error
+db_config:
+  log_level: error
+api:
+  server:
+    log_level: error
+    listen_uri: 0.0.0.0:8080

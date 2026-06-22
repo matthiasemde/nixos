@@ -14,7 +14,7 @@
     environmentFiles = getEnvFiles "crowdsec" "app";
     volumes = [
       "/data/services/crowdsec/config:/etc/crowdsec"
-      "${./config.yaml}:/etc/crowdsec/config/config.yaml"
+      "${./config.yaml.local}:/etc/crowdsec/config/config.yaml.local"
       "/data/services/crowdsec/database:/var/lib/crowdsec/data"
       "${./appsec.yaml}:/etc/crowdsec/acquis.d/appsec.yaml:ro"
     ];

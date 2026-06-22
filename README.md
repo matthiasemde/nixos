@@ -83,7 +83,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── default.nix
 │   ├── crowdsec
 │   │   ├── appsec.yaml
-│   │   ├── config.yaml
+│   │   ├── config.yaml.local
 │   │   └── default.nix
 │   ├── firefly
 │   │   └── default.nix
