@@ -7,7 +7,7 @@ auth.token = "{{ .Envs.FRP_TOKEN }}"
 [[proxies]]
 name = "traefik-tcp"
 type = "tcp"
-localIP = "traefik"
+localIP = "traefik--server"
 localPort = 443
 remotePort = 8443
 
@@ -49,7 +49,7 @@ remotePort = 8443
 [[proxies]]
 name = "matrix-rtc-tcp"
 type = "tcp"
-localIP = "livekit-sfu"
+localIP = "synapse--livekit-sfu"
 localPort = 7881
 remotePort = 7881
 
@@ -57,7 +57,7 @@ remotePort = 7881
 [[proxies]]
 name = "matrix-rtc-udp-{{ $v.First }}"
 type = "udp"
-localIP = "livekit-sfu"
+localIP = "synapse--livekit-sfu"
 localPort = {{ $v.First }}
 remotePort = {{ $v.Second }}
 {{- end }}

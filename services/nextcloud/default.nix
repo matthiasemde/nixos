@@ -19,7 +19,7 @@ in
 {
   myVirtualization.networks.${backendNetwork} = "";
 
-  myVirtualization.containers.nextcloud-app = {
+  myVirtualization.containers.nextcloud.app = {
     rawImageReference = "nextcloud:34.0.0-apache@sha256:e15ff2ff02d04bf272940bb63f2157599bc9440d45b688cc60f09b72be7ae717";
     nixSha256 = "sha256-Jo5/+grAsMmAbhlsqxmmPB8ob3XXe7nWPAmAX7+OVdI=";
     volumes = [
@@ -34,10 +34,10 @@ in
       "traefik"
     ];
     environment = {
-      POSTGRES_HOST = "nextcloud-database";
+      POSTGRES_HOST = "nextcloud--database";
       POSTGRES_DB = "nextcloud";
       POSTGRES_USER = "nextcloud";
-      REDIS_HOST = "nextcloud-redis";
+      REDIS_HOST = "nextcloud--redis";
       NEXTCLOUD_TRUSTED_DOMAINS = "nextcloud.${domain} nextcloud.${hostname}.local";
       TRUSTED_PROXIES = "172.16.0.0/12";
       OVERWRITEPROTOCOL = "https";
@@ -64,7 +64,7 @@ in
       };
   };
 
-  myVirtualization.containers.nextcloud-database = {
+  myVirtualization.containers.nextcloud.database = {
     rawImageReference = "postgres:17@sha256:ae3afa4af0906431de8856bf80a8bcf8a9ea6b3609f9e025f927b949ac93467d";
     nixSha256 = "sha256-2Nqz+MGNn5nzCYCYETWv8JBN2odoq+RuvJ2LGnWT5d8=";
     volumes = [ "/data/services/nextcloud/database:/var/lib/postgresql/data" ];
@@ -84,7 +84,7 @@ in
     };
   };
 
-  myVirtualization.containers.nextcloud-redis = {
+  myVirtualization.containers.nextcloud.redis = {
     rawImageReference = "redis:8@sha256:f0957bcaa75fd58a9a1847c1f07caf370579196259d69ac07f2e27b5b389b021";
     nixSha256 = "sha256-CXa5elUnGSjjqWhPDs+vlIuLr/7XLcM19zkQPijjUrY=";
     networks = [ backendNetwork ];
@@ -98,7 +98,7 @@ in
     };
   };
 
-  myVirtualization.containers.nextcloud-cron = {
+  myVirtualization.containers.nextcloud.cron = {
     rawImageReference = "alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b";
     nixSha256 = "sha256-nK2IyUv9ZQ4v0dFKcTEZcQeWyrsUbN3OBzLDNhnAFn0=";
     volumes = [
@@ -111,7 +111,7 @@ in
       ''
         apk add --no-cache docker tzdata && \
         ( crontab -l 2>/dev/null; \
-          echo "*/5 * * * * docker exec -u www-data nextcloud-app php -f /var/www/html/cron.php" ) | crontab - && \
+          echo "*/5 * * * * docker exec -u www-data nextcloud--app php -f /var/www/html/cron.php" ) | crontab - && \
         crond -f -L /dev/stdout
       ''
     ];

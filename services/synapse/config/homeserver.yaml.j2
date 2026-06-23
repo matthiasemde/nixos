@@ -32,7 +32,7 @@ database:
     user: synapse
     password: "{{ env.get('POSTGRES_PASSWORD') }}"
     database: synapse
-    host: synapse-database
+    host: synapse--database
     port: 5432
     cp_min: 5
     cp_max: 10
@@ -40,7 +40,7 @@ database:
 # Redis configuration for replication and caching
 redis:
   enabled: true
-  host: synapse-redis
+  host: synapse--redis
   port: 6379
 
 # Logging configuration
@@ -86,7 +86,7 @@ form_secret: "{{ env.get('SYNAPSE_FORM_SECRET') }}"
 
 matrix_authentication_service:
   enabled: true
-  endpoint: http://matrix-auth-app:8080/
+  endpoint: http://synapse--matrix-auth-app:8080/
   secret: "{{ env.get('MATRIX_SECRET') }}"
 
 

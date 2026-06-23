@@ -59,7 +59,7 @@ in
     myVirtualization.networks.${backendNetwork} = "";
     myVirtualization.networks.monitoring = "";
 
-    myVirtualization.containers.grafana = lib.mkIf cfg.enableGrafana {
+    myVirtualization.containers.grafana.app = lib.mkIf cfg.enableGrafana {
       rawImageReference = "grafana/grafana:13.0.2@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2";
       nixSha256 = "sha256-ykSkjhx28wnlLiiVKp/Bc5o2NbmQ4olt+WLMiiBgSv0=";
       networks = [
@@ -104,7 +104,7 @@ in
         };
     };
 
-    myVirtualization.containers.prometheus = lib.mkIf cfg.enablePrometheus {
+    myVirtualization.containers.grafana.prometheus = lib.mkIf cfg.enablePrometheus {
       rawImageReference = "prom/prometheus:v3.12.0@sha256:69f5241418838263316593f7274a304b095c40bcf22e57272865da91bd60a8ac";
       nixSha256 = "sha256-+aqrobm7XzkHmUIvC7pvJltXkNljcfPRxp1cbFL2IdQ=";
       networks = [
@@ -145,7 +145,7 @@ in
         };
     };
 
-    myVirtualization.containers.loki = lib.mkIf cfg.enableLoki {
+    myVirtualization.containers.grafana.loki = lib.mkIf cfg.enableLoki {
       rawImageReference = "grafana/loki:3.7.2@sha256:800ec439ed2692b79c5a1fe17a6d2955f8999ad5d05f0276c6e4a10ac11cc491";
       nixSha256 = "sha256-Vp6LlgV8NjQh9EwL4EXC/bAv6mrdjD2AbEXvv+X+Xrc=";
       networks = [ backendNetwork ];
@@ -156,7 +156,7 @@ in
       cmd = [ "-config.file=/etc/loki/config.yml" ];
     };
 
-    myVirtualization.containers.alloy = lib.mkIf cfg.enableAlloy {
+    myVirtualization.containers.grafana.alloy = lib.mkIf cfg.enableAlloy {
       rawImageReference = "grafana/alloy:v1.17.0@sha256:1f370747567b3aec7850ff9e0b22c27dde6366c5cea53a08832a524cef4383f1";
       nixSha256 = "sha256-bXCrfjwt+NB1rSq48gl7SNrwZ7UFxB7/CWtUyLISJf4=";
       networks = [

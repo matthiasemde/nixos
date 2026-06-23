@@ -5,7 +5,7 @@ in
 {
   myVirtualization.networks.traefik = "--ipv6";
 
-  myVirtualization.containers.traefik = {
+  myVirtualization.containers.traefik.server = {
     rawImageReference = "traefik:v3.7.5@sha256:d6858791f9e74df44ca4014166647c41cdc2abd3bf2a71b832ca4e1c6a91b257";
     nixSha256 = "sha256-GMIjSxKT6S9vphURKbY4spGRezGvt+oiLfnxYasgrLA=";
     ports = [
@@ -45,7 +45,7 @@ in
       };
   };
 
-  myVirtualization.containers.error-pages = {
+  myVirtualization.containers.traefik.error-pages = {
     rawImageReference = "nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a";
     nixSha256 = "sha256-1smG0epcEvN6OA/gQF3mxDMmKh8W33LQITKa37WjAP4=";
     networks = [ "traefik" ];

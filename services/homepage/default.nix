@@ -39,7 +39,7 @@ let
   };
 in
 {
-  myVirtualization.containers.homepage = {
+  myVirtualization.containers.homepage.app = {
     image = "homepage-derived:v1.0.0";
     imageFile = homepageDerived;
     volumes = [

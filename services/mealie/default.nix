@@ -18,7 +18,7 @@ in
   config = {
     myVirtualization.networks.${backendNetwork} = "";
 
-    myVirtualization.containers.mealie-app = {
+    myVirtualization.containers.mealie.app = {
       rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.19.2@sha256:7fbdc559dc799473640c500e4555d619b8e4f7218cfc73410327ced14d886ec5";
       nixSha256 = "sha256-aRWAl2Vg/IOlffrDl7wTwZMsG+5+zxK4XXGtYRaKtJI=";
       environment = {
@@ -30,7 +30,7 @@ in
         "TZ" = "Europe/Berlin";
         "DB_ENGINE" = "postgres";
         "POSTGRES_USER" = "mealie";
-        "POSTGRES_SERVER" = "mealie-database";
+        "POSTGRES_SERVER" = "mealie--database";
         "POSTGRES_PORT" = "5432";
         "POSTGRES_DB" = "mealie";
         "ALLOW_SIGNUP" = "false";
@@ -77,7 +77,7 @@ in
         };
     };
 
-    myVirtualization.containers.mealie-database = {
+    myVirtualization.containers.mealie.database = {
       rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
       nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
       volumes = [ "/data/services/mealie/database:/var/lib/postgresql/18/docker" ];

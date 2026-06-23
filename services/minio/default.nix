@@ -6,7 +6,7 @@
   ...
 }:
 {
-  myVirtualization.containers.minio = {
+  myVirtualization.containers.minio.server = {
     rawImageReference = "quay.io/minio/aistor/minio:RELEASE.2026-05-28T20-50-32Z@sha256:f43826478f78ce99e6def967e67a185b2958c8d5a3ef1b65fe89eed25e602348";
     nixSha256 = "sha256-ovgwlzTJVv24JSbTLDqjpO96mxD5TszfpmRVdGncNeQ=";
     environmentFiles = getEnvFiles "minio" "server-env";

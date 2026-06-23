@@ -7,7 +7,7 @@
 let
 in
 {
-  myVirtualization.containers.microbin = {
+  myVirtualization.containers.microbin.app = {
     rawImageReference = "danielszabo99/microbin:2.1.4@sha256:6660e5ccad0d764fa3c0032464ffb8f4b4f28c92a2eb9e39202b94cdc5b68909";
     nixSha256 = "sha256-osXe26F3zmC2j1AiGjYsyJEbI4VY50H6AXmLQKaeXIo=";
     networks = [ "traefik" ];
