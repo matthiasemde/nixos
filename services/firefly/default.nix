@@ -72,8 +72,8 @@ in
   };
 
   myVirtualization.containers.${cronName} = {
-    rawImageReference = "alpine:3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4";
-    nixSha256 = "sha256-W4G3seFFuMUMcoPQrAcisPMIWwl4shGDb0tPJpzWd2Q=";
+    rawImageReference = "alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b";
+    nixSha256 = "sha256-nK2IyUv9ZQ4v0dFKcTEZcQeWyrsUbN3OBzLDNhnAFn0=";
     volumes = [ "/etc/localtime:/etc/localtime:ro" ];
     cmd = [
       "sh"
