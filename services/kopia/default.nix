@@ -24,8 +24,8 @@ in
 
   config = {
     myVirtualization.containers.kopia = {
-      rawImageReference = "kopia/kopia:0.23.0@sha256:bd6a449c263465c388339c0637dcd25562e99dcdde286c9d51ade81e138bbf2c";
-      nixSha256 = "sha256-JLg3efs2CwM7yU3N2g+4uPJfk16JRCYsXu5VQ+xBOY0=";
+      rawImageReference = "kopia/kopia:0.23.1@sha256:89fd95ee2942880ca00eae964266958a394421ddbdf69bca62e38afc55f5900e";
+      nixSha256 = "sha256-QNp3FVxElewSLUJGszYHAWwWLoZM/L/u2MvvUR0Y+lg=";
       networks = [
         "traefik"
         "monitoring"
