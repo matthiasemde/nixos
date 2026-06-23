@@ -50,6 +50,28 @@
 
   system.autoUpgrade.persistent = true;
 
+  # Configure Yubikey support
+  # following https://joinemm.dev/blog/yubikey-nixos-guide and https://github.com/drduh/YubiKey-Guide
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.pcscd.enable = true;
+  security.polkit.enable = true;
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      var actions = ["access_pcsc", "org.debian.pcsc-lite.access_card"];
+      if (actions.indexOf(action.id) !== -1 && subject.active && subject.isInGroup("ykusers")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+  security.pam = {
+    u2f = {
+      enable = true;
+      settings = {
+        cue = true;
+      };
+    };
+  };
+
   programs.firefox.enable = true;
 
   programs.steam = {
@@ -65,6 +87,7 @@
     teamviewer
     wireguard-tools
     cifs-utils
+    age-plugin-yubikey
   ];
 
   fileSystems = lib.listToAttrs (
