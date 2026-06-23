@@ -75,7 +75,7 @@
           device = "//mahler/${share}";
           fsType = "cifs";
           options = [
-            "credentials=/run/agenix/vogel-smb-credentials.env"
+            "credentials=/run/secrets/smb-credentials"
             "uid=1000"
             "gid=1000"
             "_netdev"
