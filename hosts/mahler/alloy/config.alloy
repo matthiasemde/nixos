@@ -84,7 +84,7 @@ prometheus.relabel "service_exporter" {
 	rule {
 		action        = "replace"
 		source_labels = ["container"]
-		regex         = "(?P<service>[^-]+)--(?P<component>.*)"
+		regex         = "(?P<service>.+)--(?P<component>.+)"
 		target_label  = "service"
 		replacement   = "$service"
 	}
@@ -92,7 +92,7 @@ prometheus.relabel "service_exporter" {
 	rule {
 		action        = "replace"
 		source_labels = ["container"]
-		regex         = "(?P<service>[^-]+)--(?P<component>.*)"
+		regex         = (?P<service>.+)--(?P<component>.+)"
 		target_label  = "component"
 		replacement   = "$component"
 	}
@@ -137,7 +137,7 @@ prometheus.relabel "cadvisor" {
 	rule {
 		action        = "replace"
 		source_labels = ["container"]
-		regex         = "(?P<service>[^-]+)--(?P<component>.*)"
+		regex         = "(?P<service>.+)--(?P<component>.+)"
 		target_label  = "service"
 		replacement   = "$service"
 	}
@@ -145,7 +145,7 @@ prometheus.relabel "cadvisor" {
 	rule {
 		action        = "replace"
 		source_labels = ["container"]
-		regex         = "(?P<service>[^-]+)--(?P<component>.*)"
+		regex         = "(?P<service>.+)--(?P<component>.+)"
 		target_label  = "component"
 		replacement   = "$component"
 	}
@@ -217,7 +217,7 @@ loki.process "categorize_docker_logs" {
 		}
 	}
 
-	// Extract service name and image from docker-<service>-<component>.service journal entries.
+	// Extract service name and image from docker-<service>--<component>.service journal entries.
 	stage.match {
 		selector = `{unit=~"docker-.+\\.service"}`
 
@@ -227,12 +227,12 @@ loki.process "categorize_docker_logs" {
 
 		stage.regex {
 			source     = "unit"
-			expression = `docker-(?P<service>[^-]+)--(?P<component>[^.]*)\.service`
+			expression = `docker-(?P<service>.+)--(?P<component>.+)\.service`
 		}
 
 		stage.regex {
 			source     = "unit"
-			expression = `docker-(?P<container>[^.]+)\.service`
+			expression = `docker-(?P<container>.+)\.service`
 		}
 
 		stage.regex {
