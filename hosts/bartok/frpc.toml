@@ -7,6 +7,6 @@ auth.token = "{{ .Envs.FRP_TOKEN }}"
 [[proxies]]
 name = "bartok-traefik-tcp"
 type = "tcp"
-localIP = "traefik"
+localIP = "traefik--server"
 localPort = 443
 remotePort = 9443
