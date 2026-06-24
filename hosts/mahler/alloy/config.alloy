@@ -92,7 +92,7 @@ prometheus.relabel "service_exporter" {
 	rule {
 		action        = "replace"
 		source_labels = ["container"]
-		regex         = (?P<service>.+)--(?P<component>.+)"
+		regex         = "(?P<service>.+)--(?P<component>.+)"
 		target_label  = "component"
 		replacement   = "$component"
 	}
