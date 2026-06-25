@@ -5,33 +5,6 @@
   getEnvFiles,
   ...
 }:
-let
-  frpPkg = pkgs.frp;
-  configDerivation = pkgs.runCommand "frp-config" { } ''
-    mkdir -p $out/etc/frp
-    cp ${config.frp.configPath} $out/etc/frp/frpc.toml
-  '';
-  frpcImage = pkgs.dockerTools.buildImage {
-    name = "frpc";
-    tag = frpPkg.version;
-    copyToRoot = [
-      pkgs.bashInteractive
-      pkgs.coreutils
-      pkgs.iputils
-      pkgs.curl
-      pkgs.bind
-      frpPkg
-      configDerivation
-    ];
-    config = {
-      Cmd = [
-        "${frpPkg}/bin/frpc"
-        "-c"
-        "/etc/frp/frpc.toml"
-      ];
-    };
-  };
-in
 {
   options.frp.configPath = lib.mkOption {
     type = lib.types.path;
@@ -42,16 +15,21 @@ in
     myVirtualization.networks."frp-ingress" = "--ipv6";
 
     myVirtualization.containers.frp.server = {
-      image = "frpc:${frpPkg.version}";
-      imageFile = frpcImage;
+      rawImageReference = "snowdreamtech/frpc:0.69.1@sha256:1cf9ae280fa61412351e2e554a7729b692634b1e4d24ff15c93248e9c4cd4259";
+      nixSha256 = "sha256-9XNB/BFd15ZZGMQ1Bkc03zefiubGiMJv17m4On80+As=";
       networks = [
         "frp-ingress"
         "pterodactyl_nw"
       ];
+      volumes = [
+        "${config.frp.configPath}:/etc/frp/frpc.toml"
+      ];
       environmentFiles = getEnvFiles "frp" "server";
-      labels = {
-        "traefik.enable" = "false";
-      };
+      cmd = [
+        "frpc"
+        "-c"
+        "/etc/frp/frpc.toml"
+      ];
     };
   };
 }

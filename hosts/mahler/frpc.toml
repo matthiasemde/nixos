@@ -4,6 +4,8 @@ serverPort = 7000
 auth.method = "token"
 auth.token = "{{ .Envs.FRP_TOKEN }}"
 
+transport.wireProtocol = "v2"
+
 [[proxies]]
 name = "traefik-tcp"
 type = "tcp"
