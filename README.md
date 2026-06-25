@@ -65,7 +65,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── services.nix
 │   └── vogel
 │       ├── configuration.nix
-│       └── hardware-configuration.nix
+│       ├── hardware-configuration.nix
+│       └── secrets
+│           └── smb-credentials
 ├── README.md
 ├── renovate.json
 ├── secret-mgmt
@@ -92,8 +94,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   └── nginx.conf
 │   │   └── default.nix
 │   ├── frp
-│   │   ├── default.nix
-│   │   └── .env
+│   │   └── default.nix
 │   ├── grafana
 │   │   ├── config
 │   │   │   ├── datasources.yml
@@ -219,7 +220,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-73 directories, 142 files
+74 directories, 142 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
