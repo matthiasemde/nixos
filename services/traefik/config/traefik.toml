@@ -22,6 +22,9 @@ readTimeout = "600s"
 idleTimeout = "600s"
 writeTimeout = "600s"
 
+[entryPoints.websecure.proxyProtocol]
+trustedIPs = "172.0.0.0/8"
+
 [certificatesResolvers]
 [certificatesResolvers.myresolver.acme]
 email = "matthias@emdemail.de"
