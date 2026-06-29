@@ -40,26 +40,12 @@
     };
   };
 
-  services.prometheus.exporters.node = {
-    enable = true;
-    port = 9100;
-    enabledCollectors = [
-      "systemd"
-      "textfile"
-      "filesystem"
-      "loadavg"
-      "meminfo"
-      "netdev"
-    ];
-  };
-
   networking = {
     resolvconf.enable = false;
     firewall = {
       enable = true;
       allowedTCPPorts = [
         53 # Allow TCP DNS
-        9100 # Node exporter metrics
       ];
       allowedUDPPorts = [ 53 ]; # Allow UDP DNS
     };

@@ -28,6 +28,7 @@
         "${getSecretFile "grafana" "alloy" "client.crt"}:/etc/alloy/client.crt:ro"
         "${getSecretFile "grafana" "alloy" "client.key"}:/etc/alloy/client.key:ro"
       ];
+      dirSizeCollectorPaths = [ "/s3/data" ];
     };
   };
 }

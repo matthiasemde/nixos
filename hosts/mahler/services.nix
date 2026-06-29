@@ -88,7 +88,7 @@
         "${getSecretFile "grafana" "alloy" "server.crt"}:/etc/alloy/server.crt:ro"
         "${getSecretFile "grafana" "alloy" "server.key"}:/etc/alloy/server.key:ro"
       ];
-
+      dirSizeCollectorPaths = [ "/data/services" "/data/nas" ];
     };
     kopia = {
       repositoryPath = "/backup/kopia/repositories/main";

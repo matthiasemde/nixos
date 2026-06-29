@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   domain,
   mkTraefikLabels,
   getEnvFiles,
@@ -10,6 +11,7 @@ let
   hostname = config.networking.hostName;
   backendNetwork = "grafana-backend";
   cfg = config.grafana;
+  textfileDir = "/var/lib/node-exporter-textfiles";
 in
 {
   options.grafana = {
@@ -53,9 +55,63 @@ in
       default = [ ];
       description = "Additional volume mounts for the Alloy container (e.g. TLS certificate files).";
     };
+    enableNodeExporter = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to enable the Prometheus node exporter on the host.";
+    };
+    enableDirSizeCollector = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to run a periodic collector that measures subdirectory sizes and exposes them via the node exporter textfile collector.";
+    };
+    dirSizeCollectorPaths = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ "/data/services" ];
+      description = "Directories whose immediate subdirectories are measured for size.";
+    };
   };
 
   config = {
+    services.prometheus.exporters.node = lib.mkIf cfg.enableNodeExporter {
+      enable = true;
+      port = 9100;
+      enabledCollectors = [
+        "systemd"
+        "textfile"
+        "filesystem"
+        "loadavg"
+        "meminfo"
+        "netdev"
+      ];
+      extraFlags = lib.mkIf cfg.enableDirSizeCollector [
+        "--collector.textfile.directory=${textfileDir}"
+      ];
+    };
+
+    systemd.services.directory-size-collector = lib.mkIf (cfg.enableNodeExporter && cfg.enableDirSizeCollector) {
+      description = "Collect subdirectory sizes for node_exporter textfile collector";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash ${./collector.sh} ${textfileDir}/directory_sizes.prom ${lib.escapeShellArgs cfg.dirSizeCollectorPaths}";
+        StateDirectory = "node-exporter-textfiles";
+      };
+      path = with pkgs; [
+        findutils
+        coreutils
+      ];
+    };
+
+    systemd.timers.directory-size-collector = lib.mkIf (cfg.enableNodeExporter && cfg.enableDirSizeCollector) {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnUnitActiveSec = "10min";
+        Persistent = true;
+      };
+    };
+
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.enableNodeExporter [ 9100 ];
+
     myVirtualization.networks.${backendNetwork} = "";
     myVirtualization.networks.monitoring = "";
 

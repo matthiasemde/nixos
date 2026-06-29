@@ -12,6 +12,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── scripts
 │   │   └── update-docker-hashes.sh
 │   └── workflows
+│       ├── gitleaks.yml
 │       └── update-docker-hashes.yml
 ├── .gitignore
 ├── hosts
@@ -96,6 +97,7 @@ This repository holds the configuration of my homelab powered by NixOS
 │   ├── frp
 │   │   └── default.nix
 │   ├── grafana
+│   │   ├── collector.sh
 │   │   ├── config
 │   │   │   ├── datasources.yml
 │   │   │   ├── loki.yml
@@ -213,6 +215,8 @@ This repository holds the configuration of my homelab powered by NixOS
 ├── SETUP.md
 ├── .sops.yaml
 ├── tools
+│   ├── ca.crt
+│   ├── ca.key
 │   ├── install-precommit-hook.sh
 │   ├── migrate-db.sh
 │   ├── migrate.sh
@@ -220,7 +224,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-74 directories, 142 files
+74 directories, 146 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
