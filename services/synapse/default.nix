@@ -244,7 +244,7 @@ in
   };
 
   myVirtualization.containers.synapse.wellknown = {
-    rawImageReference = "nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a";
+    rawImageReference = "nginx:1.31.2-alpine@sha256:54f2a904c251d5a34adf545a72d32515a15e08418dae0266e23be2e18c66fefa";
     nixSha256 = "sha256-1smG0epcEvN6OA/gQF3mxDMmKh8W33LQITKa37WjAP4=";
     networks = [ "traefik" ];
     volumes = [
