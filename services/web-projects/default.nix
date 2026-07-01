@@ -8,8 +8,8 @@ let
 in
 {
   myVirtualization.containers.web-projects.app = {
-    rawImageReference = "nginx:1.31.1-alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a";
-    nixSha256 = "sha256-1smG0epcEvN6OA/gQF3mxDMmKh8W33LQITKa37WjAP4=";
+    rawImageReference = "nginx:1.31.2-alpine@sha256:54f2a904c251d5a34adf545a72d32515a15e08418dae0266e23be2e18c66fefa";
+    nixSha256 = "sha256-TPH/skkh6iPG936I7yHLgIZZ1qv8LRQT4pk8Q7qwpi8=";
     networks = [ "traefik" ];
     volumes = [
       "/data/nas/home/Matthias/Documents/code/web-projects:/usr/share/nginx/html/projects:ro"
