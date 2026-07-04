@@ -45,8 +45,8 @@ let
       };
     };
 
-  livekitRawImageReference = "livekit/livekit-server:v1.13.1@sha256:2c6869d2d5ff6c9c0166f47be1c92dad6928bfecfa5e4060a6ece48db8accfa3";
-  livekitNixSha256 = "sha256-5M4Fwb4PpF2J1LA8SqredhG1FGiWneykQnEaHsvqevg=";
+  livekitRawImageReference = "livekit/livekit-server:v1.13.2@sha256:50409575b8a4c4d4e5496793ba698701a230bc5d0f33e54dbe6877ba6e325a9f";
+  livekitNixSha256 = "sha256-3IZOYjoj9+XIx13OzLOcobiKpyw3CzEBo+mzVpXZCSw=";
   livekitImageReference = parseDockerImageReference livekitRawImageReference;
   livekitImage = pkgs.dockerTools.pullImage {
     imageName = livekitImageReference.name;
