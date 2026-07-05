@@ -26,8 +26,39 @@
     videoDrivers = [ "nvidia" ];
     xkb.layout = "de";
   };
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+
+  nix.settings = {
+    substituters = [
+      # "https://niri.cachix.org"
+      "https://niri-epireyn.cachix.org"
+    ];
+    trusted-public-keys = [
+      # "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+      "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
+    ];
+    trusted-substituters = [
+      # "https://niri.cachix.org"
+      "https://niri-epireyn.cachix.org"
+    ];
+    # Required so non-root users are allowed to use the above substituter/keys.
+    # Use @wheel for all sudo users, or list your username explicitly.
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
+  };
+
+  services.greetd = {
+    enable = true;
+
+    settings.default_session = {
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+      user = "greeter";
+    };
+  };
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -88,6 +119,7 @@
     wireguard-tools
     cifs-utils
     age-plugin-yubikey
+    tuigreet
   ];
 
   fileSystems = lib.listToAttrs (
