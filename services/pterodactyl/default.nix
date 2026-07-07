@@ -96,7 +96,7 @@ in
 
   myVirtualization.containers.pterodactyl.daemon = {
     rawImageReference = "ccarney16/pterodactyl-daemon:v1.13.1@sha256:25ff027fb8f7d8da8ce98d838f3095a8d4176f752adf9db75a9c17a46fc17e4c";
-    nixSha256 = "sha256-fZ4fU0Y8xMZdII+CvEm0z4DEsx6o5SFCucUIXUrRVy8=";
+    nixSha256 = "sha256-lWvrE27Jn/hoW6IShukrsPuMtyRpZzy28OpuS8WXqmE=";
     networks = [
       backendNetwork
       "frp-ingress"
