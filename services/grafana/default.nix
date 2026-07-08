@@ -161,7 +161,7 @@ in
     };
 
     myVirtualization.containers.grafana.prometheus = lib.mkIf cfg.enablePrometheus {
-      rawImageReference = "prom/prometheus:v3.12.0@sha256:69f5241418838263316593f7274a304b095c40bcf22e57272865da91bd60a8ac";
+      rawImageReference = "prom/prometheus:v3.13.0@sha256:c6b27ea434f8389bfe233fbc7be381cf50587c286e871bc842008f5a1b1908a7";
       nixSha256 = "sha256-+aqrobm7XzkHmUIvC7pvJltXkNljcfPRxp1cbFL2IdQ=";
       networks = [
         backendNetwork
