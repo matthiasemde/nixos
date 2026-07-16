@@ -10,7 +10,8 @@
     };
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs"; set to 'stable' until https://github.com/nix-community/nixos-vscode-server/pull/101 is merged
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
