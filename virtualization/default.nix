@@ -77,31 +77,18 @@ let
           }
         else
           let
-            corsMiddleware =
-              if corsAllowPost then
-                { "traefik.http.routers.${name}-public.middlewares" = "cors-allow-post@file"; }
-              else
-                { };
-            forwardAuthMiddleware =
-              if useForwardAuth then
-                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth@file"; }
-              else
-                { };
-            infraForwardAuthMiddleware =
-              if useInfraForwardAuth then
-                { "traefik.http.routers.${name}-public.middlewares" = "forward-auth-infra@file"; }
-              else
-                { };
-            crowdsecMiddleware =
-              if config.myInfrastructure.useCrowdsec then
-                { "traefik.http.routers.${name}-public.middlewares" = "crowdsec@file"; }
-              else
-                { };
+            middlewares = lib.filter (m: m != "") [
+              (lib.optionalString corsAllowPost "cors-allow-post@file")
+              (lib.optionalString useForwardAuth "forward-auth@file")
+              (lib.optionalString useInfraForwardAuth "forward-auth-infra@file")
+              (lib.optionalString config.myInfrastructure.useCrowdsec "crowdsec@file")
+            ];
+            middlewareLabel =
+              lib.optionalAttrs (middlewares != [ ]) {
+                "traefik.http.routers.${name}-public.middlewares" = lib.concatStringsSep "," middlewares;
+              };
           in
-          corsMiddleware
-          // forwardAuthMiddleware
-          // infraForwardAuthMiddleware
-          // crowdsecMiddleware
+          middlewareLabel
           // {
             "traefik.http.routers.${name}-public.entrypoints" = "websecure";
             "traefik.http.routers.${name}-public.rule" = publicRule;
