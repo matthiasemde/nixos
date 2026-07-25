@@ -47,7 +47,7 @@ in
 
   myVirtualization.containers.traefik.error-pages = {
     rawImageReference = "nginx:1.31.3-alpine@sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752";
-    nixSha256 = "sha256-TPH/skkh6iPG936I7yHLgIZZ1qv8LRQT4pk8Q7qwpi8=";
+    nixSha256 = "sha256-q3wcRf2vAOya2ty38o0a7ARPVnDJ2sfOmdzdsrhpm2c=";
     networks = [ "traefik" ];
     volumes = [
       "${./config/error.html}:/usr/share/nginx/html/error.html:ro"
