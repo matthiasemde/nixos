@@ -8,8 +8,8 @@ let
 in
 {
   myVirtualization.containers.audiobookshelf.app = {
-    rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.35.1@sha256:1eef6716183c52abafe5405e7d6be8390248ecd59c7488c44af871757ac8fc4d";
-    nixSha256 = "sha256-nLIbMa2mZpUx7XZJvoN4tCa5v/L0vzPRYu12FFre1Kk=";
+    rawImageReference = "ghcr.io/advplyr/audiobookshelf:2.36.0@sha256:180acad33d69c99ed208676465d8edcb268fa46967735579a7810859885b1a8e";
+    nixSha256 = "sha256-az9pta5k2CZ68VLGCI/svdzMhEjNMofOXe4QBFsWwFg=";
     environment = {
       TZ = "Europe/Berlin";
     };
