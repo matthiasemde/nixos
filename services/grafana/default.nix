@@ -117,7 +117,7 @@ in
 
     myVirtualization.containers.grafana.app = lib.mkIf cfg.enableGrafana {
       rawImageReference = "grafana/grafana:13.1.1@sha256:7cb8c64c4d57a57e734073f3cc94620adb24a0acb929bd80ba9f14017e3a975b";
-      nixSha256 = "sha256-W7Uux1EHVhlCN9TCb+nbUT+dp07siWkDZR+wR2LYlsA=";
+      nixSha256 = "sha256-Qx/5HrfcknArodbbHeYEMCgOPiROwaKQOhqEzpKj2fI=";
       networks = [
         backendNetwork
         "traefik"
