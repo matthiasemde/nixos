@@ -12,7 +12,7 @@ in
   myVirtualization.networks.${backendNetwork} = "";
 
   myVirtualization.containers.immich.app = {
-    rawImageReference = "ghcr.io/immich-app/immich-server:v3.0.3@sha256:c716dc20f957aafd89fa9d284a2ec63e25c9e2d8d8e87c6197d540a3dce237db";
+    rawImageReference = "ghcr.io/immich-app/immich-server:v3.1.0@sha256:b434cb9287eea1471c9974845914d4dd328c9c2d652e446ed4930f99944f0ceb";
     nixSha256 = "sha256-G6xqs8HAx3QKTIFAl782RqFTYxRSnSlookdDO2WBhyI=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
@@ -45,7 +45,7 @@ in
   };
 
   myVirtualization.containers.immich.machine-learning = {
-    rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v3.0.3@sha256:d76fe88b69282c09a97eac4f82dafa82cfd77bce274bc742591cde974f87dacb";
+    rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v3.1.0@sha256:5a0839dc5303cd7215bcd2180a26aed3af41675aefb3e75e5157e9f10ad16e6e";
     nixSha256 = "sha256-QWjF33UKyihbSCTYaiJvONaQeCHdoVpy1Gl2iKj6CYQ=";
     volumes = [ "immich-ml-cache:/cache" ];
     networks = [ backendNetwork ];
