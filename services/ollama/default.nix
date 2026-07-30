@@ -13,7 +13,7 @@ in
   myVirtualization.networks.${backendNetwork} = "";
 
   myVirtualization.containers.ollama.server = {
-    rawImageReference = "ollama/ollama:0.32.2@sha256:c3886c198155aa7d45a29851100cc16f5d6ea6777d635ddd0597fe95874161af";
+    rawImageReference = "ollama/ollama:0.32.3@sha256:ec24bcaa2a810eb74171ce7c517813ef4821ed678988845e8d76cf62467036d4";
     nixSha256 = "sha256-m8Xns2ib1NiZR7wa1aS61SXIhjeYYkrwHv7m2umodqI=";
     networks = [
       "traefik"
