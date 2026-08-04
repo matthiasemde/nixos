@@ -86,7 +86,7 @@ in
 
   myVirtualization.containers.immich.kiosk = {
     rawImageReference = "ghcr.io/damongolding/immich-kiosk:0.42.0@sha256:96909e1c7f52323e4cd742cc14d2650d9a421fdbf85699f64e065f6aa6fbaa89";
-    nixSha256 = "sha256-Eb123/iOM4G5cQOFr7BOHTOtn7VtyY9Z7/MQfR0Qm/s=";
+    nixSha256 = "sha256-7XxUrQ9YJg68pSHAa5VuRMRUJiO04SPVno8c6rhZeNs=";
     environment = {
       LANG = "de_DE";
       TZ = "Europe/Berlin";
