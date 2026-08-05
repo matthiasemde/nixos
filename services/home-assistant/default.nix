@@ -10,8 +10,8 @@ in
   myVirtualization.dependencies.files."/data/services/home-assistant/home-assistant.db" = "644";
 
   myVirtualization.containers.home-assistant.app = {
-    rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.7@sha256:cb76c9922b530f6a5063a15463eb3ad6de287d297c826713abda16795bb98980";
-    nixSha256 = "sha256-8bHlJZSKDynFwlyLcZIcCtbVrOheElZubHdA5c9yzWY=";
+    rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.8@sha256:a21689ef0510df9760ee11bab4d6b2fef3ed5c1a29ed9c3224271597a23729eb";
+    nixSha256 = "sha256-TZ8uAU3eDkJ0NvnxThx3qSjHolaWuCwJAwWwfLzyUAM=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/data/services/home-assistant/home-assistant.db:/config/home-assistant.db"
