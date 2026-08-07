@@ -46,7 +46,7 @@ let
     };
 
   livekitRawImageReference = "livekit/livekit-server:v1.13.5@sha256:3497163e15c48fef6e7830c78716f9e9d5edc28abf7aa90b61c86e93bbc306b1";
-  livekitNixSha256 = "sha256-BvCJF6/ICx6UteO1Fd+CmIFXnkwIowljpuhFfc8ifKM=";
+  livekitNixSha256 = "sha256-GW0zAMFrdblGDxmsKVQ94TGDa7aNqZ+1sehSbOsM6UE=";
   livekitImageReference = parseDockerImageReference livekitRawImageReference;
   livekitImage = pkgs.dockerTools.pullImage {
     imageName = livekitImageReference.name;
