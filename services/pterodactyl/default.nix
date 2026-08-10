@@ -95,7 +95,7 @@ in
   };
 
   myVirtualization.containers.pterodactyl.daemon = {
-    rawImageReference = "ccarney16/pterodactyl-daemon:v1.13.1@sha256:25ff027fb8f7d8da8ce98d838f3095a8d4176f752adf9db75a9c17a46fc17e4c";
+    rawImageReference = "ccarney16/pterodactyl-daemon:v1.13.2@sha256:d19d06d8a2e0feaf3c807b0c70e7e5787d475fab847a1c6d7de8348daee9dae5";
     nixSha256 = "sha256-lWvrE27Jn/hoW6IShukrsPuMtyRpZzy28OpuS8WXqmE=";
     networks = [
       backendNetwork
