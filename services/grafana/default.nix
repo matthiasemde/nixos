@@ -116,8 +116,8 @@ in
     myVirtualization.networks.monitoring = "";
 
     myVirtualization.containers.grafana.app = lib.mkIf cfg.enableGrafana {
-      rawImageReference = "grafana/grafana:13.1.1@sha256:7cb8c64c4d57a57e734073f3cc94620adb24a0acb929bd80ba9f14017e3a975b";
-      nixSha256 = "sha256-Qx/5HrfcknArodbbHeYEMCgOPiROwaKQOhqEzpKj2fI=";
+      rawImageReference = "grafana/grafana:13.1.2@sha256:d177053ab62253815f130d81504f77063baf5fd4ca93299d6048453bd31e047a";
+      nixSha256 = "sha256-4X+gVRWry4WOorDIlLNn8kPNLMTqTJ3MCQKRNdJ+q+Q=";
       networks = [
         backendNetwork
         "traefik"
