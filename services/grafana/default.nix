@@ -203,7 +203,7 @@ in
 
     myVirtualization.containers.grafana.loki = lib.mkIf cfg.enableLoki {
       rawImageReference = "grafana/loki:3.7.6@sha256:83c76da7858a8f4f88117ac521864ac33896fdae7a352a1df4068556e7513f64";
-      nixSha256 = "sha256-7wvXsa8MwVr81iW7c027qpGSjQiQpuSRP9tUGDNzeRk=";
+      nixSha256 = "sha256-SXaWwZ2wSTkU6+JbqcG+4NhKnKeZtYYB/8qrtNYFHKA=";
       networks = [ backendNetwork ];
       volumes = [
         "/data/services/grafana/loki:/loki"
