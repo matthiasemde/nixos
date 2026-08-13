@@ -213,8 +213,8 @@ in
     };
 
     myVirtualization.containers.grafana.alloy = lib.mkIf cfg.enableAlloy {
-      rawImageReference = "grafana/alloy:v1.18.0@sha256:eb21f4c0858edffcdd1b385910ddeef26f692fc2c282f61baa724fc09d274a17";
-      nixSha256 = "sha256-wmzEYf3gWmWrJubOtpsKC97xVH3IkfbaDEawB1A4GDQ=";
+      rawImageReference = "grafana/alloy:v1.18.1@sha256:754409730f1a4ed9781f8a2ea3b6a8c55750ee125a267ecf8fb449f9a25c109a";
+      nixSha256 = "sha256-C6I/IUWrUyS9Sok/+Jp6J7xHazOJYfn88rQs0Cclxz8=";
       networks = [
         backendNetwork
         "monitoring"
