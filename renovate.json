@@ -13,8 +13,8 @@
   "automergeStrategy": "fast-forward",
   "lockFileMaintenance": {
     "enabled": true,
-    "extends": [
-      "schedule:weekly"
+    "schedule": [
+      "after 12am and before 4am on Saturday"
     ],
     "automerge": true,
     "timezone": "Europe/Berlin"
