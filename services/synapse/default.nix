@@ -333,7 +333,7 @@ in
 
   myVirtualization.containers.synapse.element-call-jwt = {
     rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.6.0@sha256:822f0c03a3bdd924da92afc2e8ec59de5dda17af42d32e71e11f269c3517abf7";
-    nixSha256 = "sha256-vQgIV2PEOJnmL6HPi6tW8Q63brb5jXYcwH9qoG/eZg0=";
+    nixSha256 = "sha256-kaDQUDyRY/JNkTa8hBiG+46RYzTE2lWO4CGEUwgWl5E=";
     environment = {
       "LIVEKIT_JWT_PORT" = "8080";
       "LIVEKIT_URL" = "https://matrix-rtc-sfu.${domain}";
