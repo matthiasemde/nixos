@@ -73,7 +73,7 @@ in
     };
 
     myVirtualization.containers.authentik.server = lib.mkIf cfg.enableStack {
-      rawImageReference = "ghcr.io/goauthentik/server:2026.5.6@sha256:ed120caf710ccf82ef0026f0bc74e51615bc95ebff228a7a2d6fc60c441c3868";
+      rawImageReference = "ghcr.io/goauthentik/server:2026.8.0@sha256:5217eed4e86a3c6666ecf81c3430753ef958f97f93ac614070d458c10e0b2b33";
       nixSha256 = "sha256-58hlqmnlLLaIz5S1EBHayHUOSoiQmULhe76jnAiNl/k=";
       cmd = [ "server" ];
       environment = env // {
@@ -107,7 +107,7 @@ in
     };
 
     myVirtualization.containers.authentik.worker = lib.mkIf cfg.enableStack {
-      rawImageReference = "ghcr.io/goauthentik/server:2026.5.6@sha256:ed120caf710ccf82ef0026f0bc74e51615bc95ebff228a7a2d6fc60c441c3868";
+      rawImageReference = "ghcr.io/goauthentik/server:2026.8.0@sha256:5217eed4e86a3c6666ecf81c3430753ef958f97f93ac614070d458c10e0b2b33";
       nixSha256 = "sha256-58hlqmnlLLaIz5S1EBHayHUOSoiQmULhe76jnAiNl/k=";
       cmd = [ "worker" ];
       environment = env // {
