@@ -312,7 +312,7 @@ in
 
   myVirtualization.containers.synapse.ntfy = {
     rawImageReference = "binwiederhier/ntfy:v2.27@sha256:f2419f405127afa868f10985c1a41449e673477cee1eb19994339a5ae8b592e7";
-    nixSha256 = "sha256-WaTSiwHcrKEn+CBmoMBGo9t88mqA1mBhyMflTPdCg6M=";
+    nixSha256 = "sha256-8HnBcMV1I1p6u1CMCnv0WEQkp7TDw6RL+PKUp5jhOEU=";
     environment = {
       "NTFY_BASE_URL" = "https://ntfy.${domain}";
       "NTFY_BEHIND_PROXY" = "true";
