@@ -9,7 +9,7 @@ let
   backendNetwork = "pterodactyl-backend";
 
   panelBaseConfig = {
-    rawImageReference = "ccarney16/pterodactyl-panel:v1.15.0@sha256:04e1209fd1870aecdba4e873c558d26329fd5de9b174d0a59af50c72354a64ec";
+    rawImageReference = "ccarney16/pterodactyl-panel:v1.15.1@sha256:82407f6dbc259efc64619e4285d0a58089127ce777068913d21062b1cc0dfaee";
     nixSha256 = "sha256-ZErGfKiSKez1Jt+E/wpggUU7V/kUvR3LEl7emY87Dzg=";
     volumes = [
       "/data/services/pterodactyl/panel:/data:z"
