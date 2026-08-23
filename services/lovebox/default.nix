@@ -16,7 +16,6 @@ let
 
   startScript = pkgs.writeShellScript "start.sh" ''
     set -e
-    mkdir -p /var/log/nginx /var/run /tmp/nginx
 
     # Start PHP-FPM in background
     ${phpWithImagick}/bin/php-fpm -F -y /etc/php-fpm.conf &
@@ -37,7 +36,7 @@ let
 
   loveboxImage = pkgs.dockerTools.buildLayeredImage {
     name = "lovebox";
-    tag = "v1.0.0";
+    tag = "v1.2.0";
     contents = [
       phpWithImagick
       pkgs.nginx
@@ -58,6 +57,10 @@ let
         ln -s ${pkgs.nginx}/conf/mime.types $out/etc/nginx/
         ln -s ${pkgs.nginx}/conf/fastcgi_params $out/etc/nginx/
       '')
+      (pkgs.runCommand "runtime-dirs" { } ''
+        mkdir -p $out/var/cache/nginx/client_body $out/var/cache/nginx/proxy $out/var/cache/nginx/fastcgi
+        mkdir -p $out/var/log/nginx $out/var/run $out/tmp
+      '')
     ];
     config = {
       Cmd = [ "${startScript}" ];
@@ -70,7 +73,7 @@ let
 in
 {
   myVirtualization.containers.lovebox.app = {
-    image = "lovebox:v1.0.0";
+    image = "lovebox:v1.2.0";
     imageFile = loveboxImage;
     networks = [ "traefik" ];
     volumes = [
