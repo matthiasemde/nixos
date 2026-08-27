@@ -19,8 +19,8 @@ in
     myVirtualization.networks.${backendNetwork} = "";
 
     myVirtualization.containers.paperless.app = {
-      rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:3.0.5@sha256:65a4cabf0169ea7fbd90ab7bb28ba3f8b5909613635acda1a03ad606f34b456b";
-      nixSha256 = "sha256-SmTpu1iJprjvsjeWwWjDFMRPxNFd7OsjlvZ3NO+2lNQ=";
+      rawImageReference = "ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648";
+      nixSha256 = "sha256-X19cnPp5d2grsBWutmBvBYem9ti2xCjJltjqdCSnzmM=";
       environment = {
         "PAPERLESS_URL" = "https://paperless.${domain}";
         "PAPERLESS_ACCOUNT_ALLOW_SIGNUPS" = "false";
