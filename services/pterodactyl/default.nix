@@ -62,8 +62,8 @@ in
   };
 
   myVirtualization.containers.pterodactyl.database = {
-    rawImageReference = "mariadb:12.3.2@sha256:b1c7bf836e64ed9406a8984af29509f40089d55cea14b32f12c4726a1f17104b";
-    nixSha256 = "sha256-d8KIResDeBgNWNsTqHZkJnGGbzk+wcj6n+OOZ2woY6w=";
+    rawImageReference = "mariadb:12.3.3@sha256:dd9b303aed4f4890ed09f766d8ca9ddfd176c0c6f6267feff53b3192ec65a979";
+    nixSha256 = "sha256-CfyMVBtRB9VCr+oEvyYDsGEdSe1EQfm1TxRURMyLNnM=";
     volumes = [
       "/data/services/pterodactyl/database:/var/lib/mysql:z"
     ];
