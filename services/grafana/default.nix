@@ -214,7 +214,7 @@ in
 
     myVirtualization.containers.grafana.alloy = lib.mkIf cfg.enableAlloy {
       rawImageReference = "grafana/alloy:v1.19.1@sha256:b2714e2a55d11462fa05a871fc0282325ea08fd14c26f5c87a6c1f67dbfd1aa8";
-      nixSha256 = "sha256-yYFthSdVkHeN/JYQY7zVfwwSmTg1dAA49V/ihqJFLN0=";
+      nixSha256 = "sha256-QCQz3tvBaLWP0Ps7zUqbp1zmjd5L3uDEK2pBhsXNoN0=";
       networks = [
         backendNetwork
         "monitoring"
