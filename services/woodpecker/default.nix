@@ -55,7 +55,7 @@ in
 
     myVirtualization.containers.woodpecker.agent = {
       rawImageReference = "woodpeckerci/woodpecker-agent:v3.18.1@sha256:73ee7cc63161b40bfefa4a26eae45c518a09124ab34f7e3c5e781df85e1ba4ac";
-      nixSha256 = "sha256-Bvhnb4JH89Xg9HLv7WcXjKudaxFndWHd18moHG1BZS4=";
+      nixSha256 = "sha256-10FQMZmtdOKBBQdO5M2yDwyfWtmnjnMObA9bQNfC4gc=";
       environment = {
         "WOODPECKER_SERVER" = "woodpecker--server:9000";
         "WOODPECKER_BACKEND" = "docker";
