@@ -13,7 +13,7 @@ in
 
   myVirtualization.containers.outline.app = {
     rawImageReference = "outlinewiki/outline:1.10.1@sha256:832051f039b446c87aa23929cf92c00980c66aaa2d744d118c48c016ec816ad8";
-    nixSha256 = "sha256-xl9G/pHH6Z1mV0HcWNRDgzAfQqhLB3mTXF3nNQivxr0=";
+    nixSha256 = "sha256-Ijw21JPCeoKk3+qi1zBtus46yPMPRppbeIsKyfFTYLE=";
     networks = [
       backendNetwork
       "traefik"
