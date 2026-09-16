@@ -63,7 +63,7 @@ in
 
   myVirtualization.containers.pterodactyl.database = {
     rawImageReference = "mariadb:13.0.2@sha256:6364857ae6bd6640139189c632df94f76329c7b1402d33fb9e64b05bf1ca628d";
-    nixSha256 = "sha256-CfyMVBtRB9VCr+oEvyYDsGEdSe1EQfm1TxRURMyLNnM=";
+    nixSha256 = "sha256-pT7zlpPfL2RQdfB1Aj5DLeLSMZx0r/DvZssjGNJzpxs=";
     volumes = [
       "/data/services/pterodactyl/database:/var/lib/mysql:z"
     ];
