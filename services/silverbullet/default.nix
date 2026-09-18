@@ -9,7 +9,7 @@ in
 {
   myVirtualization.containers.silverbullet.app = {
     rawImageReference = "ghcr.io/silverbulletmd/silverbullet:2.11.0@sha256:535efe0a5d97587593edd88dfd7b2523f7c3a11482aa5c75887cce64f741acfc";
-    nixSha256 = "sha256-S2mAB+cJWtucMjeGpIyODZU/FacZ4+NtT6VbPKx/leA=";
+    nixSha256 = "sha256-MOCbRM00k7qrxPXM6G0QyIZSZ80jIiXsHw1XN8Cca/w=";
     networks = [ "traefik" ];
     volumes = [
       "/data/services/silverbullet/space:/space"
