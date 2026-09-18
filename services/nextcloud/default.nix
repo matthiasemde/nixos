@@ -21,7 +21,7 @@ in
 
   myVirtualization.containers.nextcloud.app = {
     rawImageReference = "nextcloud:35.0.0-apache@sha256:3e9f6eaa5dc8e26df3a7b78cd564ec14408f52cdc89d607e5b4341b85ab83f0e";
-    nixSha256 = "sha256-1t3CkowKlZ5oqBN3mDmHECa53kzcHwezRu4szV1v+s0=";
+    nixSha256 = "sha256-P1mJ9RKpytklKcz6SjrFds10efyAcLk1+v/LA097luM=";
     volumes = [
       "/data/services/nextcloud/app/config:/var/www/html/config"
       "/data/services/nextcloud/app/data:/var/www/html/data"
