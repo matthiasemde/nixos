@@ -9,7 +9,7 @@ let
 in
 {
   myVirtualization.containers.navidrome.app = {
-    rawImageReference = "deluan/navidrome:0.63.2@sha256:9012939114fbb1bb641b81cf96dec5ded15f0aafefe8d47a511d7cb919658e40";
+    rawImageReference = "deluan/navidrome:0.64.0@sha256:a384948b81bd1529986c5960169e7fc4fa00f46bde6bd517971a4c36671db2af";
     nixSha256 = "sha256-26k/hMyaLN9i+p43UJBQPrqVHqfgyiCMTLzcImn98aQ=";
     environment = {
       ND_SCANSCHEDULE = "1h";
