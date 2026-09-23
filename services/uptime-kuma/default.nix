@@ -8,7 +8,7 @@ let
 in
 {
   myVirtualization.containers.uptime-kuma.app = {
-    rawImageReference = "louislam/uptime-kuma:2.5.4@sha256:917318f9d7be5257f43ba412c766a473be336eb451d70744f3b482d0c3997c0e";
+    rawImageReference = "louislam/uptime-kuma:2.5.5@sha256:c74379ac4509ce2d2c2633f509e67003ee2e45b6e995c5e43fc101f45a0e1fbe";
     nixSha256 = "sha256-g/do1AuUShSdAfl43x9b9C8fwqim1D1Jei7dHs6SgXA=";
     networks = [ "traefik" ];
     extraOptions = [ "--dns=1.1.1.1" ];
