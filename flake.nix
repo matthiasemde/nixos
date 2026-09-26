@@ -8,11 +8,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
-      # inputs.nixpkgs.follows = "nixpkgs"; set to 'stable' until https://github.com/nix-community/nixos-vscode-server/pull/101 is merged
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
   outputs =

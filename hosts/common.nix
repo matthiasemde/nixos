@@ -65,9 +65,7 @@
     allowReboot = false;
   };
 
-  services.journald = {
-    extraConfig = ''
-      MaxRetentionSec=1day
-    '';
+  services.journald.settings.Journal = {
+    MaxRetentionSec="1day";
   };
 }
