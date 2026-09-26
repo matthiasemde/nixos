@@ -15,6 +15,9 @@
 
   networking.hostName = "vogel";
   networking.wireguard.enable = true;
+  networking.wg-quick.interfaces.dachau = {
+    configFile = "/etc/wireguard/dachau.conf";
+  };
 
   hardware.graphics = {
     enable = true;
@@ -48,6 +51,8 @@
     ];
   };
 
+  networking.firewall.enable = true;
+
   services.greetd = {
     enable = true;
 
@@ -59,6 +64,9 @@
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
+
+  services.dbus.enable = true;
+  programs.dconf.enable = true;
 
   hardware.nvidia = {
     modesetting.enable = true;
