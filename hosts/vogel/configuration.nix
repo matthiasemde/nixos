@@ -112,6 +112,11 @@
     localNetworkGameTransfers.openFirewall = true;
   };
 
+  programs.ausweisapp = {
+    enable = true;
+    openFirewall = true;
+  };
+
   environment.systemPackages = with pkgs; [
     wget
     vscode
