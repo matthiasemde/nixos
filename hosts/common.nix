@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  options,
+  ...
+}:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -65,7 +69,13 @@
     allowReboot = false;
   };
 
-  services.journald.settings.Journal = {
-    MaxRetentionSec="1day";
-  };
+  services.journald =
+    if options.services.journald ? settings then
+      {
+        settings.Journal.MaxRetentionSec = "1day";
+      }
+    else
+      {
+        extraConfig = "MaxRetentionSec=1day";
+      };
 }
