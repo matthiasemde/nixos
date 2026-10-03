@@ -80,6 +80,10 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── config
 │   │   │   └── AdGuardHome.yaml
 │   │   └── default.nix
+│   ├── atuin
+│   │   ├── config
+│   │   │   └── ai-server-config.toml
+│   │   └── default.nix
 │   ├── audiobookshelf
 │   │   └── default.nix
 │   ├── authentik
@@ -224,7 +228,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-74 directories, 146 files
+76 directories, 148 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
