@@ -2,6 +2,7 @@
 {
   imports = [
     ../../services/adguard
+    ../../services/atuin
     ../../services/audiobookshelf
     ../../services/authentik
     ../../services/firefly

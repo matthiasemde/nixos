@@ -1,0 +1,22 @@
+# Config for the atuin--ai-server container.
+# See: https://github.com/atuinsh/atuin-ai-server#configuration
+#
+# Talks to the local Ollama instance already deployed by services/ollama.
+# Swap the endpoint/model below if you'd rather point this at a different
+# OpenAI-compatible engine (vLLM, LM Studio, llama.cpp, OpenRouter, ...).
+
+port = 8080
+
+endpoint = "http://ollama--server:11434/v1"
+api_key = "ollama"
+
+default_model = "gemma4"
+
+[request.body]
+stream_options = { include_usage = true }
+
+[[models]]
+alias = "gemma4"
+name = "Gemma 4"
+description = "Local gemma4 via Ollama"
+model = "gemma4:latest"
