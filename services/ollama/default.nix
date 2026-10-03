@@ -41,8 +41,8 @@ in
   };
 
   myVirtualization.containers.ollama.open-webui = {
-    rawImageReference = "openwebui/open-webui:0.11.3@sha256:41daa0cf2561a5d4c8d1ff31ee2a98d93ab4d3ac2605cac69366ff6a3374a933";
-    nixSha256 = "sha256-31mDQmpoRVDRXtYYr5URp2/cqsfFWP9XybKY08r8Ey0=";
+    rawImageReference = "openwebui/open-webui:0.11.4@sha256:9591b13f13843c7721c2b8eaf7382846c81b3ffe126526d1888d1fed50c6a33f";
+    nixSha256 = "sha256-FyuFwMzFdR9fv7zZPErKUK65XXd25lTmcavbt3Xh98s=";
     networks = [
       "traefik"
       backendNetwork
