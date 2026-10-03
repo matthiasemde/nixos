@@ -54,6 +54,9 @@ in
         "OIDC_USER_CLAIM" = "preferred_username";
         "OIDC_AUTO_REDIRECT" = "true";
         "OIDC_REMEMBER_ME" = "true";
+        "OPENAI_BASE_URL" = "http://ollama--server:11434/v1";
+        "OPENAI_API_KEY" = "ollama";
+        "OPENAI_MODEL" = "gemma4:latest";
       };
       environmentFiles = getEnvFiles "mealie" "app";
       volumes = [
@@ -61,6 +64,7 @@ in
       ];
       networks = [
         "traefik"
+        "ollama-backend"
         backendNetwork
       ];
       labels =

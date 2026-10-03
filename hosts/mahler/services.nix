@@ -19,7 +19,7 @@
     ../../services/navidrome
     ../../services/nas
     ../../services/nextcloud
-    # ../../services/ollama
+    ../../services/ollama
     ../../services/outline
     ../../services/paperless
     # ../../services/pterodactyl

@@ -19,6 +19,9 @@ in
       "traefik"
       backendNetwork
     ];
+    environment = {
+      "OLLAMA_CONTEXT_LENGTH" = "8192";
+    };
     volumes = [
       "/data/services/ollama/data:/root/.ollama"
     ];
