@@ -11,6 +11,29 @@ accessControlAllowHeaders = [
 ]
 addVaryHeader = true
 
+[http.middlewares.matrix-admin-cors.headers]
+accessControlAllowOriginList = ["https://synapse-admin.emdecloud.de"]
+accessControlAllowMethods = [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+  "OPTIONS"
+]
+accessControlAllowHeaders = [
+  "Accept",
+  "Content-Type",
+  "Content-Length",
+  "Authorization",
+  "X-CSRF-Token"
+]
+accessControlExposeHeaders = [
+  "Content-Length"
+]
+accessControlMaxAge = 86400
+addVaryHeader = true
+
 [http.middlewares.forward-auth.forwardAuth]
 # Do not confuse "outpost" with "worker". The main server provides an "outpost"
 # for Traefik, which is used for authentication. The "worker" is used for other

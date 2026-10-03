@@ -229,10 +229,6 @@ in
       (mkTraefikLabels {
         name = "matrix";
         port = "8008";
-        allowedPaths = [
-          "/_matrix"
-          "/_synapse/client"
-        ];
       })
       // {
         "homepage.group" = "Media";
@@ -264,20 +260,19 @@ in
   };
 
   myVirtualization.containers.synapse.admin = {
-    rawImageReference = "ghcr.io/etkecc/synapse-admin:v0.11.1-etke48@sha256:b0d794c33eaa862bfe968ffb02ab82747f1218e5f259568c40cbfff9dc07bf8c";
-    nixSha256 = "sha256-5r22gCLJxgSNNasvXcFNc1Jc31oFzsuLcplE+4HuUaQ=";
-    volumes = [
-      "${./config/synapse-admin-config.json}:/app/config.json:ro"
-    ];
+    rawImageReference = "oci.element.io/element-admin:0.1.12@sha256:2b5f3164864e7fc604792f553eda799ea93ceb03254cf8e52f5a1de44464b8dc";
+    nixSha256 = "sha256-dzGeNZuDILDASwKbjsXEQfYqjOUZ27gWnQuKwGCkb7U=";
     networks = [
       "traefik"
       backendNetwork
     ];
+    environment = {
+      "SERVER_NAME" = "emdecloud.de";
+    };
     labels =
       (mkTraefikLabels {
         name = "synapse-admin";
-        port = "80";
-        isPublic = false;
+        port = "8080";
       })
       // {
         "homepage.group" = "Utilities";
