@@ -85,8 +85,8 @@ in
   };
 
   myVirtualization.containers.immich.kiosk = {
-    rawImageReference = "ghcr.io/damongolding/immich-kiosk:0.44.1@sha256:025ed71aae5fcadfe3c3e7c1f1cc682dee7e67b3a4ec6f615def0ad60350a474";
-    nixSha256 = "sha256-L9s4dg3W7IoLqc7F2xNu8pZUybgYsXmTKTUQCioJxqo=";
+    rawImageReference = "ghcr.io/damongolding/immich-kiosk:0.44.2@sha256:9df90bf970b7c0428e97c58de672cb23d08380dbf6d12420d07154dffa149b55";
+    nixSha256 = "sha256-sJUJk4JHA8aIgk8aDmdMAEBz8+IRRX02ccSk1nSi8vQ=";
     environment = {
       LANG = "de_DE";
       TZ = "Europe/Berlin";
