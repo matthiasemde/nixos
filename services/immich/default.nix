@@ -13,7 +13,7 @@ in
 
   myVirtualization.containers.immich.app = {
     rawImageReference = "ghcr.io/immich-app/immich-server:v3.3.0@sha256:be56bc12c17a84617a979ad1eab1d9105bbec1955ffa7da09b3f9cf79d3bd09d";
-    nixSha256 = "sha256-daE5RcKuxQB7WgiIGhQZOs2q3CIAew0fThuVuEmEg80=";
+    nixSha256 = "sha256-p2IKZBVovHyWo/NOVA4uLrkHGZ1hZp8wnryMG7802Tk=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/data/services/immich/upload:/usr/src/app/upload"
@@ -46,7 +46,7 @@ in
 
   myVirtualization.containers.immich.machine-learning = {
     rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v3.3.0@sha256:aa88ec3aef3bdc97ab31eff66acecc98bb6ee14d47b6122c25e761ed9f31a7da";
-    nixSha256 = "sha256-9AXZT+bZmlYm/2Uhce0aZL+YLNwYX/FWofBU7AkU7BE=";
+    nixSha256 = "sha256-48lX0VIieluZrtmDyoxaF8DUcxLNPG3CWZ2EbaQQ9/A=";
     volumes = [ "immich-ml-cache:/cache" ];
     networks = [ backendNetwork ];
     labels = {
