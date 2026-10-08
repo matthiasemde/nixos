@@ -12,8 +12,8 @@ in
   myVirtualization.networks.${backendNetwork} = "";
 
   myVirtualization.containers.immich.app = {
-    rawImageReference = "ghcr.io/immich-app/immich-server:v3.3.0@sha256:be56bc12c17a84617a979ad1eab1d9105bbec1955ffa7da09b3f9cf79d3bd09d";
-    nixSha256 = "sha256-p2IKZBVovHyWo/NOVA4uLrkHGZ1hZp8wnryMG7802Tk=";
+    rawImageReference = "ghcr.io/immich-app/immich-server:v3.3.1@sha256:db996e352359771c6a3db121a0ed8761516b22f727fc092a0f46dcfef82c1bc1";
+    nixSha256 = "sha256-1bHUAMpOAKnzImDWv976PWQkojYQqd1UU+D5QdO0frM=";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/data/services/immich/upload:/usr/src/app/upload"
@@ -45,8 +45,8 @@ in
   };
 
   myVirtualization.containers.immich.machine-learning = {
-    rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v3.3.0@sha256:aa88ec3aef3bdc97ab31eff66acecc98bb6ee14d47b6122c25e761ed9f31a7da";
-    nixSha256 = "sha256-48lX0VIieluZrtmDyoxaF8DUcxLNPG3CWZ2EbaQQ9/A=";
+    rawImageReference = "ghcr.io/immich-app/immich-machine-learning:v3.3.1@sha256:513c831cfb010ad319341a0c86b42c575a0d5b688d3e8cae346ee624074a58ed";
+    nixSha256 = "sha256-cDmKvKvmsqqOvZ8iqLBH20G7IWEAjxY5N9rIEya5UFI=";
     volumes = [ "immich-ml-cache:/cache" ];
     networks = [ backendNetwork ];
     labels = {
