@@ -59,6 +59,8 @@
   environment.systemPackages = with pkgs; [
     vim
     git
+    usbutils
+    python314
   ];
 
   system.autoUpgrade = {
