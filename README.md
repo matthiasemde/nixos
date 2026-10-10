@@ -109,11 +109,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── default.nix
 │   │   └── README.md
 │   ├── home-assistant
-│   │   ├── config
-│   │   │   ├── automations.yaml
-│   │   │   ├── configuration.yaml
-│   │   │   ├── scenes.yaml
-│   │   │   └── scripts.yaml
 │   │   └── default.nix
 │   ├── homepage
 │   │   ├── config
@@ -228,7 +223,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-76 directories, 148 files
+75 directories, 144 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

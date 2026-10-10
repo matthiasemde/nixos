@@ -76,6 +76,9 @@
       staticIp = "192.168.178.240";
     };
 
+    # Name of the dongle under /dev/serial/by-id/
+    home-assistant.zigbeeDongleId = "usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_d2d683622522f011a397628fb887153e-if00-port0";
+
     # woodpecker.adminUser = "matthiasemde";
 
     frp.configPath = ./frpc.toml;
@@ -89,7 +92,10 @@
         "${getSecretFile "grafana" "alloy" "server.crt"}:/etc/alloy/server.crt:ro"
         "${getSecretFile "grafana" "alloy" "server.key"}:/etc/alloy/server.key:ro"
       ];
-      dirSizeCollectorPaths = [ "/data/services" "/data/nas" ];
+      dirSizeCollectorPaths = [
+        "/data/services"
+        "/data/nas"
+      ];
     };
     kopia = {
       repositoryPath = "/backup/kopia/repositories/main";
