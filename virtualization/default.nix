@@ -178,6 +178,19 @@ let
     '';
   }) config.myVirtualization.networks;
 
+  macvlanNetworks = lib.mapAttrs (
+    _: cfg: ''
+      -d macvlan \
+      --subnet=${cfg.subnet} \
+      --gateway=${cfg.gateway} \
+      --ip-range=${cfg.ipRange} \
+      --ipv6 \
+      --subnet=${cfg.ipv6Subnet} \
+      --gateway=${cfg.ipv6Gateway} \
+      -o parent=${cfg.parentInterface} \
+    ''
+  ) config.myVirtualization.macvlanNetworks;
+
   systemServicesList = lib.mapAttrsToList (serviceName: script: {
     name = serviceName;
     value = {
@@ -217,6 +230,41 @@ in
       description = "Docker networks to create. The value is extra flags passed to `docker network create`.";
     };
 
+    macvlanNetworks = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            parentInterface = lib.mkOption {
+              type = lib.types.str;
+              description = "Host interface connected to the LAN.";
+            };
+            subnet = lib.mkOption {
+              type = lib.types.str;
+              description = "IPv4 subnet CIDR.";
+            };
+            gateway = lib.mkOption {
+              type = lib.types.str;
+              description = "IPv4 gateway address.";
+            };
+            ipRange = lib.mkOption {
+              type = lib.types.str;
+              description = "IPv4 range CIDR reserved for containers.";
+            };
+            ipv6Subnet = lib.mkOption {
+              type = lib.types.str;
+              description = "IPv6 subnet CIDR.";
+            };
+            ipv6Gateway = lib.mkOption {
+              type = lib.types.str;
+              description = "IPv6 gateway address.";
+            };
+          };
+        }
+      );
+      default = { };
+      description = "Docker macvlan networks shared by services on a host.";
+    };
+
     dependencies = {
       files = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
@@ -234,6 +282,8 @@ in
 
   config = {
     _module.args = { inherit mkTraefikLabels parseDockerImageReference; };
+
+    myVirtualization.networks = macvlanNetworks;
 
     system.activationScripts = lib.listToAttrs (fileScripts ++ networkScripts);
 

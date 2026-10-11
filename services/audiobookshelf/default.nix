@@ -19,7 +19,10 @@ in
       "/data/nas/audiobookshelf/audiobooks:/audiobooks"
       "/data/nas/audiobookshelf/podcasts:/podcasts"
     ];
-    networks = [ "traefik" ];
+    networks = [
+      "traefik"
+      "music-assistant-backend"
+    ];
     labels =
       (mkTraefikLabels {
         name = "audiobookshelf";

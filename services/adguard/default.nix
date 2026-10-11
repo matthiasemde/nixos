@@ -8,7 +8,7 @@
 let
   hostname = config.networking.hostName;
   networkName = "adguard-macvlan";
-  cfg = config.adguard.macvlan;
+  lanIp = config.adguard.lanIp;
 
   adguardRawImageReference = "adguard/adguardhome:v0.107.79@sha256:aba9e3bf0613be3ba3755e1fc311b126e2c24bec25e18b6483894a88283074f0";
   adguardNixSha256 = "sha256-oejSWUMQTIUzcmUhaBjhhOPXzB/L6JogCpUFd+Zo5bs=";
@@ -41,54 +41,17 @@ let
   };
 in
 {
-  options.adguard.macvlan = {
-    parentInterface = lib.mkOption {
-      type = lib.types.str;
-      description = "Host network interface to attach the macvlan to.";
-    };
-    subnet = lib.mkOption {
-      type = lib.types.str;
-      description = "IPv4 subnet CIDR for the macvlan network.";
-    };
-    gateway = lib.mkOption {
-      type = lib.types.str;
-      description = "IPv4 gateway for the macvlan network.";
-    };
-    ipRange = lib.mkOption {
-      type = lib.types.str;
-      description = "IPv4 range CIDR allocated to containers on this network.";
-    };
-    ipv6Subnet = lib.mkOption {
-      type = lib.types.str;
-      description = "IPv6 subnet CIDR for the macvlan network.";
-    };
-    ipv6Gateway = lib.mkOption {
-      type = lib.types.str;
-      description = "IPv6 gateway for the macvlan network.";
-    };
-    staticIp = lib.mkOption {
-      type = lib.types.str;
-      description = "Static IPv4 address assigned to the AdGuard container.";
-    };
+  options.adguard.lanIp = lib.mkOption {
+    type = lib.types.str;
+    description = "Static IPv4 address assigned to AdGuard on the shared LAN macvlan.";
   };
 
   config = {
-    myVirtualization.networks.${networkName} = ''
-      -d macvlan \
-      --subnet=${cfg.subnet} \
-      --gateway=${cfg.gateway} \
-      --ip-range=${cfg.ipRange} \
-      --ipv6 \
-      --subnet=${cfg.ipv6Subnet} \
-      --gateway=${cfg.ipv6Gateway} \
-      -o parent=${cfg.parentInterface} \
-    '';
-
     myVirtualization.containers.adguard.server = {
       image = "adguard-derived:v1.0.0";
       imageFile = adguardDerivedImage;
       networks = [ networkName ];
-      extraOptions = [ "--ip=${cfg.staticIp}" ];
+      extraOptions = [ "--ip=${lanIp}" ];
       labels = {
         "traefik.enable" = "false";
         "homepage.group" = "Utilities";

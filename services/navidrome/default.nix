@@ -30,7 +30,10 @@ in
       "/data/nas/home/Theresa/Musik:/music/theresa:ro"
       "/data/nas/home/Matthias/Music:/music/matthias:ro"
     ];
-    networks = [ "traefik" ];
+    networks = [
+      "traefik"
+      "music-assistant-backend"
+    ];
     labels =
       (mkTraefikLabels {
         name = "navidrome";

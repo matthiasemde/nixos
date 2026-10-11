@@ -66,18 +66,19 @@
 
     myInfrastructure.useCrowdsec = true;
 
-    adguard.macvlan = {
+    myVirtualization.macvlanNetworks.adguard-macvlan = {
       parentInterface = "enp6s0";
       subnet = "192.168.178.0/24";
       gateway = "192.168.178.1";
       ipRange = "192.168.178.240/28";
       ipv6Subnet = "fdfb:7759:b7ce::/64";
       ipv6Gateway = "fdfb:7759:b7ce::2e91:abff:fea2:270e";
-      staticIp = "192.168.178.240";
     };
+    adguard.lanIp = "192.168.178.240";
 
     # Name of the dongle under /dev/serial/by-id/
     home-assistant.zigbeeDongleId = "usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_d2d683622522f011a397628fb887153e-if00-port0";
+    music-assistant.lanIp = "192.168.178.241";
 
     # woodpecker.adminUser = "matthiasemde";
 
