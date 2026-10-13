@@ -10,7 +10,7 @@ in
 {
   myVirtualization.containers.vaultwarden.app = {
     rawImageReference = "vaultwarden/server:1.37.4@sha256:efb3cde962015fcc036b2ea625242248611943b27212ebf4392841fb30fad055";
-    nixSha256 = "sha256-cGAb0tlfRhySDcmp8797qv3Bys4mRq1QFjipgtAZ42w=";
+    nixSha256 = "sha256-wOvRUVt2+kgMaA3hI1fcJMV2fuVJRgH1wGEYQGHgm4s=";
     environment = {
       "DOMAIN" = "https://vaultwarden.${domain}";
       "SIGNUPS_ALLOWED" = "false";
