@@ -49,6 +49,7 @@
       "libvirtd"
       "kvm"
       "ykusers"
+      "dialout" # used for programming mcus
     ];
     linger = true;
     shell = pkgs.zsh;
