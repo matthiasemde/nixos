@@ -6,7 +6,8 @@
   ...
 }:
 let
-  backendNetwork = "music-assistant-backend";
+  haBackendNetwork = "home-assistant-backend";
+  maBackendNetwork = "music-assistant-backend";
   lanMacvlanNetwork = "adguard-macvlan";
   musicAssistantLanIp = config.music-assistant.lanIp;
 in
@@ -25,7 +26,8 @@ in
   };
 
   config = {
-    myVirtualization.networks.${backendNetwork} = "";
+    myVirtualization.networks.${haBackendNetwork} = "";
+    myVirtualization.networks.${maBackendNetwork} = "";
 
     myVirtualization.containers.home-assistant.app = {
       rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.10@sha256:1b64d38f38d922bf9d59336451fd6453e1d614f934456af4ee3d2a51061be3a4";
@@ -39,7 +41,8 @@ in
       ) "/dev/serial/by-id/${config.home-assistant.zigbeeDongleId}:/dev/zigbee";
       networks = [
         "traefik"
-        backendNetwork
+        haBackendNetwork
+        maBackendNetwork
       ];
       environment = {
         TZ = "Europe/Berlin";
@@ -67,7 +70,8 @@ in
       ];
       networks = lib.optional (musicAssistantLanIp != null) lanMacvlanNetwork ++ [
         "traefik"
-        backendNetwork
+        haBackendNetwork
+        maBackendNetwork
       ];
       extraOptions = lib.optional (musicAssistantLanIp != null) "--ip=${musicAssistantLanIp}";
       environment = {

@@ -50,7 +50,10 @@ in
     myVirtualization.containers.adguard.server = {
       image = "adguard-derived:v1.0.0";
       imageFile = adguardDerivedImage;
-      networks = [ networkName ];
+      networks = [
+        networkName
+        "home-assistant-backend"
+      ];
       extraOptions = [ "--ip=${lanIp}" ];
       labels = {
         "traefik.enable" = "false";

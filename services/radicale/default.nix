@@ -36,7 +36,10 @@ in
     volumes = [
       "/data/services/radicale/collections:/var/lib/radicale/collections"
     ];
-    networks = [ "traefik" ];
+    networks = [
+      "traefik"
+      "home-assistant-backend"
+    ];
     labels = mkTraefikLabels {
       name = "radicale";
       port = "5232";

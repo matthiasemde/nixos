@@ -24,6 +24,7 @@ in
     networks = [
       backendNetwork
       "traefik"
+      "home-assistant-backend"
     ];
     environment = {
       DB_HOSTNAME = "immich--database";
