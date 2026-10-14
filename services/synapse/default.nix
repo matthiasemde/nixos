@@ -14,8 +14,8 @@ let
   authBackendNetwork = "matrix-auth-backend";
   matrixRtcNetwork = "matrix-rtc-backend";
 
-  matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.26.0@sha256:e089f1048a1d4a9a492ed17b9fe759100f1bd619407b001f5927928d88b780c4";
-  matrixAuthNixSha256 = "sha256-l/+W4kN5hGbvt0EcZMwAqV19x46lxb3xB+jrrHSN9PE=";
+  matrixAuthRawImageReference = "ghcr.io/element-hq/matrix-authentication-service:1.27.0@sha256:085e37263957b3b79be85de9cfda1980b97e9653f284fba0c902445e06c200b8";
+  matrixAuthNixSha256 = "sha256-+MSG+Wr0C58Nut4TMgACiIucfERfS5PWuOEC3xu6O58=";
   matrixAuthImageReference = parseDockerImageReference matrixAuthRawImageReference;
   matrixAuthImage = pkgs.dockerTools.pullImage {
     imageName = matrixAuthImageReference.name;
