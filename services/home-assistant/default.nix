@@ -93,5 +93,37 @@ in
           "homepage.description" = "Music control in your home";
         };
     };
+
+    myVirtualization.containers.whisper.server = {
+      rawImageReference = "rhasspy/wyoming-whisper:3.8.1@sha256:99999ececb7b5d1d176689a81cc78f281d5fdd2a3b29a24b51b85154ab704acd";
+      nixSha256 = "sha256-HZjOXzy/OmL8wUc9u0N8sPdJOVm0ueQ1MENr2zb6GRY=";
+      volumes = [
+        "/data/services/whisper/data:/data"
+      ];
+      networks = [
+         haBackendNetwork
+      ];
+      cmd = [
+        "--model"
+        "small-int8"
+        "--language"
+        "de"
+      ];
+    };
+
+    myVirtualization.containers.piper.server = {
+      rawImageReference = "rhasspy/wyoming-piper:2.5.2@sha256:7d39aafac409c2b6b09d999ed04d84c311d632e558b35baa60fad6aac722af7a";
+      nixSha256 = "sha256-qgP3wq5whUPHHjEb39oM94kjCZEmNF9cd/rKAvX2Bcs=";
+      volumes = [
+        "/data/services/piper/data:/data"
+      ];
+      networks = [
+        haBackendNetwork
+      ];
+      cmd = [
+        "--voice"
+        "de_DE-thorsten-high"
+      ];
+    };
   };
 }
