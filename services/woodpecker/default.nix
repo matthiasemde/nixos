@@ -54,8 +54,8 @@ in
     };
 
     myVirtualization.containers.woodpecker.agent = {
-      rawImageReference = "woodpeckerci/woodpecker-agent:v3.18.1@sha256:73ee7cc63161b40bfefa4a26eae45c518a09124ab34f7e3c5e781df85e1ba4ac";
-      nixSha256 = "sha256-10FQMZmtdOKBBQdO5M2yDwyfWtmnjnMObA9bQNfC4gc=";
+      rawImageReference = "woodpeckerci/woodpecker-agent:v3.19.0@sha256:f85f163e09494ace3377a3f3a6043f131fb47e3e627f7438de42417ee06ca56d";
+      nixSha256 = "sha256-/WAAeTSe/MBd0f0+hLfNis9qr4jhFK4Fr/NdYuXhL50=";
       environment = {
         "WOODPECKER_SERVER" = "woodpecker--server:9000";
         "WOODPECKER_BACKEND" = "docker";
