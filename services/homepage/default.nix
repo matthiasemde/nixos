@@ -6,7 +6,7 @@
 }:
 {
   myVirtualization.containers.homepage.app = {
-    rawImageReference = "ghcr.io/gethomepage/homepage:v2.5.0@sha256:57c4a0531937889c0b968b120fe9c2560bbe036b5c9e18c49a9e2479de9975d1";
+    rawImageReference = "ghcr.io/gethomepage/homepage:v2.6.0@sha256:3e38fe788223cb46a3ce1f046ef11667b40f7707fdca0dcbfa3f86c5c42bf1e8";
     nixSha256 = "sha256-RKRvJv7A0Zr0WaNeESrEh56/wv3pXL0kHQGRwAngPqs=";
     volumes =
       (map (file: "${./config}/${file}:/app/config/${file}:ro") (
