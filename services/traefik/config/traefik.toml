@@ -25,6 +25,9 @@ writeTimeout = "600s"
 [entryPoints.websecure.proxyProtocol]
 trustedIPs = "172.0.0.0/8"
 
+[entryPoints.mqtt]
+address = ":1883"
+
 [certificatesResolvers]
 [certificatesResolvers.myresolver.acme]
 email = "matthias@emdemail.de"

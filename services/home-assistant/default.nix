@@ -3,6 +3,8 @@
   lib,
   domain,
   mkTraefikLabels,
+  getEnvFiles,
+  getSecretFile,
   ...
 }:
 let
@@ -77,7 +79,7 @@ in
       environment = {
         # Provide logging level as environment variable.
         # default=info, possible=(critical, error, warning, info, debug)
-        LOG_LEVEL = "info";
+        LOG_LEVEL = "warning";
       };
       labels =
         (mkTraefikLabels {
@@ -124,6 +126,28 @@ in
         "--voice"
         "de_DE-thorsten-high"
       ];
+    };
+
+    myVirtualization.containers.mosquitto.server = {
+      rawImageReference = "eclipse-mosquitto:2.0.22@sha256:cba7cd79d4e48b2e668b599c100bc5bb612a2c85aada76ab5a27987ecc81e3d7";
+      nixSha256 = "sha256-gWaKQmySXNJtq+mn7l/A96k5EzHD0qGOHPrnEBCyMoA=";
+      volumes = [
+        "${./mosquitto.conf}:/mosquitto/config/mosquitto.conf"
+        "${getSecretFile "mosquitto" "server" "passwd"}:/mosquitto/config/passwd"
+        "/data/services/mosquitto/data:/mosquitto/data"
+      ];
+      networks = [
+        "traefik"
+        haBackendNetwork
+      ];
+      # ports = [ "1883:1883" ];
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.tcp.routers.mosquitto-local.entrypoints" = "mqtt";
+        "traefik.tcp.routers.mosquitto-local.rule" = "HostSNI(`*`)";
+        "traefik.tcp.routers.mosquitto-local.service" = "mosquitto";
+        "traefik.tcp.services.mosquitto.loadbalancer.server.port" = "1883";
+      };
     };
   };
 }

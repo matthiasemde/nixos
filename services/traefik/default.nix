@@ -9,9 +9,10 @@ in
     rawImageReference = "traefik:v3.7.14@sha256:575fa15b135078fe5e50aa847987d96dbddd7b093c172429618404df73f3fa7c";
     nixSha256 = "sha256-VLboGT3/8bhKRZN1L24D+woJWsZXhQHrfXhh1/akvcQ=";
     ports = [
-      "80:80"
-      "443:443"
-      "8080:8080"
+      "80:80" # web
+      "443:443" # websecure
+      "1883:1883" # mqtt
+      "8080:8080" # traefik ui
     ];
     networks = [
       "traefik"

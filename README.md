@@ -54,6 +54,9 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   │   │       ├── ca.crt
 │   │   │   │       ├── server.crt
 │   │   │   │       └── server.key
+│   │   │   ├── mosquitto
+│   │   │   │   └── server
+│   │   │   │       └── passwd
 │   │   │   ├── nas
 │   │   │   │   └── fileshare
 │   │   │   │       └── password
@@ -109,7 +112,8 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   ├── default.nix
 │   │   └── README.md
 │   ├── home-assistant
-│   │   └── default.nix
+│   │   ├── default.nix
+│   │   └── mosquitto.conf
 │   ├── homepage
 │   │   ├── config
 │   │   │   ├── bookmarks.yaml
@@ -223,7 +227,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-75 directories, 144 files
+77 directories, 146 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->
