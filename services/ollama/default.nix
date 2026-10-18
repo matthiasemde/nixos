@@ -42,7 +42,7 @@ in
 
   myVirtualization.containers.ollama.open-webui = {
     rawImageReference = "openwebui/open-webui:0.12.0@sha256:1565038903151ced924b5a3226f73f40f16963df4b910441f6391f10144afdaa";
-    nixSha256 = "sha256-FyuFwMzFdR9fv7zZPErKUK65XXd25lTmcavbt3Xh98s=";
+    nixSha256 = "sha256-U4Ec82hfMKPgVTmqTa5mxfNnB+t1PFN6TeSn0mfjRyA=";
     networks = [
       "traefik"
       backendNetwork
