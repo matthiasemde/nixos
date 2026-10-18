@@ -1,0 +1,110 @@
+script:
+  desktop_play_pause:
+    alias: "Desktop Play/Pause"
+    description: "Toggle play/pause on the desktop media remote"
+    icon: mdi:play-pause
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/play-pause"
+          payload: "toggle"
+
+  desktop_next_track:
+    alias: "Desktop Next Track"
+    description: "Skip to the next track on the desktop media remote"
+    icon: mdi:skip-next
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/next"
+          payload: "next"
+
+  desktop_previous_track:
+    alias: "Desktop Previous Track"
+    description: "Go to the previous track on the desktop media remote"
+    icon: mdi:skip-previous
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/previous"
+          payload: "previous"
+
+  desktop_stop:
+    alias: "Desktop Stop"
+    description: "Stop playback on the desktop media remote"
+    icon: mdi:stop
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/stop"
+          payload: "stop"
+
+  desktop_volume_up:
+    alias: "Desktop Volume Up"
+    description: "Increase volume by 5% on the desktop media remote"
+    icon: mdi:volume-plus
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/up"
+          payload: "5"
+
+  desktop_volume_down:
+    alias: "Desktop Volume Down"
+    description: "Decrease volume by 5% on the desktop media remote"
+    icon: mdi:volume-minus
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/down"
+          payload: "5"
+
+  desktop_set_volume:
+    alias: "Desktop Set Volume"
+    description: "Set the desktop media remote volume to a specific level (0-100)"
+    icon: mdi:volume-high
+    fields:
+      volume:
+        description: "Volume level (0-100)"
+        required: true
+        selector:
+          number:
+            min: 0
+            max: 100
+            step: 1
+            unit_of_measurement: "%"
+            mode: slider
+    sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.desktop_volume
+        data:
+          value: "{{ volume }}"
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/set"
+          payload: "{{ (volume | default(0) | float / 100) | round(2) }}"
+
+  desktop_toggle_mute:
+    alias: "Desktop Toggle Mute"
+    description: "Toggle mute on the desktop media remote"
+    icon: mdi:volume-mute
+    sequence:
+      - service: input_boolean.toggle
+        target:
+          entity_id: input_boolean.desktop_muted
+
+  desktop_refresh_state:
+    alias: "Desktop Refresh Media State"
+    description: "Request current state from the desktop media remote"
+    icon: mdi:refresh
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/get"
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/status/get"
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/sink/get"

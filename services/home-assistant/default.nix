@@ -37,6 +37,7 @@ in
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
         "/data/services/home-assistant:/config"
+        "${./ha-packages}:/config/packages:ro"
       ];
       devices = lib.optional (
         config.home-assistant.zigbeeDongleId != null

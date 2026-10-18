@@ -1,0 +1,56 @@
+automation:
+  - id: "mqtt_media_remote_desktop_volume_to_mqtt"
+    alias: "Desktop Volume Slider -> MQTT"
+    description: "Publish volume changes from the slider to the media remote"
+    trigger:
+      - platform: state
+        entity_id: input_number.desktop_volume
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/set"
+          payload: "{{ trigger.to_state.state | float / 100 | round(2) }}"
+
+  - id: "mqtt_media_remote_desktop_mqtt_volume_to_slider"
+    alias: "MQTT Volume -> Desktop Volume Slider"
+    description: "Update the volume slider when the media remote reports a volume change"
+    trigger:
+      - platform: mqtt
+        topic: "home/desktop/media-remote/state/volume"
+    action:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.desktop_volume
+        data:
+          value: >-
+            {% set vol = value | default('Volume: 0') | regex_replace('Volume:\s*([\d.]+).*', '\1') | float(0) %}
+            {{ (vol * 100) | round(0) }}
+
+  - id: "mqtt_media_remote_desktop_request_states"
+    alias: "Request Media Remote States on Startup"
+    description: "Request current states from the media remote when Home Assistant starts"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/get"
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/playback/status/get"
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/sink/get"
+
+  - id: "mqtt_media_remote_desktop_mute_toggle"
+    alias: "Desktop Mute Toggle -> MQTT"
+    description: "Publish mute toggle command when the mute boolean changes"
+    trigger:
+      - platform: state
+        entity_id: input_boolean.desktop_muted
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "home/desktop/media-remote/volume/mute"
+          payload: "toggle"

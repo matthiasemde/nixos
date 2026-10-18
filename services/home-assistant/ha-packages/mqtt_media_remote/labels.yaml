@@ -1,0 +1,123 @@
+homeassistant:
+  labels:
+    - name: "Media Remote"
+      id: media_remote
+      icon: mdi:remote
+      description: "Media remote control entities"
+    - name: "Desktop"
+      id: desktop
+      icon: mdi:desktop-tower
+      description: "Desktop computer entities"
+    - name: "AI Managed"
+      id: ai_managed
+      icon: mdi:robot
+      description: "Entities managed by AI agent (opencode)"
+
+  customize:
+    sensor.desktop_volume:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    sensor.desktop_playback_status:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    sensor.desktop_current_sink:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    sensor.desktop_volume_level:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    binary_sensor.desktop_media_playing:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    input_number.desktop_volume:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    input_boolean.desktop_muted:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_play_pause:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_next_track:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_previous_track:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_stop:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_volume_up:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_volume_down:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_set_volume:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_toggle_mute:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    script.desktop_refresh_state:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+    group.desktop_media_remote:
+      labels:
+        - media_remote
+        - desktop
+        - ai_managed
+
+group:
+  desktop_media_remote:
+    name: "Desktop Media Remote"
+    icon: mdi:remote
+    entities:
+      - sensor.desktop_volume
+      - sensor.desktop_playback_status
+      - sensor.desktop_current_sink
+      - sensor.desktop_volume_level
+      - binary_sensor.desktop_media_playing
+      - input_number.desktop_volume
+      - input_boolean.desktop_muted
+      - script.desktop_play_pause
+      - script.desktop_next_track
+      - script.desktop_previous_track
+      - script.desktop_stop
+      - script.desktop_volume_up
+      - script.desktop_volume_down
+      - script.desktop_set_volume
+      - script.desktop_toggle_mute
+      - script.desktop_refresh_state
