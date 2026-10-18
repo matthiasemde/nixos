@@ -12,33 +12,33 @@ in
 {
   myVirtualization.networks.${backendNetwork} = "";
 
-  myVirtualization.containers.ollama.server = {
-    rawImageReference = "ollama/ollama:0.40.3@sha256:adca95a12c2b386a8f9a995e7fa0600e187e3323b5e5522f5a6c3b1ec73eff99";
-    nixSha256 = "sha256-2XRa9iIUhPyzy7D+fFTkDmctXb04FKQg4v5le2clatg=";
-    networks = [
-      "traefik"
-      backendNetwork
-    ];
-    environment = {
-      "OLLAMA_CONTEXT_LENGTH" = "8192";
-    };
-    volumes = [
-      "/data/services/ollama/data:/root/.ollama"
-    ];
-    labels =
-      mkTraefikLabels {
-        name = "ollama";
-        port = "11434";
-        isPublic = false;
-      }
-      // {
-        "homepage.group" = "AI";
-        "homepage.name" = "Ollama";
-        "homepage.icon" = "ollama";
-        "homepage.href" = "http://ollama.${hostname}.local";
-        "homepage.description" = "Lokal LLM hosting and management platform.";
-      };
-  };
+  # myVirtualization.containers.ollama.server = {
+  #   rawImageReference = "ollama/ollama:0.40.3@sha256:adca95a12c2b386a8f9a995e7fa0600e187e3323b5e5522f5a6c3b1ec73eff99";
+  #   nixSha256 = "sha256-2XRa9iIUhPyzy7D+fFTkDmctXb04FKQg4v5le2clatg=";
+  #   networks = [
+  #     "traefik"
+  #     backendNetwork
+  #   ];
+  #   environment = {
+  #     "OLLAMA_CONTEXT_LENGTH" = "8192";
+  #   };
+  #   volumes = [
+  #     "/data/services/ollama/data:/root/.ollama"
+  #   ];
+  #   labels =
+  #     mkTraefikLabels {
+  #       name = "ollama";
+  #       port = "11434";
+  #       isPublic = false;
+  #     }
+  #     // {
+  #       "homepage.group" = "AI";
+  #       "homepage.name" = "Ollama";
+  #       "homepage.icon" = "ollama";
+  #       "homepage.href" = "http://ollama.${hostname}.local";
+  #       "homepage.description" = "Lokal LLM hosting and management platform.";
+  #     };
+  # };
 
   myVirtualization.containers.ollama.open-webui = {
     rawImageReference = "openwebui/open-webui:0.12.0@sha256:1565038903151ced924b5a3226f73f40f16963df4b910441f6391f10144afdaa";
