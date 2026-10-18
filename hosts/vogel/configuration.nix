@@ -125,6 +125,9 @@
     openFirewall = true;
   };
 
+  # Generic command-line automation tool (used for mqtt-remote)
+  programs.ydotool.enable = true;
+
   environment.systemPackages = with pkgs; [
     wget
     vscode

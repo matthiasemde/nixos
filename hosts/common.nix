@@ -49,7 +49,9 @@
       "libvirtd"
       "kvm"
       "ykusers"
+      "input" # needed to read events from input devices like zsa consumer control
       "dialout" # used for programming mcus
+      "ydotool" # used to access the ydotool socket
     ];
     linger = true;
     shell = pkgs.zsh;
