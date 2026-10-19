@@ -113,15 +113,6 @@ This repository holds the configuration of my homelab powered by NixOS
 │   │   └── README.md
 │   ├── home-assistant
 │   │   ├── default.nix
-│   │   ├── ha-packages
-│   │   │   ├── AGENTS.md
-│   │   │   └── mqtt_media_remote
-│   │   │       ├── automations.yaml
-│   │   │       ├── helpers.yaml
-│   │   │       ├── labels.yaml
-│   │   │       ├── scripts.yaml
-│   │   │       ├── sensors.yaml
-│   │   │       └── templates.yaml
 │   │   └── mosquitto.conf
 │   ├── homepage
 │   │   ├── config
@@ -236,7 +227,7 @@ This repository holds the configuration of my homelab powered by NixOS
 └── virtualization
     └── default.nix
 
-79 directories, 153 files
+77 directories, 146 files
 ```
 
 <!-- DIRECTORY_STRUCTURE_END -->

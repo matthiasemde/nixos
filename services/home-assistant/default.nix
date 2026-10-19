@@ -37,7 +37,14 @@ in
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
         "/data/services/home-assistant:/config"
-        "${./ha-packages}:/config/packages:ro"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/blueprints:/config/blueprints"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/automations.yaml:/config/automations.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/configuration.yaml:/config/configuration.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/helpers.yaml:/config/helpers.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/scenes.yaml:/config/scenes.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/scripts.yaml:/config/scripts.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/mqtt/sensors.yaml:/config/mqtt/sensors.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/templates.yaml:/config/templates.yaml"
       ];
       devices = lib.optional (
         config.home-assistant.zigbeeDongleId != null
@@ -103,14 +110,14 @@ in
       volumes = [
         "/data/services/whisper/data:/data"
       ];
+      environment = {
+        WYO_WHISPER_MODEL = "small-int8";
+        WYO_WHISPER_LANGUAGE = "de";
+        WYO_WHISPER_HASS_API = "http://home-assistant--app:8123/api";
+      };
+      environmentFiles = getEnvFiles "whisper" "server";
       networks = [
-         haBackendNetwork
-      ];
-      cmd = [
-        "--model"
-        "small-int8"
-        "--language"
-        "de"
+        haBackendNetwork
       ];
     };
 
