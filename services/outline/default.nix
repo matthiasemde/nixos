@@ -12,7 +12,7 @@ in
   myVirtualization.networks.${backendNetwork} = "";
 
   myVirtualization.containers.outline.app = {
-    rawImageReference = "outlinewiki/outline:1.10.1@sha256:832051f039b446c87aa23929cf92c00980c66aaa2d744d118c48c016ec816ad8";
+    rawImageReference = "outlinewiki/outline:1.11.0@sha256:08ee9ffdb847e1bd35ded30ee832090dd06a7f93f67422687db59e70bc7f5393";
     nixSha256 = "sha256-Ijw21JPCeoKk3+qi1zBtus46yPMPRppbeIsKyfFTYLE=";
     networks = [
       backendNetwork
