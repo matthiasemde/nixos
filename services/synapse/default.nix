@@ -261,7 +261,7 @@ in
 
   myVirtualization.containers.synapse.admin = {
     rawImageReference = "oci.element.io/element-admin:0.1.17@sha256:55dce08800f425d1eeacadb8864eea95acc5a8a0824efef3bae3d84e2eb83d35";
-    nixSha256 = "sha256-E1S2UV8d0roqBkgnYWnDX4IMEoy/0xjzBO9huQxLDUg=";
+    nixSha256 = "sha256-GIbq7U926cCYI7PVznAyvT71q/e++OD18Cdf3/kI7xM=";
     networks = [
       "traefik"
       backendNetwork
