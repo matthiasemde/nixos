@@ -47,8 +47,8 @@ in
   };
 
   myVirtualization.containers.traefik.error-pages = {
-    rawImageReference = "nginx:1.31.6-alpine@sha256:092a82dc1cb2fa653ee660f24a8f8603f55b4ea9316923f9a0d394e50714ae10";
-    nixSha256 = "sha256-lwT+kVdXGLHBpyjxmZBGIMn+xKgO3L9AwS5D5X1VALM=";
+    rawImageReference = "nginx:1.31.7-alpine@sha256:892bb2152464f0c5d8972593a5f5afaf8054552580b699d95f8ff4af08c2d33d";
+    nixSha256 = "sha256-Xd7q8/xe2gQ/a6wTY5pwsn7dNz5xLbg+9/M8H/vh8QY=";
     networks = [ "traefik" ];
     volumes = [
       "${./config/error.html}:/usr/share/nginx/html/error.html:ro"
