@@ -241,7 +241,7 @@ in
 
   myVirtualization.containers.synapse.wellknown = {
     rawImageReference = "nginx:1.31.7-alpine@sha256:892bb2152464f0c5d8972593a5f5afaf8054552580b699d95f8ff4af08c2d33d";
-    nixSha256 = "sha256-lwT+kVdXGLHBpyjxmZBGIMn+xKgO3L9AwS5D5X1VALM=";
+    nixSha256 = "sha256-Xd7q8/xe2gQ/a6wTY5pwsn7dNz5xLbg+9/M8H/vh8QY=";
     networks = [ "traefik" ];
     volumes = [
       "${wellknownServerFile}:/usr/share/nginx/html/.well-known/matrix/server:ro"
