@@ -205,7 +205,7 @@ in
 
   myVirtualization.containers.synapse.app = {
     rawImageReference = "matrixdotorg/synapse:v1.163.0@sha256:e98ab72138d90fa8b8876c6421fe78a9fdb181c0d7cc690ad740e5173e0c65e6";
-    nixSha256 = "sha256-YQ1VirKAvpBmjB6c281K4qkRaHa8OP5h4gwm42x0Nf0=";
+    nixSha256 = "sha256-jedmW5WTFVeAr7gPt/9xr18UvG3p2ghuLuW1RRjgq5A=";
     environment = {
       "SYNAPSE_CONFIG_PATH" = "/data/homeserver.yaml";
     };
