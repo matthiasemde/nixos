@@ -13,7 +13,7 @@ in
   # Shell history sync server. Requires ATUIN_DB_URI (postgres connection
   # string, including credentials) to be provided via the "server" secret.
   myVirtualization.containers.atuin.server = {
-    rawImageReference = "ghcr.io/atuinsh/atuin:18.24.1@sha256:327d0789dafce127ff26a68ba80c9ab63fec9d95186015dee4d73a010bf14e53";
+    rawImageReference = "ghcr.io/atuinsh/atuin:18.24.2@sha256:2055d1e404f81ba324f1100dead8631823139bce11439bef908520e1a273bae2";
     nixSha256 = "sha256-u9BdCPkdHMxxRbC6kJwmtuN2ouXyOnda212IYF52Kq4=";
     environment = {
       "ATUIN_HOST" = "0.0.0.0";
