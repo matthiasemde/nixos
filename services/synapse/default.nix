@@ -260,8 +260,8 @@ in
   };
 
   myVirtualization.containers.synapse.admin = {
-    rawImageReference = "oci.element.io/element-admin:0.1.17@sha256:55dce08800f425d1eeacadb8864eea95acc5a8a0824efef3bae3d84e2eb83d35";
-    nixSha256 = "sha256-GIbq7U926cCYI7PVznAyvT71q/e++OD18Cdf3/kI7xM=";
+    rawImageReference = "oci.element.io/element-admin:0.1.18@sha256:559cf3974c6dc72eba41a13dd46a1614d6a66e3701c6e6bc3587b811b1a1e56e";
+    nixSha256 = "sha256-bL7ajjr2um5eMZHsuvKKbAJ3vbK/Yrs6FgA+PMMs1lM=";
     networks = [
       "traefik"
       backendNetwork
