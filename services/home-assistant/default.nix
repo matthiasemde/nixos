@@ -32,19 +32,16 @@ in
     myVirtualization.networks.${maBackendNetwork} = "";
 
     myVirtualization.containers.home-assistant.app = {
-      rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.10@sha256:1b64d38f38d922bf9d59336451fd6453e1d614f934456af4ee3d2a51061be3a4";
-      nixSha256 = "sha256-a2aEHgsTRdUlocC96z2IyY1EA20VGnUjqRX1TiQMv2g=";
+      rawImageReference = "ghcr.io/home-assistant/home-assistant:2026.11.0.dev202610240224@sha256:134c8907536a4f304609e99bba00ead729e343d7b4159037ec01e9c28802d098";
+      nixSha256 = "sha256-OoXJ4zxiA0fb9WlyfXmzomMXoZP50ymnU41o54KdQeQ=";
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
-        "/data/services/home-assistant:/config"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/blueprints:/config/blueprints"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/automations.yaml:/config/automations.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/configuration.yaml:/config/configuration.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/helpers.yaml:/config/helpers.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/scenes.yaml:/config/scenes.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/scripts.yaml:/config/scripts.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/mqtt/sensors.yaml:/config/mqtt/sensors.yaml"
-        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration/templates.yaml:/config/templates.yaml"
+        "/data/nas/home/Matthias/Documents/projects/home-assistant-configuration:/config"
+        "/data/services/database/home-assistant_v2.db:/config/home-assistant_v2.db"
+        "/data/services/home-assistant/config/backups:/config/backups"
+        "/data/services/home-assistant/config/image:/config/image"
+        "/data/services/home-assistant/config/tts:/config/tts"
+        "/data/services/home-assistant/config/zigbee.db:/config/zigbee.db"
       ];
       devices = lib.optional (
         config.home-assistant.zigbeeDongleId != null
@@ -56,7 +53,10 @@ in
       ];
       environment = {
         TZ = "Europe/Berlin";
+        HA_DISABLE_LOG_FILE = "1";
+        # DB_URL = "mysql://home-assistant:\${DB_PASSWORD}@home-assistant--database/home-assistant?charset=utf8mb4";
       };
+      environmentFiles = getEnvFiles "home-assistant" "app";
       labels =
         (mkTraefikLabels {
           name = "home-assistant";
@@ -71,6 +71,25 @@ in
         };
     };
 
+    myVirtualization.containers.home-assistant.database = {
+      rawImageReference = "mariadb:12.3.3@sha256:99c125f103f5d081ebbc9ffe064e63daf7f688ac33a5f7f29af2d7260a96debf";
+      nixSha256 = "sha256-cDkRVOATNV+aCGHukGmGo2LkvcDvYOObrtYVdhkvhJc=";
+      volumes = [
+        "/data/services/home-assistant/database:/var/lib/mysql:z"
+      ];
+      networks = [ haBackendNetwork ];
+      environment = {
+        MARIADB_DATABASE = "home-assistant";
+        MARIADB_USER = "home-assistant";
+        MARIADB_RANDOM_ROOT_PASSWORD = "yes";
+        MARIADB_ROOT_HOST = "localhost";
+      };
+      environmentFiles = getEnvFiles "home-assistant" "database";
+      labels = {
+        "traefik.enable" = "false";
+      };
+    };
+
     myVirtualization.containers.music-assistant.app = {
       rawImageReference = "ghcr.io/music-assistant/server:2.10.8@sha256:2a0536321d0554d6157504e8e477ef871dd41d466bdc22f250ccaff19f667e58";
       nixSha256 = "sha256-JzBGOEDrB4IT6IEIqjCHMQm3mSjDK4w/EBdxHnZGja0=";
@@ -78,6 +97,7 @@ in
         "/etc/localtime:/etc/localtime:ro"
         "/data/services/music-assistant/data:/data"
       ];
+      ports = [ "8095:8095" ];
       networks = lib.optional (musicAssistantLanIp != null) lanMacvlanNetwork ++ [
         "traefik"
         haBackendNetwork
