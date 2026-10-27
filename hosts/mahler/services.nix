@@ -5,7 +5,7 @@
     ../../services/atuin
     ../../services/audiobookshelf
     ../../services/authentik
-    ../../services/firefly
+    # ../../services/firefly
     ../../services/fl-hofmusic
     ../../services/frp
     ../../services/grafana
