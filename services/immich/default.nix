@@ -93,7 +93,7 @@ in
       TZ = "Europe/Berlin";
       KIOSK_IMMICH_URL = "http://immich--app:2283";
       KIOSK_DISABLE_UI = "true";
-      KIOSK_DURATION = "3600";
+      KIOSK_DURATION = "600";
       KIOSK_BACKGROUND_BLUR_AMOUNT = "200";
       KIOSK_BEHIND_PROXY = "true";
     };
