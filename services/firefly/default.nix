@@ -70,7 +70,7 @@ in
 
   myVirtualization.containers.firefly.cron = {
     rawImageReference = "alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a";
-    nixSha256 = "sha256-NibsZ3J+zAdKxZyM+bG/BuLpcTzRupFJd6zKswTsIH8=";
+    nixSha256 = "sha256-3PCq4g0XIEjgwodDB/QBmfIhdgEEjHjgvORHoWCgbLc=";
     volumes = [ "/etc/localtime:/etc/localtime:ro" ];
     cmd = [
       "sh"
