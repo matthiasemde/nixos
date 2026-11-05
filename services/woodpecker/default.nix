@@ -19,7 +19,7 @@ in
     myVirtualization.networks.${backendNetwork} = "";
 
     myVirtualization.containers.woodpecker.server = {
-      rawImageReference = "woodpeckerci/woodpecker-server:v3.19.0@sha256:6ca167a3c58b50c5a3c903dd8db92b39cfc30c560a47052cff7dd0235123a9cb";
+      rawImageReference = "woodpeckerci/woodpecker-server:v3.20.0@sha256:5835826bada76884ff3a96aea4140cc2823472d1a30050b16f35a1d0266bb40b";
       nixSha256 = "sha256-KibiW8QmmcCki8Lpr+4NiWEYuZ4FcpCTQbgetE6S35Y=";
       environment = {
         "WOODPECKER_HOST" = "https://ci.${domain}";
