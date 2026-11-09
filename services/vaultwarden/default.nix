@@ -9,7 +9,7 @@ let
 in
 {
   myVirtualization.containers.vaultwarden.app = {
-    rawImageReference = "vaultwarden/server:1.37.4@sha256:efb3cde962015fcc036b2ea625242248611943b27212ebf4392841fb30fad055";
+    rawImageReference = "vaultwarden/server:1.37.5@sha256:4fe17f415f90087377d37c755e0ea3cf189dcc6794e49cdd2a9adbb4937d9e1f";
     nixSha256 = "sha256-wOvRUVt2+kgMaA3hI1fcJMV2fuVJRgH1wGEYQGHgm4s=";
     environment = {
       "DOMAIN" = "https://vaultwarden.${domain}";
