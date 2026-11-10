@@ -11,7 +11,7 @@ let
   lanIp = config.adguard.lanIp;
 
   adguardRawImageReference = "adguard/adguardhome:v0.107.80@sha256:e2e1b48c832f7705be915873f95de0d5114de573736441d7f2923a8a6293027c";
-  adguardNixSha256 = "sha256-oejSWUMQTIUzcmUhaBjhhOPXzB/L6JogCpUFd+Zo5bs=";
+  adguardNixSha256 = "sha256-OrYxiC4vNepJtZjH9ZtuF5dXwArsKKu4eP0yb1/uIJk=";
   adguardImageReference = parseDockerImageReference adguardRawImageReference;
   adguardImage = pkgs.dockerTools.pullImage {
     imageName = adguardImageReference.name;
