@@ -14,7 +14,7 @@ in
   # string, including credentials) to be provided via the "server" secret.
   myVirtualization.containers.atuin.server = {
     rawImageReference = "ghcr.io/atuinsh/atuin:18.24.6@sha256:48ef426c8bf9760733ec3ff1d820ef13018f25d1b0307dd43d8576837363cda2";
-    nixSha256 = "sha256-N4+ubVuIrqnBG9EmtEApwHz6uFoja6fSF9It6Cv7R7Q=";
+    nixSha256 = "sha256-6FM48t7L1XuRFuhBZJ9/oA58DBCTVs+gKPYwfzRNhbQ=";
     environment = {
       "ATUIN_HOST" = "0.0.0.0";
       "ATUIN_PORT" = "8888";
