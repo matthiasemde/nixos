@@ -327,8 +327,8 @@ in
   };
 
   myVirtualization.containers.synapse.element-call-jwt = {
-    rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.9.0@sha256:d210fd778ba38b7e42e6fc64e8a24a7d66ccc3b938fb20d73bd713224af2dfea";
-    nixSha256 = "sha256-NyJ2Ut6RB1vgQ1WEeaUfrpPSgOSFrRzvqkC3OdPag+o=";
+    rawImageReference = "ghcr.io/element-hq/lk-jwt-service:0.10.0@sha256:caea79d24fa442e74527cab3bc6fa82979d2aea56b9a79c0b18c57d66a182996";
+    nixSha256 = "sha256-Qq8K7Yqu+ptZzBD4W69izPHs89cG5YFhT94HPD152Is=";
     environment = {
       "LIVEKIT_JWT_PORT" = "8080";
       "LIVEKIT_URL" = "https://matrix-rtc-sfu.${domain}";
