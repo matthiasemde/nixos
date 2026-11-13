@@ -19,8 +19,8 @@ in
     myVirtualization.networks.${backendNetwork} = "";
 
     myVirtualization.containers.mealie.app = {
-      rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.30.0@sha256:d552b662eb93f4dafa127fccfd8db9139e24c249753c72c17c9248edbc21e0c8";
-      nixSha256 = "sha256-D6YnuEj3RP+VLZOyMy6p7EAouMhNoYHMFZ2zjYAxUeE=";
+      rawImageReference = "ghcr.io/mealie-recipes/mealie:v3.31.0@sha256:e0c056e730122abd92e611af811c29bbad94c6018572180369cd9f3797e49a05";
+      nixSha256 = "sha256-rt7hhkdU4eJ5WGP+j5PY6Ylv/P00n7xaaBDjukCYFto=";
       environment = {
         "BASE_URL" = "https://mealie.${domain}";
         "DEFAULT_GROUP" = "Default";
