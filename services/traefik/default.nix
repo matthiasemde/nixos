@@ -6,8 +6,8 @@ in
   myVirtualization.networks.traefik = "--ipv6";
 
   myVirtualization.containers.traefik.server = {
-    rawImageReference = "traefik:v3.7.17@sha256:f4bb143d1135a579b630ed491e17ec50f6f7c9c6a30585ff3d385471d2a86f5a";
-    nixSha256 = "sha256-RWtBJubRvdnkpTLoO9sKS6daiHSy8qmiTSRsr8rp588=";
+    rawImageReference = "traefik:v3.7.18@sha256:9c437ac4f09ce6f4980a8544902d3475fdf70a1a7c578729581d2535dfa7d635";
+    nixSha256 = "sha256-OQ0eMduF3/BpCW+p5vQR1Oui80IKdfjZcZ81agprplg=";
     ports = [
       "80:80" # web
       "443:443" # websecure
