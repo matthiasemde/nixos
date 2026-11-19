@@ -15,7 +15,7 @@
     ../../services/kopia
     ../../services/lovebox
     ../../services/mealie
-    ../../services/microbin
+    # ../../services/microbin
     ../../services/navidrome
     ../../services/nas
     ../../services/nextcloud
