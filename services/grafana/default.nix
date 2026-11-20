@@ -202,7 +202,7 @@ in
     };
 
     myVirtualization.containers.grafana.loki = lib.mkIf cfg.enableLoki {
-      rawImageReference = "grafana/loki:3.7.9@sha256:569e5cab050b7705eb82080335ff9a8bd329650b358bb0d42131e3ced8d9492e";
+      rawImageReference = "grafana/loki:3.7.10@sha256:6d789ab9a603ee4429d0fdc4d11512bf2423e8a8c5fc898a9e5aa2d8471ce459";
       nixSha256 = "sha256-AB1EjSoukMOMg0GTD+qeVygJ47irCDq01vGuMQVPWrY=";
       networks = [ backendNetwork ];
       volumes = [
