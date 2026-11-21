@@ -92,7 +92,7 @@ in
 
     myVirtualization.containers.music-assistant.app = {
       rawImageReference = "ghcr.io/music-assistant/server:2.10.13@sha256:a60aaad61d1fafb573608903a87b051007d08e23b14f7d9a7ee2b7abf65577dd";
-      nixSha256 = "sha256-u0GPDRTBGnVL9HuAqE6I9+FQFqJ5A01IisSoTRGGw7U=";
+      nixSha256 = "sha256-Zd0XUtp/+ZJRD4zroA5tEqU1rrTOa863CO9HpwGUkTM=";
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
         "/data/services/music-assistant/data:/data"
