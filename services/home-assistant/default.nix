@@ -158,7 +158,7 @@ in
 
     myVirtualization.containers.mosquitto.server = {
       rawImageReference = "eclipse-mosquitto:2.0.23@sha256:c33ca2d1b3d00bd5fd96a168558c489ed8ef1e4c9ae36a06031b77edf8499035";
-      nixSha256 = "sha256-gWaKQmySXNJtq+mn7l/A96k5EzHD0qGOHPrnEBCyMoA=";
+      nixSha256 = "sha256-t47HMlNFKFBFoWezQqYhD/JXYp2OgGFy8RY2eaFCEFM=";
       volumes = [
         "${./mosquitto.conf}:/mosquitto/config/mosquitto.conf"
         "${getSecretFile "mosquitto" "server" "passwd"}:/mosquitto/config/passwd"
