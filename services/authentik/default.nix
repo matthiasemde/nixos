@@ -132,8 +132,8 @@ in
     };
 
     myVirtualization.containers.authentik.outpost-infra = lib.mkIf cfg.enableOutpost {
-      rawImageReference = "ghcr.io/goauthentik/proxy:2026.8.6@sha256:ceb1402294bb71cac3651d88b917302001ccbecad6afcea1f8b6ace101da64df";
-      nixSha256 = "sha256-pbaP20Do5ez6o5jcDp7JR+Ty+2qjJ/BTtOEbepVfq80=";
+      rawImageReference = "ghcr.io/goauthentik/proxy:2026.8.7@sha256:69efdaaab67dd247ff9d17476cbf0a8b2d1258ced2b65e48ad340ea559625ff2";
+      nixSha256 = "sha256-aY2PoLMpVAR94ekfjMifoqZYp28PWqGpBYJEFCyk6u4=";
       environment = {
         "AUTHENTIK_HOST" = "https://auth.emdecloud.de";
         "AUTHENTIK_INSECURE" = "true";
