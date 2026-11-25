@@ -74,7 +74,7 @@ in
 
     myVirtualization.containers.authentik.server = lib.mkIf cfg.enableStack {
       rawImageReference = "ghcr.io/goauthentik/server:2026.8.7@sha256:5cee18c7a4304d0d8df1419be0dfe38738538d1fc40b0b38156fa29573346a20";
-      nixSha256 = "sha256-Z2JPAqsW3v2ADw0NJ3DGPiLPVCYGK3p2/sUL38XF6ro=";
+      nixSha256 = "sha256-EQHTPrGuL/lxrlAt3G88Jeb+H+NI7Wf+BOZLRv7Pyhw=";
       cmd = [ "server" ];
       environment = env // {
         "AUTHENTIK_POSTGRESQL__HOST" = "authentik--database";
@@ -108,7 +108,7 @@ in
 
     myVirtualization.containers.authentik.worker = lib.mkIf cfg.enableStack {
       rawImageReference = "ghcr.io/goauthentik/server:2026.8.7@sha256:5cee18c7a4304d0d8df1419be0dfe38738538d1fc40b0b38156fa29573346a20";
-      nixSha256 = "sha256-Z2JPAqsW3v2ADw0NJ3DGPiLPVCYGK3p2/sUL38XF6ro=";
+      nixSha256 = "sha256-EQHTPrGuL/lxrlAt3G88Jeb+H+NI7Wf+BOZLRv7Pyhw=";
       cmd = [ "worker" ];
       environment = env // {
         "AUTHENTIK_POSTGRESQL__HOST" = "authentik--database";
