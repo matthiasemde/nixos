@@ -143,7 +143,7 @@ in
 
     myVirtualization.containers.piper.server = {
       rawImageReference = "rhasspy/wyoming-piper:2.5.4@sha256:333622ab9e4bcd00c80a37219b90a1a9d6aa3fd1ad34e0a6e3bddd36ee999efd";
-      nixSha256 = "sha256-xUuIn+SLqVt+xcS6c8BLQ/orE1pkpGLNnlpBsa2oIKk=";
+      nixSha256 = "sha256-16eUXIpyQ/AIQxJBLu/Hiv+zcA7joISn3pUcDzPrbIw=";
       volumes = [
         "/data/services/piper/data:/data"
       ];
