@@ -125,7 +125,7 @@ in
     };
 
     myVirtualization.containers.whisper.server = {
-      rawImageReference = "rhasspy/wyoming-whisper:3.9.0@sha256:8ca540671a529e43c3e964c9d2cf43d4a0b66bfa4b20e59109ff86efd3617ad8";
+      rawImageReference = "rhasspy/wyoming-whisper:3.9.1@sha256:2ca64ba021356d98dcf4719338fdfeefec8d67102c3b3f46e8453d4c44fa4839";
       nixSha256 = "sha256-hQFZdtBRZIfKOex9QYFbupWh2l1f6bTU+w192q0PWb4=";
       volumes = [
         "/data/services/whisper/data:/data"
