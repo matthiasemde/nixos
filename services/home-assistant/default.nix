@@ -73,7 +73,7 @@ in
 
     myVirtualization.containers.home-assistant.database = {
       rawImageReference = "mariadb:13.0.2@sha256:54f493ea0d60b621a5bff84e5b20100f8b86b6efa6b79158e04756c5194a5e4d";
-      nixSha256 = "sha256-cDkRVOATNV+aCGHukGmGo2LkvcDvYOObrtYVdhkvhJc=";
+      nixSha256 = "sha256-DwqpORweVSbitnOogL1HgK1vZ+r5zUPMNDDIBp/fJ+A=";
       volumes = [
         "/data/services/home-assistant/database:/var/lib/mysql:z"
       ];
