@@ -1,7 +1,7 @@
 { ... }:
 {
   myVirtualization.containers.fl-hofmusic.app = {
-    rawImageReference = "nginx:1.31.7-alpine@sha256:892bb2152464f0c5d8972593a5f5afaf8054552580b699d95f8ff4af08c2d33d";
+    rawImageReference = "nginx:1.31.9-alpine@sha256:fb4658584bd9a916ffb6f6e365f97c25cfdb2923801f551ea08356e695f14ff7";
     nixSha256 = "sha256-Xd7q8/xe2gQ/a6wTY5pwsn7dNz5xLbg+9/M8H/vh8QY=";
     networks = [ "traefik" ];
     volumes = [
