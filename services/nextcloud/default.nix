@@ -66,7 +66,7 @@ in
 
   myVirtualization.containers.nextcloud.database = {
     rawImageReference = "postgres:19@sha256:3fb624f672a1cb628d0bdc0f533cffad31345421eedf16ab1f85ed1ea0d07d2e";
-    nixSha256 = "sha256-2Nqz+MGNn5nzCYCYETWv8JBN2odoq+RuvJ2LGnWT5d8=";
+    nixSha256 = "sha256-ZpiK6v+/LXJh7TEdbMNZzGj4FEj9re/sUTISj/eVI4Q=";
     volumes = [ "/data/services/nextcloud/database:/var/lib/postgresql/data" ];
     networks = [ backendNetwork ];
     environment = {
