@@ -58,7 +58,7 @@ in
   };
 
   myVirtualization.containers.outline.database = {
-    rawImageReference = "postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8";
+    rawImageReference = "postgres:19@sha256:4ea94de574c17f0372722806c949757050fbb1cd7648410fe45d6bba275cc00e";
     nixSha256 = "sha256-zH0xxBUum8w4fpGFV6r76jI7ayJuXC8G0qY1Dm26opU=";
     volumes = [ "/data/services/outline/database:/var/lib/postgresql/18/docker" ];
     networks = [ backendNetwork ];
