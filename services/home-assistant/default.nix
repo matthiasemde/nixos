@@ -91,7 +91,7 @@ in
     };
 
     myVirtualization.containers.music-assistant.app = {
-      rawImageReference = "ghcr.io/music-assistant/server:2.10.13@sha256:a60aaad61d1fafb573608903a87b051007d08e23b14f7d9a7ee2b7abf65577dd";
+      rawImageReference = "ghcr.io/music-assistant/server:2.10.14@sha256:468995e9eb42e593011fb2153df5b44528a0559cd42803e9d1cb5284c696972a";
       nixSha256 = "sha256-Zd0XUtp/+ZJRD4zroA5tEqU1rrTOa863CO9HpwGUkTM=";
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
