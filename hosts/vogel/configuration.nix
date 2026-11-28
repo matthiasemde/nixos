@@ -19,9 +19,12 @@
     configFile = "/etc/wireguard/dachau.conf";
   };
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  hardware = {
+    keyboard.zsa.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
   };
 
   services.xserver = {
